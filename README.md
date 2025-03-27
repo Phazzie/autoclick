@@ -4,11 +4,13 @@ A streamlined, maintainable, and easily extensible web automation application.
 
 ## Features
 
-- Manages user credentials securely
-- Allows users to build and execute web automation workflows
-- Provides basic reporting/analytics on results
-- Supports parallel execution of workflows
-- Enables easy addition of new features through plugins
+- **Modern UI**: Intuitive graphical interface with keyboard shortcuts and drag-and-drop
+- **Workflow Builder**: Create and edit automation workflows visually
+- **Browser Recording**: Record actions in Chrome, Firefox, or Edge
+- **Element Selection**: Select and inspect elements on web pages
+- **Secure Credentials**: Manage website credentials securely
+- **Execution Engine**: Run workflows with detailed logging
+- **Extensible Architecture**: Add new features through plugins
 
 ## Getting Started
 
@@ -16,6 +18,7 @@ A streamlined, maintainable, and easily extensible web automation application.
 
 - Python 3.9 or higher
 - Git
+- Chrome, Firefox, or Edge browser (for web automation)
 
 ### Setup
 
@@ -34,6 +37,19 @@ A streamlined, maintainable, and easily extensible web automation application.
    - Install all required dependencies
    - Set up git hooks for code quality
    - Initialize the project structure
+
+### Running the Application
+
+1. Start the GUI:
+
+   ```
+   python -m src.cli.main gui
+   ```
+
+2. Or use the command-line interface:
+   ```
+   python -m src.cli.main --help
+   ```
 
 ### Development Workflow
 
@@ -80,12 +96,24 @@ This checks:
 ## Project Structure
 
 - `src/` - Source code
+  - `cli/` - Command-line interface
   - `core/` - Core functionality
+  - `ui/` - User interface
+    - `components/` - UI components
+    - `interfaces/` - Interfaces for UI components
+    - `models/` - Data models
+    - `presenters/` - Presenters for UI components
+    - `services/` - Services for UI components
   - `plugins/` - Plugin implementations
   - `utils/` - Utility functions
 - `tests/` - Test suite
+  - `cli/` - Tests for CLI
+  - `core/` - Tests for core functionality
+  - `ui/` - Tests for UI components
 - `tools/` - Development tools
 - `docs/` - Documentation
+  - `user_guide.md` - User documentation
+  - `developer_guide.md` - Developer documentation
 
 ## Plugin System
 
