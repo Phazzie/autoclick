@@ -26,6 +26,7 @@ from src.ui.services.dialog_service import DialogService
 from src.ui.services.file_service import FileService
 from src.ui.services.theme_service import ThemeService
 from src.ui.services.execution_service import ExecutionService
+from src.ui.services.shortcut_service import ShortcutService
 
 
 class SimpleGUI:
@@ -41,10 +42,17 @@ class SimpleGUI:
         self.logger = logging.getLogger(__name__)
         self.logger.info("Initializing AUTOCLICK GUI")
 
+        # Initialize the main window
+        self.root = tk.Tk()
+        self.root.title("AUTOCLICK - Web Automation")
+        self.root.geometry("1024x768")
+
         # Create services
         self.dialog_service = DialogService()
         self.file_service = FileService()
         self.theme_service = ThemeService(theme)
+        self.execution_service = ExecutionService()
+        self.shortcut_service = ShortcutService(self.root)
 
         # Create models
         self.workflow_model = WorkflowModel()
@@ -53,19 +61,14 @@ class SimpleGUI:
         self.execution_model = ExecutionModel()
         self.credential_model = CredentialModel()
 
-        # Create services
-        self.execution_service = ExecutionService()
-
-        # Initialize the main window
-        self.root = tk.Tk()
-        self.root.title("AUTOCLICK - Web Automation")
-        self.root.geometry("1024x768")
-
         # Apply theme
         self._apply_theme()
 
         # Create the main UI
         self._create_ui()
+
+        # Register keyboard shortcuts
+        self._register_shortcuts()
 
         self.logger.info("GUI initialized")
 
@@ -191,6 +194,7 @@ class SimpleGUI:
         # Help menu
         help_menu = tk.Menu(self.menu_bar, tearoff=0)
         help_menu.add_command(label="Documentation", command=self._show_documentation)
+        help_menu.add_command(label="Keyboard Shortcuts", command=self._show_shortcuts)
         help_menu.add_command(label="About", command=self._show_about)
 
         # Add menus to menu bar
@@ -271,6 +275,75 @@ class SimpleGUI:
             "A streamlined, maintainable, and easily extensible web automation application.\n\n"
             "© 2023 Phazzie"
         )
+
+    def _register_shortcuts(self) -> None:
+        """Register keyboard shortcuts"""
+        self.logger.info("Registering keyboard shortcuts")
+
+        # File menu shortcuts
+        self.shortcut_service.register_shortcut(
+            "Control-n",
+            self._new_workflow,
+            "New Workflow"
+        )
+        self.shortcut_service.register_shortcut(
+            "Control-o",
+            self._open_workflow,
+            "Open Workflow"
+        )
+        self.shortcut_service.register_shortcut(
+            "Control-s",
+            self._save_workflow,
+            "Save Workflow"
+        )
+        self.shortcut_service.register_shortcut(
+            "Control-Shift-s",
+            self._save_workflow_as,
+            "Save Workflow As"
+        )
+        self.shortcut_service.register_shortcut(
+            "Control-q",
+            self.root.quit,
+            "Exit"
+        )
+
+        # View menu shortcuts
+        self.shortcut_service.register_shortcut(
+            "Control-1",
+            lambda: self.notebook.select(0),
+            "Switch to Record Tab"
+        )
+        self.shortcut_service.register_shortcut(
+            "Control-2",
+            lambda: self.notebook.select(1),
+            "Switch to Element Selector Tab"
+        )
+        self.shortcut_service.register_shortcut(
+            "Control-3",
+            lambda: self.notebook.select(2),
+            "Switch to Workflow Builder Tab"
+        )
+        self.shortcut_service.register_shortcut(
+            "Control-4",
+            lambda: self.notebook.select(3),
+            "Switch to Execution Tab"
+        )
+        self.shortcut_service.register_shortcut(
+            "Control-5",
+            lambda: self.notebook.select(4),
+            "Switch to Credentials Tab"
+        )
+
+        # Help menu shortcuts
+        self.shortcut_service.register_shortcut(
+            "F1",
+            self._show_shortcuts,
+            "Show Keyboard Shortcuts"
+        )
+
+    def _show_shortcuts(self) -> None:
+        """Show keyboard shortcuts dialog"""
+        self.shortcut_service.show_shortcuts_dialog()
 
     def start(self) -> None:
         """Start the GUI"""
