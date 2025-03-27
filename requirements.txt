@@ -10,5 +10,8 @@ coverage==7.3.0
 # Web automation
 selenium==4.18.1
 
+# Image processing
+Pillow==11.1.0
+
 # Security
 cryptography==42.0.5

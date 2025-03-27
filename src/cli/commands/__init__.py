@@ -5,6 +5,7 @@ from src.cli.commands.credentials import credentials_command
 from src.cli.commands.plugins import plugins_command
 from src.cli.commands.report import report_command
 from src.cli.commands.interactive import interactive_command
+from src.cli.commands.screenshot import screenshot_command
 
 __all__ = [
     "run_command",
@@ -13,4 +14,5 @@ __all__ = [
     "plugins_command",
     "report_command",
     "interactive_command",
+    "screenshot_command",
 ]
