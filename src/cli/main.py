@@ -12,6 +12,8 @@ from src.cli.commands import (
     plugins_command,
     report_command,
     interactive_command,
+    screenshot_command,
+    gui_command,
 )
 
 
@@ -209,6 +211,10 @@ def create_parser() -> argparse.ArgumentParser:
     screenshot_element_parser.add_argument("--timeout", type=int, default=30, help="Timeout in seconds")
     screenshot_element_parser.add_argument("--wait", type=int, help="Wait time in seconds before taking the screenshot")
 
+    # GUI command
+    gui_parser = subparsers.add_parser("gui", help="Launch the AUTOCLICK GUI")
+    gui_parser.add_argument("--theme", default="default", choices=["default", "dark", "light"], help="GUI theme to use")
+
     return parser
 
 
@@ -249,6 +255,8 @@ def main(args: Optional[List[str]] = None) -> int:
             return interactive_command(parsed_args)
         elif parsed_args.command == "screenshot":
             return screenshot_command(parsed_args)
+        elif parsed_args.command == "gui":
+            return gui_command(parsed_args)
         else:
             parser.print_help()
             return 0

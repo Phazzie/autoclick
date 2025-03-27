@@ -324,3 +324,37 @@ This file contains all the checklists for various tasks in the AUTOCLICK project
 - [x] Add error handling and user feedback
 - [x] Create tests for CLI commands
 - [ ] Test CLI functionality
+
+### Graphical User Interface (GUI)
+
+> The Graphical User Interface provides a visual way to interact with AUTOCLICK. It allows non-technical users to record browser actions, visually select elements, edit automation workflows, and run automations without writing code.
+
+- [x] Design GUI structure and layout
+- [x] Implement WorkflowBuilder class
+- [x] Create tests for WorkflowBuilder
+- [x] Implement SimpleGUI class
+- [x] Create tests for SimpleGUI
+- [x] Implement Record tab
+- [x] Implement Element Selector tab
+- [x] Implement Workflow Builder tab
+- [x] Implement Execution tab
+- [x] Add file operations (new, open, save)
+- [x] Add theme support
+- [x] Implement CLI command to launch GUI
+- [x] Refactor GUI to follow SOLID principles
+- [x] Implement Model-View-Presenter architecture
+- [x] Create WorkflowModel with tests
+- [x] Create WorkflowPresenter with tests
+- [x] Create WorkflowTab component
+- [x] Create service interfaces and implementations
+- [x] Create RecordModel and RecordPresenter with tests
+- [x] Create ElementModel and ElementPresenter with tests
+- [x] Create RecordTab component
+- [x] Create ElementSelectorTab component
+- [x] Complete implementation of all tabs using MVP pattern
+- [ ] Test GUI functionality
+- [ ] Add keyboard shortcuts
+- [ ] Add drag-and-drop support for reordering actions
+- [ ] Add visual workflow representation
+- [ ] Add help tooltips for all controls
+- [ ] Migrate to CustomTkinter for modern appearance

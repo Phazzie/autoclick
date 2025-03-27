@@ -6,19 +6,20 @@ import shlex
 import sys
 from typing import List, Optional
 
-from src.cli.main import create_parser, main
+# Avoid circular import
+# from src.cli.main import create_parser, main
 
 
 class AutoClickShell(cmd.Cmd):
     """Interactive shell for AUTOCLICK"""
-    
+
     intro = "Welcome to the AUTOCLICK interactive shell. Type help or ? to list commands."
     prompt = "autoclick> "
-    
+
     def __init__(self, verbose: bool = False, quiet: bool = False):
         """
         Initialize the shell
-        
+
         Args:
             verbose: Enable verbose output
             quiet: Suppress all output except errors
@@ -27,74 +28,74 @@ class AutoClickShell(cmd.Cmd):
         self.verbose = verbose
         self.quiet = quiet
         self.parser = create_parser()
-    
+
     def default(self, line: str) -> bool:
         """
         Handle unknown commands
-        
+
         Args:
             line: Command line
-            
+
         Returns:
             True to continue, False to exit
         """
         print(f"Unknown command: {line}")
         return True
-    
+
     def emptyline(self) -> bool:
         """
         Handle empty lines
-        
+
         Returns:
             True to continue
         """
         return True
-    
+
     def do_exit(self, arg: str) -> bool:
         """
         Exit the shell
-        
+
         Args:
             arg: Command arguments
-            
+
         Returns:
             False to exit
         """
         print("Exiting AUTOCLICK shell")
         return False
-    
+
     def do_quit(self, arg: str) -> bool:
         """
         Quit the shell
-        
+
         Args:
             arg: Command arguments
-            
+
         Returns:
             False to exit
         """
         return self.do_exit(arg)
-    
+
     def do_EOF(self, arg: str) -> bool:
         """
         Handle EOF (Ctrl+D)
-        
+
         Args:
             arg: Command arguments
-            
+
         Returns:
             False to exit
         """
         print()  # Print a newline
         return self.do_exit(arg)
-    
+
     def do_run(self, arg: str) -> bool:
         """
         Run a script
-        
+
         Args:
             arg: Command arguments
-            
+
         Returns:
             True to continue
         """
@@ -103,21 +104,21 @@ class AutoClickShell(cmd.Cmd):
             args.append("--verbose")
         if self.quiet:
             args.append("--quiet")
-        
+
         try:
             main(args)
         except SystemExit:
             pass  # Ignore SystemExit from argparse
-        
+
         return True
-    
+
     def do_config(self, arg: str) -> bool:
         """
         Manage configuration
-        
+
         Args:
             arg: Command arguments
-            
+
         Returns:
             True to continue
         """
@@ -126,21 +127,21 @@ class AutoClickShell(cmd.Cmd):
             args.append("--verbose")
         if self.quiet:
             args.append("--quiet")
-        
+
         try:
             main(args)
         except SystemExit:
             pass  # Ignore SystemExit from argparse
-        
+
         return True
-    
+
     def do_credentials(self, arg: str) -> bool:
         """
         Manage credentials
-        
+
         Args:
             arg: Command arguments
-            
+
         Returns:
             True to continue
         """
@@ -149,21 +150,21 @@ class AutoClickShell(cmd.Cmd):
             args.append("--verbose")
         if self.quiet:
             args.append("--quiet")
-        
+
         try:
             main(args)
         except SystemExit:
             pass  # Ignore SystemExit from argparse
-        
+
         return True
-    
+
     def do_plugins(self, arg: str) -> bool:
         """
         Manage plugins
-        
+
         Args:
             arg: Command arguments
-            
+
         Returns:
             True to continue
         """
@@ -172,21 +173,21 @@ class AutoClickShell(cmd.Cmd):
             args.append("--verbose")
         if self.quiet:
             args.append("--quiet")
-        
+
         try:
             main(args)
         except SystemExit:
             pass  # Ignore SystemExit from argparse
-        
+
         return True
-    
+
     def do_report(self, arg: str) -> bool:
         """
         Manage reports
-        
+
         Args:
             arg: Command arguments
-            
+
         Returns:
             True to continue
         """
@@ -195,21 +196,21 @@ class AutoClickShell(cmd.Cmd):
             args.append("--verbose")
         if self.quiet:
             args.append("--quiet")
-        
+
         try:
             main(args)
         except SystemExit:
             pass  # Ignore SystemExit from argparse
-        
+
         return True
-    
+
     def do_help(self, arg: str) -> bool:
         """
         Show help
-        
+
         Args:
             arg: Command arguments
-            
+
         Returns:
             True to continue
         """
@@ -266,28 +267,28 @@ class AutoClickShell(cmd.Cmd):
             print("  export <report_id> <file> - Export a report to a file")
         else:
             print(f"No help available for {arg}")
-        
+
         return True
 
 
 def interactive_command(args: argparse.Namespace) -> int:
     """
     Handle the interactive command
-    
+
     Args:
         args: Command-line arguments
-        
+
     Returns:
         Exit code
     """
     logger = logging.getLogger(__name__)
     logger.info("Starting interactive shell")
-    
+
     try:
         # Create and run the shell
         shell = AutoClickShell(verbose=args.verbose, quiet=args.quiet)
         shell.cmdloop()
-        
+
         return 0
     except KeyboardInterrupt:
         print("\nInteractive shell terminated by user")
