@@ -87,9 +87,91 @@ This checks:
 - `tools/` - Development tools
 - `docs/` - Documentation
 
-## Creating Plugins
+## Plugin System
 
-Use the plugin generator to create new plugins:
+AUTOCLICK features a powerful plugin system that allows you to extend its functionality without modifying the core codebase.
+
+### Plugin Types
+
+The system supports several types of plugins:
+
+- **Automation Plugins**: Extend the automation capabilities
+- **Reporter Plugins**: Create custom report formats
+- **Storage Plugins**: Implement different storage backends
+
+### Using Plugins
+
+To use plugins in your automation:
+
+```python
+from src.plugins.loader import PluginLoader
+
+# Create a plugin loader
+loader = PluginLoader()
+
+# Load plugins from a directory
+loader.load_plugins_from_directory("path/to/plugins")
+
+# Initialize plugins with configuration
+config = {
+    "plugin_name": {
+        "option1": "value1",
+        "option2": "value2"
+    }
+}
+loader.initialize_plugins(config)
+
+# Get a specific plugin
+plugin = loader.registry.get_plugin("plugin_name")
+
+# Use the plugin
+plugin.some_method()
+
+# Clean up when done
+loader.cleanup_plugins()
+```
+
+### Creating Plugins
+
+To create a new plugin:
+
+1. Create a new directory for your plugin
+2. Create an `__init__.py` file
+3. Create a `plugin.py` file with your plugin class
+4. Implement the appropriate plugin interface
+
+Example:
+
+```python
+from src.plugins.interfaces import ReporterPluginInterface
+
+class MyReporterPlugin(ReporterPluginInterface):
+    def initialize(self, config):
+        # Initialize with configuration
+        pass
+
+    def get_info(self):
+        # Return plugin information
+        return {
+            "name": "my_reporter",
+            "version": "1.0.0",
+            "description": "My custom reporter plugin"
+        }
+
+    def cleanup(self):
+        # Clean up resources
+        pass
+
+    def generate_report(self, data, output_path):
+        # Generate a report
+        pass
+
+    def get_supported_formats(self):
+        # Return supported formats
+        return ["custom"]
+```
+
+You can also use the plugin generator to create new plugins:
 
 ```
 python tools/plugin_generator.py <plugin-name> <plugin-type>
