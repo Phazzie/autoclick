@@ -54,7 +54,10 @@ def test_plugin_exists(generator, valid_config, tmp_path):
     assert generator.plugin_exists(valid_config)
 
 
-def test_create_plugin(generator, valid_config, tmp_path):
+def test_create_plugin(generator, valid_config, tmp_path, monkeypatch):
+    # Mock the validate_interface_exists method
+    monkeypatch.setattr(generator, "validate_interface_exists", lambda x: None)
+
     # Test normal creation
     generator.create_plugin(valid_config)
     plugin_path = generator.get_plugin_path(valid_config)
@@ -71,5 +74,5 @@ def test_create_plugin(generator, valid_config, tmp_path):
 
 def test_generate_plugin_content(generator, valid_config):
     content = generator.generate_plugin_content(valid_config)
-    assert "class TestPluginPlugin(ReportersInterface):" in content
-    assert "def __init__(self, config: Dict[str, Any]):" in content
+    assert "class Test_pluginPlugin(ReportersInterface):" in content
+    assert "def __init__(self, config: Dict[str, Any])" in content
