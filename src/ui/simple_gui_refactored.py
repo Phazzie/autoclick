@@ -7,18 +7,25 @@ from typing import Any, Dict, Optional
 from src.ui.models.workflow_model import WorkflowModel
 from src.ui.models.record_model import RecordModel
 from src.ui.models.element_model import ElementModel
+from src.ui.models.execution_model import ExecutionModel
+from src.ui.models.credential_model import CredentialModel
 
 from src.ui.presenters.workflow_presenter import WorkflowPresenter
 from src.ui.presenters.record_presenter import RecordPresenter
 from src.ui.presenters.element_presenter import ElementPresenter
+from src.ui.presenters.execution_presenter import ExecutionPresenter
+from src.ui.presenters.credential_presenter import CredentialPresenter
 
 from src.ui.components.workflow_tab import WorkflowTab
 from src.ui.components.record_tab import RecordTab
 from src.ui.components.element_selector_tab import ElementSelectorTab
+from src.ui.components.execution_tab import ExecutionTab
+from src.ui.components.credential_tab import CredentialTab
 
 from src.ui.services.dialog_service import DialogService
 from src.ui.services.file_service import FileService
 from src.ui.services.theme_service import ThemeService
+from src.ui.services.execution_service import ExecutionService
 
 
 class SimpleGUI:
@@ -43,6 +50,11 @@ class SimpleGUI:
         self.workflow_model = WorkflowModel()
         self.record_model = RecordModel()
         self.element_model = ElementModel()
+        self.execution_model = ExecutionModel()
+        self.credential_model = CredentialModel()
+
+        # Create services
+        self.execution_service = ExecutionService()
 
         # Initialize the main window
         self.root = tk.Tk()
@@ -102,17 +114,24 @@ class SimpleGUI:
         self.record_tab_frame = ttk.Frame(self.notebook)
         self.element_tab_frame = ttk.Frame(self.notebook)
         self.workflow_tab_frame = ttk.Frame(self.notebook)
-        self.execution_tab = ttk.Frame(self.notebook)
+        self.execution_tab_frame = ttk.Frame(self.notebook)
+        self.credential_tab_frame = ttk.Frame(self.notebook)
 
         self.notebook.add(self.record_tab_frame, text="Record")
         self.notebook.add(self.element_tab_frame, text="Element Selector")
         self.notebook.add(self.workflow_tab_frame, text="Workflow Builder")
-        self.notebook.add(self.execution_tab, text="Execution")
+        self.notebook.add(self.execution_tab_frame, text="Execution")
+        self.notebook.add(self.credential_tab_frame, text="Credentials")
 
         # Create presenters
         record_presenter = RecordPresenter(self.record_model)
         element_presenter = ElementPresenter(self.element_model)
         workflow_presenter = WorkflowPresenter(self.workflow_model)
+        execution_presenter = ExecutionPresenter(
+            self.execution_model,
+            self.execution_service
+        )
+        credential_presenter = CredentialPresenter(self.credential_model)
 
         # Create tab components
         self.record_tab = RecordTab(self.record_tab_frame, record_presenter)
@@ -123,6 +142,12 @@ class SimpleGUI:
 
         self.workflow_tab = WorkflowTab(self.workflow_tab_frame, workflow_presenter)
         self.workflow_tab.pack(fill=tk.BOTH, expand=True)
+
+        self.execution_tab = ExecutionTab(self.execution_tab_frame, execution_presenter)
+        self.execution_tab.pack(fill=tk.BOTH, expand=True)
+
+        self.credential_tab = CredentialTab(self.credential_tab_frame, credential_presenter)
+        self.credential_tab.pack(fill=tk.BOTH, expand=True)
 
         # Create menu
         self._create_menu()
