@@ -26,6 +26,8 @@ This file contains all the checklists for various tasks in the AUTOCLICK project
   - [GitHub Actions Setup](#github-actions-setup)
   - [Package Building](#package-building)
   - [Release Automation](#release-automation)
+- [User Interface Checklists](#user-interface-checklists)
+  - [Command-Line Interface (CLI)](#command-line-interface-cli)
 
 ---
 
@@ -283,3 +285,22 @@ This file contains all the checklists for various tasks in the AUTOCLICK project
 - [x] Configure artifact attachment to releases
 - [ ] Add release notes generation
 - [ ] Set up PyPI publishing
+
+## User Interface Checklists
+
+> These checklists ensure that AUTOCLICK provides intuitive and effective user interfaces. Good user interfaces make the system accessible to users with different levels of technical expertise.
+
+### Command-Line Interface (CLI)
+
+> The Command-Line Interface provides a text-based way to interact with AUTOCLICK. It allows users to run automation scripts, manage configurations, and work with plugins through terminal commands.
+
+- [x] Design CLI command structure
+- [ ] Implement main CLI entry point
+- [ ] Implement script execution commands
+- [ ] Implement configuration management commands
+- [ ] Implement plugin management commands
+- [ ] Implement reporting commands
+- [ ] Add help text and documentation
+- [ ] Add command completion
+- [ ] Add error handling and user feedback
+- [ ] Test CLI functionality
