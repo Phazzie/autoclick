@@ -2,9 +2,10 @@
 import unittest
 from unittest.mock import MagicMock, patch
 
-from src.core.actions.credential_filter_action import CredentialFilterAction
 from src.core.actions.action_interface import ActionResult
-from src.core.credentials.credential_manager import CredentialManager, CredentialStatus
+from src.core.actions.credential_filter_action import CredentialFilterAction
+from src.core.credentials.credential_manager import (CredentialManager,
+                                                     CredentialStatus)
 
 
 class TestCredentialFilterAction(unittest.TestCase):
@@ -15,7 +16,7 @@ class TestCredentialFilterAction(unittest.TestCase):
         self.credential_manager = MagicMock(spec=CredentialManager)
         self.action = CredentialFilterAction(
             description="Test credential filter",
-            credential_manager=self.credential_manager
+            credential_manager=self.credential_manager,
         )
 
     def test_initialization(self):
@@ -34,7 +35,7 @@ class TestCredentialFilterAction(unittest.TestCase):
             success_variable="login_success",
             message_variable="login_message",
             inactive_status=CredentialStatus.EXPIRED,
-            action_id="custom-id"
+            action_id="custom-id",
         )
 
         self.assertEqual(custom_action.username_variable, "user")
@@ -62,7 +63,7 @@ class TestCredentialFilterAction(unittest.TestCase):
         context = {
             "username": "testuser",
             "success": True,
-            "message": "Login successful"
+            "message": "Login successful",
         }
 
         self.credential_manager.get_statistics.return_value = {"total": 1}
@@ -77,18 +78,13 @@ class TestCredentialFilterAction(unittest.TestCase):
             "testuser", True, "Login successful", CredentialStatus.SUCCESS
         )
         self.credential_manager.update_credentials_status.assert_called_once_with(
-            from_status=CredentialStatus.FAILURE,
-            to_status=CredentialStatus.BLACKLISTED
+            from_status=CredentialStatus.FAILURE, to_status=CredentialStatus.BLACKLISTED
         )
 
     def test_execute_with_failure_status(self):
         """Test execution with failure status"""
         # Arrange
-        context = {
-            "username": "testuser",
-            "success": False,
-            "message": "Login failed"
-        }
+        context = {"username": "testuser", "success": False, "message": "Login failed"}
 
         self.credential_manager.get_statistics.return_value = {"total": 0}
         self.credential_manager.update_credentials_status.return_value = 1
@@ -102,8 +98,7 @@ class TestCredentialFilterAction(unittest.TestCase):
             "testuser", False, "Login failed", CredentialStatus.FAILURE
         )
         self.credential_manager.update_credentials_status.assert_called_once_with(
-            from_status=CredentialStatus.FAILURE,
-            to_status=CredentialStatus.BLACKLISTED
+            from_status=CredentialStatus.FAILURE, to_status=CredentialStatus.BLACKLISTED
         )
         self.assertEqual(result.data["updated_count"], 1)
 
@@ -122,8 +117,7 @@ class TestCredentialFilterAction(unittest.TestCase):
         # Assert
         self.assertTrue(result.success)
         self.credential_manager.update_credentials_status.assert_called_once_with(
-            from_status=CredentialStatus.FAILURE,
-            to_status=CredentialStatus.EXPIRED
+            from_status=CredentialStatus.FAILURE, to_status=CredentialStatus.EXPIRED
         )
         self.assertEqual(result.data["updated_count"], 2)
 
@@ -150,11 +144,13 @@ class TestCredentialFilterAction(unittest.TestCase):
             "success_variable": "login_success",
             "message_variable": "login_message",
             "inactive_status": "EXPIRED",
-            "id": "test-id"
+            "id": "test-id",
         }
 
         # Act
-        with patch("src.core.actions.credential_filter_action.CredentialManager") as mock_cm:
+        with patch(
+            "src.core.actions.credential_filter_action.CredentialManager"
+        ) as mock_cm:
             action = CredentialFilterAction.from_dict(data)
 
         # Assert

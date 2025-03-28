@@ -1,21 +1,22 @@
 """Credential management for tracking and filtering credentials"""
-import os
 import csv
 import json
 import logging
-from typing import Dict, Any, List, Optional, Set, Tuple
-from enum import Enum, auto
+import os
 from datetime import datetime
+from enum import Enum, auto
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 
 class CredentialStatus(Enum):
     """Status of a credential"""
-    UNUSED = auto()       # Credential has not been used yet
-    SUCCESS = auto()      # Credential was used successfully
-    FAILURE = auto()      # Credential failed to authenticate
-    LOCKED = auto()       # Account is locked or requires additional verification
-    EXPIRED = auto()      # Credential has expired
-    INVALID = auto()      # Credential format is invalid
+
+    UNUSED = auto()  # Credential has not been used yet
+    SUCCESS = auto()  # Credential was used successfully
+    FAILURE = auto()  # Credential failed to authenticate
+    LOCKED = auto()  # Account is locked or requires additional verification
+    EXPIRED = auto()  # Credential has expired
+    INVALID = auto()  # Credential format is invalid
     BLACKLISTED = auto()  # Credential has been blacklisted
 
 
@@ -32,7 +33,7 @@ class CredentialRecord:
         username: str,
         password: str,
         status: CredentialStatus = CredentialStatus.UNUSED,
-        metadata: Optional[Dict[str, Any]] = None
+        metadata: Optional[Dict[str, Any]] = None,
     ):
         """
         Initialize the credential record
@@ -57,7 +58,7 @@ class CredentialRecord:
         success: bool,
         message: str,
         status: Optional[CredentialStatus] = None,
-        metadata: Optional[Dict[str, Any]] = None
+        metadata: Optional[Dict[str, Any]] = None,
     ) -> None:
         """
         Record an authentication attempt
@@ -80,7 +81,7 @@ class CredentialRecord:
             "success": success,
             "message": message,
             "timestamp": timestamp,
-            "metadata": metadata or {}
+            "metadata": metadata or {},
         }
 
         # Add to history
@@ -108,11 +109,11 @@ class CredentialRecord:
             "attempts": self.attempts,
             "last_used": self.last_used.isoformat() if self.last_used else None,
             "last_result": self.last_result,
-            "metadata": self.metadata
+            "metadata": self.metadata,
         }
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'CredentialRecord':
+    def from_dict(cls, data: Dict[str, Any]) -> "CredentialRecord":
         """
         Create a credential record from a dictionary
 
@@ -126,8 +127,10 @@ class CredentialRecord:
         record = cls(
             username=data["username"],
             password=data["password"],
-            status=CredentialStatus[data["status"]] if "status" in data else CredentialStatus.UNUSED,
-            metadata=data.get("metadata", {})
+            status=CredentialStatus[data["status"]]
+            if "status" in data
+            else CredentialStatus.UNUSED,
+            metadata=data.get("metadata", {}),
         )
 
         # Set additional properties
@@ -160,7 +163,7 @@ class CredentialManager:
         username: str,
         password: str,
         status: CredentialStatus = CredentialStatus.UNUSED,
-        metadata: Optional[Dict[str, Any]] = None
+        metadata: Optional[Dict[str, Any]] = None,
     ) -> CredentialRecord:
         """
         Add a credential to the manager
@@ -200,7 +203,7 @@ class CredentialManager:
         success: bool,
         message: str,
         status: Optional[CredentialStatus] = None,
-        metadata: Optional[Dict[str, Any]] = None
+        metadata: Optional[Dict[str, Any]] = None,
     ) -> None:
         """
         Record an authentication attempt for a credential
@@ -224,7 +227,9 @@ class CredentialManager:
         # Record the attempt
         record.record_attempt(success, message, status, metadata)
 
-    def get_credentials_by_status(self, status: CredentialStatus) -> List[CredentialRecord]:
+    def get_credentials_by_status(
+        self, status: CredentialStatus
+    ) -> List[CredentialRecord]:
         """
         Get credentials by status
 
@@ -235,8 +240,7 @@ class CredentialManager:
             List of credential records with the specified status
         """
         return [
-            record for record in self.credentials.values()
-            if record.status == status
+            record for record in self.credentials.values() if record.status == status
         ]
 
     def get_failed_credentials(self) -> List[CredentialRecord]:
@@ -293,7 +297,8 @@ class CredentialManager:
         """
         # Get usernames to remove
         usernames = [
-            record.username for record in self.credentials.values()
+            record.username
+            for record in self.credentials.values()
             if record.status == status
         ]
 
@@ -329,7 +334,9 @@ class CredentialManager:
             return True
         return False
 
-    def update_credentials_status(self, from_status: CredentialStatus, to_status: CredentialStatus) -> int:
+    def update_credentials_status(
+        self, from_status: CredentialStatus, to_status: CredentialStatus
+    ) -> int:
         """
         Update the status of all credentials with a specific status
 
@@ -354,7 +361,7 @@ class CredentialManager:
         file_path: str,
         username_field: str = "username",
         password_field: str = "password",
-        delimiter: str = ","
+        delimiter: str = ",",
     ) -> int:
         """
         Load credentials from a CSV file
@@ -379,8 +386,13 @@ class CredentialManager:
                 reader = csv.DictReader(file, delimiter=delimiter)
 
                 # Check that the required fields are present
-                if username_field not in reader.fieldnames or password_field not in reader.fieldnames:
-                    raise ValueError(f"CSV file must contain {username_field} and {password_field} fields")
+                if (
+                    username_field not in reader.fieldnames
+                    or password_field not in reader.fieldnames
+                ):
+                    raise ValueError(
+                        f"CSV file must contain {username_field} and {password_field} fields"
+                    )
 
                 # Load the credentials
                 count = 0
@@ -390,7 +402,8 @@ class CredentialManager:
 
                     # Create metadata from other fields
                     metadata = {
-                        key: value for key, value in row.items()
+                        key: value
+                        for key, value in row.items()
                         if key not in [username_field, password_field]
                     }
 
@@ -413,7 +426,7 @@ class CredentialManager:
         include_status: bool = True,
         include_metadata: bool = True,
         delimiter: str = ",",
-        filter_status: Optional[Set[CredentialStatus]] = None
+        filter_status: Optional[Set[CredentialStatus]] = None,
     ) -> int:
         """
         Save credentials to a CSV file
@@ -437,7 +450,8 @@ class CredentialManager:
             # Get the credentials to save
             if filter_status:
                 credentials = [
-                    record for record in self.credentials.values()
+                    record
+                    for record in self.credentials.values()
                     if record.status in filter_status
                 ]
             else:
@@ -466,7 +480,9 @@ class CredentialManager:
             # Open the CSV file
             with open(file_path, "w", newline="") as file:
                 # Create a CSV writer
-                writer = csv.DictWriter(file, fieldnames=fieldnames, delimiter=delimiter)
+                writer = csv.DictWriter(
+                    file, fieldnames=fieldnames, delimiter=delimiter
+                )
 
                 # Write the header
                 writer.writeheader()
@@ -475,7 +491,7 @@ class CredentialManager:
                 for record in credentials:
                     row = {
                         username_field: record.username,
-                        password_field: record.password
+                        password_field: record.password,
                     }
 
                     if include_status:
@@ -548,7 +564,7 @@ class CredentialManager:
         self,
         file_path: str,
         include_history: bool = False,
-        filter_status: Optional[Set[CredentialStatus]] = None
+        filter_status: Optional[Set[CredentialStatus]] = None,
     ) -> int:
         """
         Save credentials to a JSON file
@@ -568,7 +584,8 @@ class CredentialManager:
             # Get the credentials to save
             if filter_status:
                 credentials = [
-                    record for record in self.credentials.values()
+                    record
+                    for record in self.credentials.values()
                     if record.status in filter_status
                 ]
             else:
@@ -614,11 +631,18 @@ class CredentialManager:
             status_counts[status.name] = len(self.get_credentials_by_status(status))
 
         # Calculate success rate
-        total_used = status_counts[CredentialStatus.SUCCESS.name] + status_counts[CredentialStatus.FAILURE.name]
-        success_rate = status_counts[CredentialStatus.SUCCESS.name] / total_used if total_used > 0 else 0
+        total_used = (
+            status_counts[CredentialStatus.SUCCESS.name]
+            + status_counts[CredentialStatus.FAILURE.name]
+        )
+        success_rate = (
+            status_counts[CredentialStatus.SUCCESS.name] / total_used
+            if total_used > 0
+            else 0
+        )
 
         return {
             "total": len(self.credentials),
             "status_counts": status_counts,
-            "success_rate": success_rate
+            "success_rate": success_rate,
         }
