@@ -1,0 +1,41 @@
+name: Code Quality Checks
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest coverage pylint mypy black
+        
+    - name: Run code quality checks
+      run: python tools/code_quality_checker.py
+      
+    - name: Run type checks
+      run: mypy src tests
+      
+    - name: Run linting
+      run: pylint src tests
+      
+    - name: Check formatting
+      run: black --check src tests
+      
+    - name: Run tests with coverage
+      run: |
+        coverage run -m pytest
+        coverage report --fail-under=80
