@@ -18,6 +18,31 @@ class ActionFactory:
             cls._instance = super(ActionFactory, cls).__new__(cls)
         return cls._instance
 
+    def __init__(self) -> None:
+        """Initialize the factory"""
+        # No auto-loading to avoid circular imports
+        pass
+
+    @classmethod
+    def reset_registry(cls) -> None:
+        """Reset the action registry (mainly for testing)"""
+        cls._registry = {}
+
+    @classmethod
+    def register_built_in_actions(cls) -> None:
+        """Register all built-in action types"""
+        # Import action classes to trigger registration via decorators
+        # This is more explicit than auto-loading and follows SOLID better
+        from src.core.actions.click_action import ClickAction  # noqa
+        from src.core.actions.if_then_else_action import IfThenElseAction  # noqa
+        from src.core.actions.switch_case_action import SwitchCaseAction  # noqa
+        from src.core.actions.set_variable_action import SetVariableAction  # noqa
+        from src.core.actions.for_each_action import ForEachAction  # noqa
+        from src.core.actions.while_loop_action import WhileLoopAction  # noqa
+        from src.core.actions.loop_control_actions import BreakAction, ContinueAction  # noqa
+
+        # We don't need to do anything else - the imports trigger the decorators
+
     @classmethod
     def get_instance(cls) -> 'ActionFactory':
         """Get the singleton instance of the factory"""
@@ -95,8 +120,8 @@ class ActionFactory:
 
             # Check if the item is a class that inherits from BaseAction
             if (
-                inspect.isclass(item) 
-                and issubclass(item, BaseAction) 
+                inspect.isclass(item)
+                and issubclass(item, BaseAction)
                 and item is not BaseAction
             ):
                 # Register the action type using the type property

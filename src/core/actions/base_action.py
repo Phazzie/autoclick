@@ -53,6 +53,7 @@ class BaseAction(ActionInterface, ABC):
 
         try:
             return self._execute(context)
+        except Exception as e:
             self.logger.error(f"Action execution failed for action '{self.description}' (ID: {self.id}): {str(e)}", exc_info=True)
             return ActionResult.create_failure(f"Action '{self.description}' failed: {str(e)}")
 

@@ -6,6 +6,7 @@ from typing import Dict, Any
 from src.core.actions.base_action import BaseAction
 from src.core.actions.action_interface import ActionResult
 from src.core.actions.switch_case_action import SwitchCaseAction, CaseBranch
+from src.core.actions.action_factory import ActionFactory
 from src.core.conditions.condition_interface import ConditionInterface, ConditionResult
 
 
@@ -64,6 +65,15 @@ class TestAction(BaseAction):
 
 class TestSwitchCaseAction(unittest.TestCase):
     """Test cases for the switch-case action"""
+
+    @classmethod
+    def setUpClass(cls):
+        """Set up the test class"""
+        # Reset the action factory registry
+        ActionFactory.reset_registry()
+        # Register the SwitchCaseAction
+        factory = ActionFactory.get_instance()
+        factory.register_action_type("switch_case", SwitchCaseAction)
 
     def test_execute_first_case_matches(self):
         """Test executing when the first case matches"""

@@ -8,12 +8,22 @@ from unittest.mock import MagicMock, patch
 
 from src.core.actions.base_action import BaseAction
 from src.core.actions.click_action import ClickAction
+from src.core.actions.action_factory import ActionFactory
 from src.core.context.execution_context import ExecutionContext
 from src.core.workflow.workflow_serializer import WorkflowSerializer
 
 
 class TestWorkflowSerializer(unittest.TestCase):
     """Test cases for the workflow serializer"""
+
+    @classmethod
+    def setUpClass(cls):
+        """Set up the test class"""
+        # Reset the action factory registry
+        ActionFactory.reset_registry()
+        # Register the ClickAction
+        factory = ActionFactory.get_instance()
+        factory.register_action_type("click", ClickAction)
 
     def setUp(self):
         """Set up test environment"""
@@ -43,7 +53,7 @@ class TestWorkflowSerializer(unittest.TestCase):
         self.assertIn("metadata", result)
         self.assertIn("actions", result)
         self.assertIn("context", result)
-        
+
         # Check metadata
         self.assertEqual(result["metadata"]["name"], "Test Workflow")
         self.assertEqual(result["metadata"]["description"], "A test workflow")
@@ -51,7 +61,7 @@ class TestWorkflowSerializer(unittest.TestCase):
         self.assertEqual(result["metadata"]["action_count"], 2)
         self.assertIn("version", result["metadata"])
         self.assertIn("created_at", result["metadata"])
-        
+
         # Check actions
         self.assertEqual(len(result["actions"]), 2)
         self.assertEqual(result["actions"][0]["id"], "action1")
@@ -60,7 +70,7 @@ class TestWorkflowSerializer(unittest.TestCase):
         self.assertEqual(result["actions"][1]["id"], "action2")
         self.assertEqual(result["actions"][1]["type"], "click")
         self.assertEqual(result["actions"][1]["selector"], "#button2")
-        
+
         # Check context
         self.assertEqual(result["context"]["id"], "test-context")
 
@@ -91,7 +101,7 @@ class TestWorkflowSerializer(unittest.TestCase):
         self.assertIn("metadata", result)
         self.assertIn("actions", result)
         self.assertIn("context", result)
-        
+
         # Check default metadata
         self.assertIn("version", result["metadata"])
         self.assertIn("created_at", result["metadata"])
@@ -103,14 +113,14 @@ class TestWorkflowSerializer(unittest.TestCase):
         # Arrange
         mock_factory = MagicMock()
         mock_factory_class.get_instance.return_value = mock_factory
-        
+
         # Mock the create_action method to return the actions
         mock_factory.create_action.side_effect = lambda data: ClickAction(
             description=data.get("description", ""),
             selector=data.get("selector", ""),
             action_id=data.get("id")
         )
-        
+
         # Create a workflow dictionary
         workflow_dict = {
             "metadata": {
@@ -137,16 +147,16 @@ class TestWorkflowSerializer(unittest.TestCase):
             ],
             "context": self.test_context.to_dict()
         }
-        
+
         # Act
         result = self.serializer.deserialize_workflow(workflow_dict)
-        
+
         # Assert
         self.assertIsInstance(result, dict)
         self.assertIn("actions", result)
         self.assertIn("context", result)
         self.assertIn("metadata", result)
-        
+
         # Check actions
         self.assertEqual(len(result["actions"]), 2)
         self.assertEqual(result["actions"][0].id, "action1")
@@ -155,10 +165,10 @@ class TestWorkflowSerializer(unittest.TestCase):
         self.assertEqual(result["actions"][1].id, "action2")
         self.assertEqual(result["actions"][1].type, "click")
         self.assertEqual(result["actions"][1].description, "Click button 2")
-        
+
         # Check context
         self.assertEqual(result["context"].id, "test-context")
-        
+
         # Check metadata
         self.assertEqual(result["metadata"]["name"], "Test Workflow")
         self.assertEqual(result["metadata"]["description"], "A test workflow")
@@ -169,11 +179,11 @@ class TestWorkflowSerializer(unittest.TestCase):
         # Test with non-dictionary input
         with self.assertRaises(ValueError):
             self.serializer.deserialize_workflow("not a dictionary")
-        
+
         # Test with missing actions key
         with self.assertRaises(ValueError):
             self.serializer.deserialize_workflow({"metadata": {}})
-        
+
         # Test with non-list actions
         with self.assertRaises(ValueError):
             self.serializer.deserialize_workflow({"actions": "not a list"})
@@ -183,7 +193,7 @@ class TestWorkflowSerializer(unittest.TestCase):
         # Create a temporary file
         with tempfile.NamedTemporaryFile(delete=False, suffix=".json") as temp_file:
             temp_path = temp_file.name
-        
+
         try:
             # Save the workflow
             self.serializer.save_workflow_to_file(
@@ -192,7 +202,7 @@ class TestWorkflowSerializer(unittest.TestCase):
                 self.test_context,
                 self.test_metadata
             )
-            
+
             # Check that the file exists and contains valid JSON
             self.assertTrue(os.path.exists(temp_path))
             with open(temp_path, 'r') as f:
@@ -202,32 +212,36 @@ class TestWorkflowSerializer(unittest.TestCase):
                 self.assertIn("metadata", json_content)
                 self.assertIn("actions", json_content)
                 self.assertIn("context", json_content)
-            
+
             # Mock the deserialize_workflow method to return a known result
             expected_result = {
                 "actions": self.test_actions,
                 "context": self.test_context,
                 "metadata": self.test_metadata
             }
-            
+
             with patch.object(self.serializer, 'deserialize_workflow', return_value=expected_result):
                 # Load the workflow
                 result = self.serializer.load_workflow_from_file(temp_path)
-                
+
                 # Assert
                 self.assertEqual(result, expected_result)
-        
+
         finally:
             # Clean up
             if os.path.exists(temp_path):
                 os.remove(temp_path)
 
-    def test_save_workflow_file_error(self):
+    @patch('builtins.open')
+    def test_save_workflow_file_error(self, mock_open):
         """Test error handling when saving a workflow to a file"""
-        # Try to save to an invalid path
+        # Make open raise an IOError
+        mock_open.side_effect = IOError("Test file error")
+
+        # Try to save the workflow
         with self.assertRaises(IOError):
             self.serializer.save_workflow_to_file(
-                "/invalid/path/workflow.json",
+                "test_workflow.json",
                 self.test_actions
             )
 
