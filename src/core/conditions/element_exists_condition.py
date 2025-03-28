@@ -52,7 +52,7 @@ class ElementExistsCondition(BaseCondition[bool]):
             # Find the element
             elements = driver.find_elements_by_css_selector(self.selector)
             exists = len(elements) > 0
-            
+
             if exists:
                 return ConditionResult.create_success(
                     True,
