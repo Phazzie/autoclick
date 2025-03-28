@@ -7,7 +7,7 @@ from src.core.actions.action_interface import ActionResult
 from src.core.actions.credential_filter_action import CredentialFilterAction
 from src.core.credentials.credential_manager import CredentialManager, CredentialStatus
 from src.core.workflow.workflow_engine import WorkflowEngine
-from src.core.variables.variable_manager import VariableManager
+# No need for variable storage imports
 
 
 class PrintAction(BaseAction):
@@ -149,34 +149,32 @@ def main():
     # Create the workflow engine
     engine = WorkflowEngine()
 
-    # Create the variable manager
-    variables = VariableManager()
-    variables.set("username", "user1")
-    variables.set("success", True)
-    variables.set("message", "Login successful")
-
-    # Create the context
-    context = {"variables": variables}
+    # Create the context with initial variables
+    context = {
+        "username": "user1",
+        "success": True,
+        "message": "Login successful"
+    }
 
     # Create and run the workflow
     workflow = create_workflow()
-    engine.run_workflow(workflow, context)
+    engine.execute_workflow(workflow, context)
 
-    # Update variables for the second credential
-    variables.set("username", "user2")
-    variables.set("success", False)
-    variables.set("message", "Invalid password")
-
-    # Run the workflow again
-    engine.run_workflow(workflow, context)
-
-    # Update variables for the third credential
-    variables.set("username", "user3")
-    variables.set("success", False)
-    variables.set("message", "Account locked")
+    # Update context for the second credential
+    context["username"] = "user2"
+    context["success"] = False
+    context["message"] = "Invalid password"
 
     # Run the workflow again
-    engine.run_workflow(workflow, context)
+    engine.execute_workflow(workflow, context)
+
+    # Update context for the third credential
+    context["username"] = "user3"
+    context["success"] = False
+    context["message"] = "Account locked"
+
+    # Run the workflow again
+    engine.execute_workflow(workflow, context)
 
 
 if __name__ == "__main__":
