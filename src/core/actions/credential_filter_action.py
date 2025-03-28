@@ -1,5 +1,5 @@
 """Action for filtering credentials based on login results"""
-from typing import Any, Dict, Optional, Set
+from typing import Any, Dict, Optional
 
 from src.core.actions.action_factory import ActionFactory
 from src.core.actions.action_interface import ActionResult
@@ -76,16 +76,42 @@ class CredentialFilterAction(BaseAction):
 
         # Record the attempt if success status is available
         if success is not None:
-            status = CredentialStatus.SUCCESS if success else CredentialStatus.FAILURE
-            self.credential_manager.record_attempt(username, success, message, status)
+            try:
+                status = CredentialStatus.SUCCESS if success else CredentialStatus.FAILURE
+                self.credential_manager.record_attempt(username, success, message, status)
+            except KeyError as e:
+                # Handle the case where the credential doesn't exist
+                return ActionResult.create_failure(
+                    f"Failed to record attempt: {str(e)}",
+                    {"username": username, "error": "credential_not_found"}
+                )
+            except Exception as e:
+                # Handle other exceptions
+                return ActionResult.create_failure(
+                    f"Failed to record attempt: {str(e)}",
+                    {"username": username, "error": "record_attempt_failed"}
+                )
 
         # Move failed credentials to inactive status
-        updated_count = self.credential_manager.update_credentials_status(
-            from_status=CredentialStatus.FAILURE, to_status=self.inactive_status
-        )
+        try:
+            updated_count = self.credential_manager.update_credentials_status(
+                from_status=CredentialStatus.FAILURE, to_status=self.inactive_status
+            )
+        except Exception as e:
+            return ActionResult.create_failure(
+                f"Failed to update credential statuses: {str(e)}",
+                {"error": "update_status_failed"}
+            )
 
         # Get statistics
-        stats = self.credential_manager.get_statistics()
+        try:
+            stats = self.credential_manager.get_statistics()
+        except Exception as e:
+            # If we can't get statistics, still return success but with a warning
+            return ActionResult.create_success(
+                f"Marked {updated_count} failed credentials as {self.inactive_status.name}, but failed to get statistics: {str(e)}",
+                {"updated_count": updated_count, "warning": "statistics_failed"}
+            )
 
         # Return the result
         return ActionResult.create_success(
@@ -96,10 +122,34 @@ class CredentialFilterAction(BaseAction):
     def _get_variable(
         self, context: Dict[str, Any], variable_name: str, default: Any = None
     ) -> Any:
-        """Get a variable from the context"""
+        """Get a variable from the context
+
+        Args:
+            context: Execution context
+            variable_name: Name of the variable to get
+            default: Default value if the variable is not found
+
+        Returns:
+            Value of the variable, or the default value if not found
+
+        Note:
+            This method first checks for a variable in the context's variable storage,
+            then falls back to checking the context directly. This allows for both
+            structured variable storage and direct context values.
+        """
+        # First try to get from variable storage if available
         if "variables" in context and hasattr(context["variables"], "get"):
-            return context["variables"].get(variable_name, default)
-        return context.get(variable_name, default)
+            value = context["variables"].get(variable_name, None)
+            if value is not None:
+                return value
+
+        # Then try to get directly from context
+        value = context.get(variable_name, None)
+        if value is not None:
+            return value
+
+        # If not found anywhere, return the default
+        return default
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert the action to a dictionary"""

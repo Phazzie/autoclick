@@ -2,10 +2,9 @@
 import csv
 import json
 import logging
-import os
 from datetime import datetime
 from enum import Enum, auto
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set
 
 
 class CredentialStatus(Enum):
@@ -623,26 +622,67 @@ class CredentialManager:
         Get statistics about the credentials
 
         Returns:
-            Dictionary of statistics
+            Dictionary of statistics including:
+            - total: Total number of credentials
+            - active: Number of active credentials (not blacklisted, locked, or expired)
+            - inactive: Number of inactive credentials (blacklisted, locked, or expired)
+            - status_counts: Count of credentials by status
+            - total_attempts: Total number of login attempts
+            - successful_attempts: Number of successful login attempts
+            - failed_attempts: Number of failed login attempts
+            - success_rate: Ratio of successful attempts to total attempts
+            - average_attempts: Average number of attempts per credential
         """
         # Count credentials by status
         status_counts = {}
         for status in CredentialStatus:
             status_counts[status.name] = len(self.get_credentials_by_status(status))
 
+        # Calculate active and inactive counts
+        inactive_statuses = [
+            CredentialStatus.BLACKLISTED,
+            CredentialStatus.LOCKED,
+            CredentialStatus.EXPIRED,
+            CredentialStatus.INVALID
+        ]
+        inactive_count = sum(status_counts[status.name] for status in inactive_statuses)
+        active_count = len(self.credentials) - inactive_count
+
+        # Calculate attempt statistics
+        total_attempts = 0
+        successful_attempts = 0
+        failed_attempts = 0
+
+        for record in self.credentials.values():
+            total_attempts += record.attempts
+            for attempt in record.history:
+                if attempt.get("success", False):
+                    successful_attempts += 1
+                else:
+                    failed_attempts += 1
+
         # Calculate success rate
-        total_used = (
-            status_counts[CredentialStatus.SUCCESS.name]
-            + status_counts[CredentialStatus.FAILURE.name]
-        )
         success_rate = (
-            status_counts[CredentialStatus.SUCCESS.name] / total_used
-            if total_used > 0
+            successful_attempts / total_attempts
+            if total_attempts > 0
+            else 0
+        )
+
+        # Calculate average attempts per credential
+        average_attempts = (
+            total_attempts / len(self.credentials)
+            if len(self.credentials) > 0
             else 0
         )
 
         return {
             "total": len(self.credentials),
+            "active": active_count,
+            "inactive": inactive_count,
             "status_counts": status_counts,
+            "total_attempts": total_attempts,
+            "successful_attempts": successful_attempts,
+            "failed_attempts": failed_attempts,
             "success_rate": success_rate,
+            "average_attempts": average_attempts,
         }

@@ -55,7 +55,15 @@ class BaseAction(ActionInterface, ABC):
             return self._execute(context)
         except Exception as e:
             self.logger.error(f"Action execution failed for action '{self.description}' (ID: {self.id}): {str(e)}", exc_info=True)
-            return ActionResult.create_failure(f"Action '{self.description}' failed: {str(e)}")
+            # Create a failure result with detailed error information
+            failure_result = ActionResult.create_failure(
+                f"Action '{self.description}' failed: {str(e)}",
+                {"exception": str(e), "action_id": self.id, "action_type": self.type}
+            )
+            # Re-raise the exception if configured to do so, otherwise return the failure result
+            if getattr(context, "raise_exceptions", False):
+                raise
+            return failure_result
 
     @abstractmethod
     def _execute(self, context: Dict[str, Any]) -> ActionResult:
