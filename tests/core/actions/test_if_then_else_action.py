@@ -8,6 +8,7 @@ from src.core.actions.action_interface import ActionResult
 from src.core.conditions.condition_interface import ConditionResult
 from src.core.conditions.base_condition import BaseCondition
 from src.core.actions.if_then_else_action import IfThenElseAction
+from src.core.expressions.expression_parser import parse_expression
 
 
 # Test condition for if-then-else action tests
@@ -28,6 +29,8 @@ class TestCondition(BaseCondition[bool]):
     def _evaluate(self, context: Dict[str, Any]) -> ConditionResult[bool]:
         """Evaluate the condition"""
         self.evaluated = True
+        # Store the context for testing variable expressions
+        self.last_context = context.copy() if isinstance(context, dict) else None
         return ConditionResult.create_success(
             self.return_value,
             f"Test condition returned {self.return_value}"
@@ -67,6 +70,8 @@ class TestAction(BaseAction):
     def _execute(self, context: Dict[str, Any]) -> ActionResult:
         """Execute the action"""
         self.executed = True
+        # Store the context for testing variable expressions
+        self.last_context = context.copy() if isinstance(context, dict) else None
         if self.success:
             return ActionResult.create_success(f"Executed: {self.description}")
         else:
@@ -263,6 +268,45 @@ class TestIfThenElseAction(unittest.TestCase):
         self.assertEqual(len(data["else_actions"]), 1)
         self.assertEqual(data["else_actions"][0]["description"], "Else action")
 
+    def test_variable_expressions_in_context(self):
+        """Test that variable expressions in the context are processed"""
+        # Arrange
+        condition = TestCondition(True)
+        then_action = TestAction()
+        else_action = TestAction()
+        action = IfThenElseAction(
+            description="Test if-then-else with variables",
+            condition=condition,
+            then_actions=[then_action],
+            else_actions=[else_action]
+        )
+
+        # Create a context with variable expressions
+        context = {
+            "name": "John",
+            "greeting": "Hello, ${name}!",
+            "value": "${1 + 2}"
+        }
+
+        # Act
+        result = action.execute(context)
+
+        # Assert
+        self.assertTrue(result.success)
+        self.assertTrue(condition.evaluated)
+
+        # Check that variable expressions were processed in the condition's context
+        processed_context = condition.last_context
+        self.assertIsNotNone(processed_context, "Condition should have stored the context")
+        self.assertEqual(processed_context["name"], "John")
+        self.assertEqual(processed_context["greeting"], "Hello, John!")
+
+        # Check that the action received the processed context
+        action_context = then_action.last_context
+        self.assertIsNotNone(action_context, "Action should have stored the context")
+        self.assertEqual(action_context["name"], "John")
+        self.assertEqual(action_context["greeting"], "Hello, John!")
+
     @patch("src.core.conditions.condition_factory.ConditionFactory")
     @patch("src.core.actions.action_factory.ActionFactory")
     def test_from_dict(self, mock_action_factory, mock_condition_factory):
@@ -275,7 +319,7 @@ class TestIfThenElseAction(unittest.TestCase):
         # Mock the action factory
         mock_action_factory_instance = MagicMock()
         mock_action_factory.get_instance.return_value = mock_action_factory_instance
-        
+
         # Mock the created actions
         mock_then_action = TestAction()
         mock_else_action = TestAction()
