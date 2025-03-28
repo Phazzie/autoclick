@@ -63,7 +63,7 @@ The following major features are not yet implemented or are only partially imple
 
 ### In Progress
 
-- [ ] Implement Workflow Serialization
+- [x] Implement Workflow Serialization
 
 ### Not Started
 
