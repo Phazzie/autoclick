@@ -27,6 +27,7 @@
 ### In Progress
 
 - [ ] Implement Workflow Serialization
+- [x] Implement Credential Filtering
 
 ## Feature Areas to Implement
 
@@ -36,6 +37,7 @@
 4. **Data-Driven Testing**
 5. **Advanced Error Handling**
 6. **Reporting and Analytics**
+7. **Credential Management**
 
 ## Design Principles
 
@@ -849,6 +851,103 @@
     - [ ] Create class diagrams
     - [ ] Add code examples
     - [ ] Create developer guide
+
+### Phase 5: Credential Management (1 week)
+
+#### Week 8: Credential Management System
+
+##### Day 1-2: Credential Storage
+
+- [x] **Define Credential Status System**
+
+  - [x] Create `CredentialStatus` enum
+    - [x] Define status values (unused, success, failure, etc.)
+    - [x] Add status transition rules
+    - [x] Create status validation
+    - [x] Implement status metadata
+  - [x] Implement credential record
+    - [x] Create `CredentialRecord` class
+    - [x] Add username/password storage
+    - [x] Implement attempt tracking
+    - [x] Create status history
+  - [x] Write tests for credential status
+    - [x] Test status transitions
+    - [x] Test record creation
+    - [x] Test attempt tracking
+    - [x] Test serialization/deserialization
+
+- [x] **Implement Credential Manager**
+  - [x] Create `CredentialManager` class
+    - [x] Implement credential storage
+    - [x] Add credential lookup
+    - [x] Create credential filtering
+    - [x] Implement credential status updates
+  - [x] Add credential operations
+    - [x] Implement add/remove operations
+    - [x] Create attempt recording
+    - [x] Add status filtering
+    - [x] Implement statistics collection
+  - [x] Write tests for credential manager
+    - [x] Test credential operations
+    - [x] Test filtering capabilities
+    - [x] Test statistics generation
+    - [x] Test persistence
+
+##### Day 3-4: Credential Actions
+
+- [x] **Create Credential Filter Action**
+
+  - [x] Implement `CredentialFilterAction`
+    - [x] Create constructor with credential manager
+    - [x] Add variable name configuration
+    - [x] Implement status filtering
+    - [x] Create error handling
+  - [x] Add credential status updates
+    - [x] Implement success/failure tracking
+    - [x] Add inactive status marking
+    - [x] Create status transition logic
+    - [x] Implement statistics collection
+  - [x] Write tests for credential filter action
+    - [x] Test success/failure handling
+    - [x] Test status updates
+    - [x] Test error handling
+    - [x] Test integration with workflow
+
+- [ ] **Implement Credential Import/Export**
+  - [ ] Create credential file operations
+    - [ ] Implement CSV import/export
+    - [ ] Add JSON import/export
+    - [ ] Create database integration
+    - [ ] Implement secure storage
+  - [ ] Add credential validation
+    - [ ] Create format validation
+    - [ ] Implement duplicate detection
+    - [ ] Add security validation
+    - [ ] Create validation reporting
+  - [ ] Write tests for import/export
+    - [ ] Test file operations
+    - [ ] Test validation
+    - [ ] Test error handling
+    - [ ] Test large dataset performance
+
+##### Day 5: Credential UI
+
+- [ ] **Create Credential Management UI**
+  - [ ] Add credential list view
+    - [ ] Create credential table
+    - [ ] Implement status filtering
+    - [ ] Add search functionality
+    - [ ] Create sorting options
+  - [ ] Implement credential editor
+    - [ ] Create add/edit forms
+    - [ ] Add validation feedback
+    - [ ] Implement batch operations
+    - [ ] Create import/export UI
+  - [ ] Write tests for credential UI
+    - [ ] Test list view
+    - [ ] Test editor functionality
+    - [ ] Test validation
+    - [ ] Test integration with actions
 
 ## Implementation Details
 
