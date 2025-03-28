@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Automation Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .summary {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .success {
+            color: #28a745;
+        }
+        .error {
+            color: #dc3545;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Automation Report</h1>
+    <div class="summary">
+        <h2>Summary</h2>
+        <p>Total Scripts: 3</p>
+        <p>Success: <span class="success">2</span></p>
+        <p>Success Rate: <span class="error">66.67%</span></p>
+        <p>Generated: 2025-03-27 11:34:35</p>
+    </div>
+    
+    <h2>Results</h2>
+    <table>
+        <tr>
+            <th>Script</th>
+            <th>Status</th>
+            <th>Duration</th>
+            <th>Message</th>
+        </tr>
+
+        <tr>
+            <td>script1.py</td>
+            <td class="success">success</td>
+            <td>1.50s</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>script2.py</td>
+            <td class="error">error</td>
+            <td>0.50s</td>
+            <td>Element not found</td>
+        </tr>
+        <tr>
+            <td>script3.py</td>
+            <td class="success">success</td>
+            <td>2.00s</td>
+            <td></td>
+        </tr>
+    </table>
+</body>
+</html>
