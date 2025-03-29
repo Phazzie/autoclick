@@ -161,17 +161,20 @@ class StatePersistence(StatePersistenceInterface):
         # If we have more files than the maximum, remove the oldest ones
         if len(files) > max_states:
             # Get the files to remove (oldest first)
+            # Note: files are already sorted by modification time (newest first)
             to_remove = files[max_states:]
 
             # Remove the files
+            removed_count = 0
             for file_path in to_remove:
                 try:
                     os.remove(file_path)
+                    removed_count += 1
                     self.logger.info(f"Removed old state file: {file_path}")
                 except Exception as e:
                     self.logger.error(f"Error removing state file {file_path}: {str(e)}")
 
-            return len(to_remove)
+            return removed_count
 
         return 0
 
@@ -206,6 +209,7 @@ class StatePersistence(StatePersistenceInterface):
 
         # Restore variables for each scope
         for scope_name, scope_vars in variables.items():
-            scope = VariableScope[scope_name]
+            # Convert scope name to uppercase to match enum member names
+            scope = VariableScope[scope_name.upper()]
             for name, value in scope_vars.items():
                 context.variables.set(name, value, scope)
