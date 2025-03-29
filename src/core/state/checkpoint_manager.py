@@ -346,6 +346,7 @@ class CheckpointManager(CheckpointManagerInterface):
 
         # Restore variables for each scope
         for scope_name, scope_vars in variables.items():
-            scope = VariableScope[scope_name]
+            # Convert scope name to uppercase to match enum member names
+            scope = VariableScope[scope_name.upper()]
             for name, value in scope_vars.items():
                 context.variables.set(name, value, scope)

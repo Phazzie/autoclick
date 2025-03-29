@@ -62,12 +62,12 @@ class TestClickAction(unittest.TestCase):
         """Test successful execution of ClickAction"""
         # Arrange
         action = ClickAction(description="Click submit button", selector="#submit")
-        
+
         # Create mock driver and element
         mock_element = MagicMock()
         mock_driver = MagicMock()
         mock_driver.find_element_by_css_selector.return_value = mock_element
-        
+
         context = {"driver": mock_driver}
 
         # Act
@@ -95,11 +95,11 @@ class TestClickAction(unittest.TestCase):
         """Test ClickAction execution when element is not found"""
         # Arrange
         action = ClickAction(description="Click submit button", selector="#submit")
-        
+
         # Create mock driver that raises exception
         mock_driver = MagicMock()
         mock_driver.find_element_by_css_selector.side_effect = Exception("Element not found")
-        
+
         context = {"driver": mock_driver}
 
         # Act
@@ -112,6 +112,8 @@ class TestClickAction(unittest.TestCase):
     def test_factory_registration(self):
         """Test that ClickAction is registered with the factory"""
         # Arrange
+        # Import the ClickAction to ensure it's registered
+        from src.core.actions.click_action import ClickAction
         factory = ActionFactory.get_instance()
 
         # Act & Assert
@@ -121,8 +123,10 @@ class TestClickAction(unittest.TestCase):
     def test_factory_creation(self):
         """Test creating a ClickAction from the factory"""
         # Arrange
+        # Import the ClickAction to ensure it's registered
+        from src.core.actions.click_action import ClickAction
         factory = ActionFactory.get_instance()
-        
+
         # Act
         action_data = {
             "type": "click",

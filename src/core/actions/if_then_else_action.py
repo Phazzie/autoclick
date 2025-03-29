@@ -5,6 +5,7 @@ from src.core.actions.base_action import BaseAction
 from src.core.actions.action_interface import ActionResult
 from src.core.conditions.condition_interface import ConditionInterface
 from src.core.actions.action_factory import ActionFactory
+from src.core.conditions.condition_factory import ConditionFactory
 
 
 @ActionFactory.register("if_then_else")
@@ -136,24 +137,9 @@ class IfThenElseAction(BaseAction):
         # If no condition was passed, try to create one
         if condition is None:
             # Get the condition factory
-            from src.core.conditions.condition_factory import ConditionFactoryClass
             condition_data = data.get("condition", {})
-            try:
-                condition = ConditionFactoryClass.get_instance().create_condition(condition_data)
-            except Exception as e:
-                # If we can't create the condition, use a default one that always returns True
-                from src.core.conditions.base_condition import BaseCondition
-                from src.core.conditions.condition_interface import ConditionResult
-
-                class DefaultCondition(BaseCondition[bool]):
-                    @property
-                    def type(self) -> str:
-                        return "default"
-
-                    def _evaluate(self, context: Dict[str, Any]) -> ConditionResult[bool]:
-                        return ConditionResult.create_success(True, "Default condition")
-
-                condition = DefaultCondition("Default condition")
+            # Use the module-level ConditionFactory
+            condition = ConditionFactory.get_instance().create_condition(condition_data)
 
         # Create then actions
         then_actions_data = data.get("then_actions", [])
