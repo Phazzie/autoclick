@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "metadata": {
+    "name": "Login Workflow",
+    "description": "A workflow that logs into a website",
+    "author": "Example Script",
+    "version": "1.0.0",
+    "tags": [
+      "login",
+      "example"
+    ]
+  },
+  "actions": [
+    {
+      "id": "54995947-2615-44da-bdf5-2d4e3d72a206",
+      "type": "print",
+      "description": "Print start message",
+      "message": "Starting workflow..."
+    },
+    {
+      "id": "f3d5b550-9a42-4647-bfc3-f4a0289f547c",
+      "type": "if_then_else",
+      "description": "Check for login button",
+      "condition": {
+        "id": "e457bc93-1ec5-4a80-9e88-5e895d4b74bc",
+        "type": "element_exists",
+        "description": "Element exists: #login-button",
+        "selector": "#login-button"
+      },
+      "then_actions": [
+        {
+          "id": "056650fb-a79d-4dec-8ff2-aeb60fe6abca",
+          "type": "print",
+          "description": "Print login message",
+          "message": "Login button found, clicking it..."
+        },
+        {
+          "id": "98e17c8e-4ef6-4b92-a4bb-7b707123b66e",
+          "type": "click",
+          "description": "Click login button",
+          "selector": "#login-button"
+        }
+      ],
+      "else_actions": [
+        {
+          "id": "9679f1df-da59-4387-84c7-1e6c2a33a868",
+          "type": "print",
+          "description": "Print error message",
+          "message": "Login button not found!"
+        }
+      ]
+    },
+    {
+      "id": "d9807559-1f15-4d0b-9e30-20268a9b9669",
+      "type": "print",
+      "description": "Print end message",
+      "message": "Workflow completed!"
+    }
+  ]
+}
