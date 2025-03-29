@@ -95,14 +95,24 @@ class ActionFactory:
 
             # Check if the item is a class that inherits from BaseAction
             if (
-                inspect.isclass(item) 
-                and issubclass(item, BaseAction) 
+                inspect.isclass(item)
+                and issubclass(item, BaseAction)
                 and item is not BaseAction
             ):
                 # Register the action type using the type property
                 action_instance = item("Temporary instance for type detection")
                 action_type = action_instance.type
                 self.register_action_type(action_type, item)
+
+    @classmethod
+    def reset_registry(cls) -> None:
+        """
+        Reset the action registry
+
+        This is primarily used for testing to ensure a clean state.
+        """
+        cls._registry = {}
+        cls._instance = None
 
     @classmethod
     def register(cls, action_type: str) -> Callable[[Type[BaseAction]], Type[BaseAction]]:
