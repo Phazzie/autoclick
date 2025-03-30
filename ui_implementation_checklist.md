@@ -143,7 +143,8 @@
 - [x] Test condition editor functionality
 - [x] Test loop configuration functionality
 - [x] Test error handling functionality
-- [ ] Test workflow builder functionality
+- [x] Test workflow builder functionality
+- [x] Test action execution functionality
 - [x] Test data source functionality
 - [ ] Test reporting functionality
 - [ ] Test settings functionality

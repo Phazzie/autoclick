@@ -17,6 +17,7 @@ from src.ui.views.condition_view import ConditionView
 from src.ui.views.loop_view import LoopView
 from src.ui.views.error_view import ErrorView
 from src.ui.views.workflow_view import WorkflowView
+from src.ui.views.action_execution_view import ActionExecutionView
 
 # Import presenters
 from src.ui.presenters.sidebar_presenter import SidebarPresenter
@@ -26,6 +27,7 @@ from src.ui.presenters.condition_presenter import ConditionPresenter
 from src.ui.presenters.loop_presenter import LoopPresenter
 from src.ui.presenters.error_presenter import ErrorPresenter
 from src.ui.presenters.workflow_presenter import WorkflowPresenter
+from src.ui.presenters.action_execution_presenter import ActionExecutionPresenter
 
 # Import backend components
 from src.core.credentials.credential_manager import CredentialManager
@@ -161,7 +163,7 @@ class AutoClickApp:
         # Create tabs
         self.tabs = {}
         tab_names = [
-            "Workflow Builder", "Variable Management", "Credential Management",
+            "Workflow Builder", "Action Execution", "Variable Management", "Credential Management",
             "Condition Editor", "Loop Configuration", "Error Handling", "Reporting", "Data Sources", "Settings"
         ]
         for tab_name in tab_names:
@@ -185,6 +187,7 @@ class AutoClickApp:
         self.loop_view = LoopView(self.tabs["Loop Configuration"])
         self.error_view = ErrorView(self.tabs["Error Handling"])
         self.workflow_view = WorkflowView(self.tabs["Workflow Builder"])
+        self.action_execution_view = ActionExecutionView(self.tabs["Action Execution"])
 
         # Create presenter instances
         self.sidebar_presenter = SidebarPresenter(self.sidebar_frame, self)
@@ -218,6 +221,11 @@ class AutoClickApp:
             app=self,
             service=self.workflow_service
         )
+        self.action_execution_presenter = ActionExecutionPresenter(
+            view=self.action_execution_view,
+            app=self,
+            service=self.workflow_service
+        )
 
         # Link views to presenters
         self.sidebar_frame.set_presenter(self.sidebar_presenter)
@@ -227,6 +235,7 @@ class AutoClickApp:
         self.loop_view.set_presenter(self.loop_presenter)
         self.error_view.set_presenter(self.error_presenter)
         self.workflow_view.set_presenter(self.workflow_presenter)
+        self.action_execution_view.set_presenter(self.action_execution_presenter)
 
         # Build UI for each view
         self.sidebar_frame.build_ui()
@@ -236,6 +245,7 @@ class AutoClickApp:
         self.loop_view.build_ui()
         self.error_view.build_ui()
         self.workflow_view.build_ui()
+        self.action_execution_view.build_ui()
 
         # Initialize presenters
         self.sidebar_presenter.initialize_view()
@@ -245,6 +255,7 @@ class AutoClickApp:
         self.loop_presenter.initialize_view()
         self.error_presenter.initialize_view()
         self.workflow_presenter.initialize_view()
+        self.action_execution_presenter.initialize_view()
 
     def _setup_layout(self):
         """Set up the main application layout."""

@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 class SidebarPresenter(BasePresenter): # Type hint view and app
     view: 'SidebarView'
     app: 'AutoClickApp'
-    
+
     def __init__(self, view: 'SidebarView', app: 'AutoClickApp'): # Needs App reference
         super().__init__(view=view, app=app)
         # Initialization done via initialize_view called by App
-    
+
     def initialize_view(self):
         """Populate nav items and set initial theme switch state."""
         if not self.view: return
@@ -25,22 +25,24 @@ class SidebarPresenter(BasePresenter): # Type hint view and app
                  self.view.set_theme_switch_state(ctk.get_appearance_mode())
         except Exception as e:
              self._handle_error("initializing sidebar view", e)
-    
+
     def _get_nav_items(self) -> List[Tuple[str, str]]:
         """Returns the list of navigation items (text, tab_name)."""
         # Could be dynamic based on user role or config in future
         return [
-            ("Workflow Builder", "Workflow Builder"), ("Variable Management", "Variable Management"),
-            ("Credential Management", "Credential Management"), ("Error Handling", "Error Handling"),
-            ("Reporting", "Reporting"), ("Data Sources", "Data Sources"), ("Settings", "Settings")
+            ("Workflow Builder", "Workflow Builder"), ("Action Execution", "Action Execution"),
+            ("Variable Management", "Variable Management"), ("Credential Management", "Credential Management"),
+            ("Condition Editor", "Condition Editor"), ("Loop Configuration", "Loop Configuration"),
+            ("Error Handling", "Error Handling"), ("Reporting", "Reporting"),
+            ("Data Sources", "Data Sources"), ("Settings", "Settings")
         ]
-    
+
     def navigate_to(self, tab_name: str):
         """Instructs the main app to switch tabs."""
         if self.app and hasattr(self.app, 'navigate_to_tab'):
              self.app.navigate_to_tab(tab_name)
         else: print(f"Error: Cannot navigate. App reference missing or invalid.")
-    
+
     def toggle_theme(self):
         """Instructs the main app to toggle the theme."""
         if self.app and hasattr(self.app, 'request_theme_toggle'):
