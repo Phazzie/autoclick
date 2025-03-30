@@ -73,22 +73,22 @@
 
 ### 3.1 Workflow Builder (Most Complex)
 
-- [ ] Extract and save workflow_view.py
-- [ ] Extract and save workflow_presenter.py
-- [ ] Implement basic canvas setup
-- [ ] Implement node toolbox with draggable node types
-- [ ] Implement node creation on canvas
-- [ ] Implement node selection and highlighting
-- [ ] Implement node dragging and positioning
-- [ ] Implement node property panel
-- [ ] Implement connection creation between nodes
-- [ ] Implement connection styling and arrow drawing
-- [ ] Implement connection validation (valid source/target)
+- [x] Extract and save workflow_view.py
+- [x] Extract and save workflow_presenter.py
+- [x] Implement basic canvas setup
+- [x] Implement node toolbox with draggable node types
+- [x] Implement node creation on canvas
+- [x] Implement node selection and highlighting
+- [x] Implement node dragging and positioning
+- [x] Implement node property panel
+- [x] Implement connection creation between nodes
+- [x] Implement connection styling and arrow drawing
+- [x] Implement connection validation (valid source/target)
 - [ ] Implement canvas panning
 - [ ] Implement canvas zooming
-- [ ] Implement workflow saving/loading
-- [ ] Implement workflow execution controls
-- [ ] Add validation for workflow structure
+- [x] Implement workflow saving/loading
+- [x] Implement workflow execution controls
+- [x] Add validation for workflow structure
 
 ### 3.2 Data Sources
 

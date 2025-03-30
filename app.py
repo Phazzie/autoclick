@@ -16,6 +16,7 @@ from src.ui.views.credential_view import CredentialView
 from src.ui.views.condition_view import ConditionView
 from src.ui.views.loop_view import LoopView
 from src.ui.views.error_view import ErrorView
+from src.ui.views.workflow_view import WorkflowView
 
 # Import presenters
 from src.ui.presenters.sidebar_presenter import SidebarPresenter
@@ -24,6 +25,7 @@ from src.ui.presenters.credential_presenter import CredentialPresenter
 from src.ui.presenters.condition_presenter import ConditionPresenter
 from src.ui.presenters.loop_presenter import LoopPresenter
 from src.ui.presenters.error_presenter import ErrorPresenter
+from src.ui.presenters.workflow_presenter import WorkflowPresenter
 
 # Import backend components
 from src.core.credentials.credential_manager import CredentialManager
@@ -140,6 +142,7 @@ class AutoClickApp:
         # Initialize additional adapter services
         self.datasource_service = DataSourceAdapter()
         self.reporting_service = ReportingAdapter()
+        self.workflow_service = WorkflowAdapter()
 
     def _create_ui_components(self):
         """Create the main UI components."""
@@ -181,6 +184,7 @@ class AutoClickApp:
         self.condition_view = ConditionView(self.tabs["Condition Editor"])
         self.loop_view = LoopView(self.tabs["Loop Configuration"])
         self.error_view = ErrorView(self.tabs["Error Handling"])
+        self.workflow_view = WorkflowView(self.tabs["Workflow Builder"])
 
         # Create presenter instances
         self.sidebar_presenter = SidebarPresenter(self.sidebar_frame, self)
@@ -209,6 +213,11 @@ class AutoClickApp:
             app=self,
             service=self.error_service
         )
+        self.workflow_presenter = WorkflowPresenter(
+            view=self.workflow_view,
+            app=self,
+            service=self.workflow_service
+        )
 
         # Link views to presenters
         self.sidebar_frame.set_presenter(self.sidebar_presenter)
@@ -217,6 +226,7 @@ class AutoClickApp:
         self.condition_view.set_presenter(self.condition_presenter)
         self.loop_view.set_presenter(self.loop_presenter)
         self.error_view.set_presenter(self.error_presenter)
+        self.workflow_view.set_presenter(self.workflow_presenter)
 
         # Build UI for each view
         self.sidebar_frame.build_ui()
@@ -225,6 +235,7 @@ class AutoClickApp:
         self.condition_view.build_ui()
         self.loop_view.build_ui()
         self.error_view.build_ui()
+        self.workflow_view.build_ui()
 
         # Initialize presenters
         self.sidebar_presenter.initialize_view()
@@ -233,6 +244,7 @@ class AutoClickApp:
         self.condition_presenter.initialize_view()
         self.loop_presenter.initialize_view()
         self.error_presenter.initialize_view()
+        self.workflow_presenter.initialize_view()
 
     def _setup_layout(self):
         """Set up the main application layout."""
