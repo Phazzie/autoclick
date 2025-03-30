@@ -55,21 +55,60 @@ class CredentialView(BaseView):
         )
         self.title_label.grid(row=0, column=0, sticky="w", padx=PAD_X_INNER, pady=PAD_Y_INNER)
 
-        # Status filter
-        self.status_frame = ctk.CTkFrame(self.header_frame)
-        self.status_frame.grid(row=0, column=1, sticky="e", padx=PAD_X_INNER, pady=PAD_Y_INNER)
+        # Filter and search frame
+        self.filter_frame = ctk.CTkFrame(self.header_frame)
+        self.filter_frame.grid(row=0, column=1, sticky="e", padx=PAD_X_INNER, pady=PAD_Y_INNER)
 
-        self.status_label = ctk.CTkLabel(self.status_frame, text="Status:", font=get_default_font())
+        # Status filter
+        self.status_label = ctk.CTkLabel(self.filter_frame, text="Status:", font=get_default_font())
         self.status_label.grid(row=0, column=0, sticky="w", padx=PAD_X_INNER, pady=PAD_Y_INNER)
 
         self.status_filter_var = tk.StringVar(value="All")
         self.status_dropdown = ctk.CTkOptionMenu(
-            self.status_frame,
+            self.filter_frame,
             values=["All", "Active", "Success", "Failure", "Inactive"],
             variable=self.status_filter_var,
-            command=self._on_status_filter_changed
+            command=self._on_status_filter_changed,
+            width=100
         )
-        self.status_dropdown.grid(row=0, column=1, sticky="e", padx=PAD_X_INNER, pady=PAD_Y_INNER)
+        self.status_dropdown.grid(row=0, column=1, sticky="w", padx=PAD_X_INNER, pady=PAD_Y_INNER)
+
+        # Category filter
+        self.category_label = ctk.CTkLabel(self.filter_frame, text="Category:", font=get_default_font())
+        self.category_label.grid(row=0, column=2, sticky="w", padx=PAD_X_INNER, pady=PAD_Y_INNER)
+
+        self.category_var = tk.StringVar(value="All")
+        self.category_dropdown = ctk.CTkOptionMenu(
+            self.filter_frame,
+            values=["All", "Other", "Email", "Social", "Banking", "Shopping", "Work"],
+            variable=self.category_var,
+            command=self._on_category_filter_changed,
+            width=100
+        )
+        self.category_dropdown.grid(row=0, column=3, sticky="w", padx=PAD_X_INNER, pady=PAD_Y_INNER)
+
+        # Search field
+        self.search_label = ctk.CTkLabel(self.filter_frame, text="Search:", font=get_default_font())
+        self.search_label.grid(row=0, column=4, sticky="w", padx=PAD_X_INNER, pady=PAD_Y_INNER)
+
+        self.search_var = tk.StringVar()
+        self.search_var.trace_add("write", self._on_search_changed)
+        self.search_entry = ctk.CTkEntry(
+            self.filter_frame,
+            textvariable=self.search_var,
+            placeholder_text="Search credentials...",
+            width=200
+        )
+        self.search_entry.grid(row=0, column=5, sticky="ew", padx=PAD_X_INNER, pady=PAD_Y_INNER)
+
+        # Clear search button
+        self.clear_search_button = ctk.CTkButton(
+            self.filter_frame,
+            text="Clear",
+            command=self._on_clear_search,
+            width=60
+        )
+        self.clear_search_button.grid(row=0, column=6, sticky="e", padx=PAD_X_INNER, pady=PAD_Y_INNER)
 
         # Credential treeview
         self.credential_tree = StyledTreeview(
@@ -86,6 +125,28 @@ class CredentialView(BaseView):
         )
         self.credential_tree.grid(row=1, column=0, sticky="nsew", padx=0, pady=0)
         self.credential_tree.bind("<<TreeviewSelect>>", self._on_credential_selected)
+
+        # Add sorting by clicking on column headers
+        for col in (COL_ID_NAME, COL_ID_USERNAME, COL_ID_STATUS, COL_ID_CATEGORY, COL_ID_LAST_USED):
+            self.credential_tree.heading(col, command=lambda c=col: self._on_column_click(c))
+
+        # Initialize sorting state
+        self.sort_column = COL_ID_NAME  # Default sort column
+        self.sort_reverse = False  # Default sort direction
+
+        # Import/Export buttons
+        self.import_export_frame = ctk.CTkFrame(self.list_frame)
+        self.import_export_frame.grid(row=2, column=0, sticky="ew", padx=0, pady=PAD_Y_INNER)
+
+        self.import_button = ctk.CTkButton(self.import_export_frame, text="Import", command=self._on_import_clicked)
+        self.import_button.grid(row=0, column=0, padx=PAD_X_INNER, pady=PAD_Y_INNER)
+
+        self.export_button = ctk.CTkButton(self.import_export_frame, text="Export", command=self._on_export_clicked)
+        self.export_button.grid(row=0, column=1, padx=PAD_X_INNER, pady=PAD_Y_INNER)
+
+        # Batch operations button
+        self.batch_button = ctk.CTkButton(self.import_export_frame, text="Batch Operations", command=self._on_batch_operations_clicked)
+        self.batch_button.grid(row=0, column=2, padx=PAD_X_INNER, pady=PAD_Y_INNER)
 
         # === Right Panel (Credential Editor) ===
         self.editor_frame = ctk.CTkFrame(self)
@@ -203,7 +264,35 @@ class CredentialView(BaseView):
         """Handle status filter change."""
         self.current_status = status
         if self.presenter:
-            self.presenter.filter_credentials(status)
+            self.presenter.filter_credentials(status, self.category_var.get(), self.search_var.get())
+
+    def _on_category_filter_changed(self, category: str):
+        """Handle category filter change."""
+        if self.presenter:
+            self.presenter.filter_credentials(self.status_var.get(), category, self.search_var.get())
+
+    def _on_search_changed(self, *args):
+        """Handle search text change."""
+        if self.presenter:
+            self.presenter.filter_credentials(self.status_var.get(), self.category_var.get(), self.search_var.get())
+
+    def _on_clear_search(self):
+        """Handle clear search button click."""
+        self.search_var.set("")
+
+    def _on_column_click(self, column):
+        """Handle column header click for sorting."""
+        # If clicking the same column, reverse the sort order
+        if self.sort_column == column:
+            self.sort_reverse = not self.sort_reverse
+        else:
+            # Otherwise, sort by the new column in ascending order
+            self.sort_reverse = False
+            self.sort_column = column
+
+        # Apply the sort
+        if self.presenter:
+            self.presenter.sort_credentials(self.sort_column, self.sort_reverse)
 
     def _on_credential_selected(self, event):
         """Handle credential selection in the tree."""
@@ -239,6 +328,21 @@ class CredentialView(BaseView):
         self.clear_editor()
         self.set_editor_state(False)
         self.selected_credential = None
+
+    def _on_import_clicked(self):
+        """Handle import button click."""
+        if self.presenter:
+            self.presenter.import_credentials()
+
+    def _on_export_clicked(self):
+        """Handle export button click."""
+        if self.presenter:
+            self.presenter.export_credentials()
+
+    def _on_batch_operations_clicked(self):
+        """Handle batch operations button click."""
+        if self.presenter:
+            self.presenter.show_batch_operations()
 
     # === Public Methods ===
 

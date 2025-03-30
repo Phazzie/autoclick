@@ -249,3 +249,372 @@ class CredentialAdapter:
             tags=tags,
             notes=notes
         )
+
+    def import_from_csv(self, file_path: str) -> int:
+        """
+        Import credentials from a CSV file.
+
+        Args:
+            file_path: Path to the CSV file
+
+        Returns:
+            Number of credentials imported
+
+        Raises:
+            ValueError: If the file is not a valid CSV file
+            FileNotFoundError: If the file does not exist
+        """
+        import csv
+        import logging
+
+        # Validate file path
+        if not file_path.lower().endswith('.csv'):
+            raise ValueError(f"File must be a CSV file: {file_path}")
+
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"File not found: {file_path}")
+
+        count = 0
+        skipped_rows = []
+
+        try:
+            with open(file_path, 'r', newline='') as csvfile:
+                # Validate CSV format
+                try:
+                    reader = csv.DictReader(csvfile)
+                    # Check if the CSV has any columns
+                    if not reader.fieldnames:
+                        raise ValueError("CSV file has no columns")
+
+                    # Check if required columns exist
+                    required_columns = ['username', 'password']
+                    missing_columns = [col for col in required_columns if col not in reader.fieldnames]
+                    if missing_columns:
+                        raise ValueError(f"CSV file is missing required columns: {', '.join(missing_columns)}")
+                except csv.Error as e:
+                    raise ValueError(f"Invalid CSV format: {str(e)}")
+
+                # Reset file pointer to beginning
+                csvfile.seek(0)
+                reader = csv.DictReader(csvfile)
+
+                for row_num, row in enumerate(reader, start=2):  # Start at 2 to account for header row
+                    # Validate required fields
+                    if not row.get('username') or not row.get('password'):
+                        skipped_rows.append(f"Row {row_num}: Missing username or password")
+                        continue
+
+                    # Extract fields
+                    username = row['username']
+                    password = row['password']
+                    name = row.get('name', username)
+                    category = row.get('category', 'Other')
+                    notes = row.get('notes', '')
+
+                    # Extract tags if present
+                    tags = []
+                    if 'tags' in row:
+                        tags = [tag.strip() for tag in row['tags'].split(',') if tag.strip()]
+
+                    try:
+                        # Add the credential
+                        self.add_credential(
+                            name=name,
+                            username=username,
+                            password=password,
+                            category=category,
+                            tags=tags,
+                            notes=notes
+                        )
+                        count += 1
+                    except Exception as e:
+                        skipped_rows.append(f"Row {row_num}: {str(e)}")
+        except Exception as e:
+            # Log the error and re-raise
+            logging.error(f"Error importing CSV file: {str(e)}")
+            raise
+
+        # Log skipped rows
+        if skipped_rows:
+            logging.warning(f"Skipped {len(skipped_rows)} rows during import:")
+            for msg in skipped_rows:
+                logging.warning(f"  {msg}")
+
+        return count, skipped_rows
+
+    def import_from_json(self, file_path: str) -> int:
+        """
+        Import credentials from a JSON file.
+
+        Args:
+            file_path: Path to the JSON file
+
+        Returns:
+            Number of credentials imported and list of skipped rows
+
+        Raises:
+            ValueError: If the file is not a valid JSON file
+            FileNotFoundError: If the file does not exist
+            json.JSONDecodeError: If the file contains invalid JSON
+        """
+        import json
+        import logging
+
+        # Validate file path
+        if not file_path.lower().endswith('.json'):
+            raise ValueError(f"File must be a JSON file: {file_path}")
+
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"File not found: {file_path}")
+
+        count = 0
+        skipped_rows = []
+
+        try:
+            with open(file_path, 'r') as jsonfile:
+                try:
+                    data = json.load(jsonfile)
+                except json.JSONDecodeError as e:
+                    raise ValueError(f"Invalid JSON format: {str(e)}")
+
+                # Validate data structure
+                if not isinstance(data, (list, dict)):
+                    raise ValueError(f"Invalid JSON structure: expected list or object, got {type(data).__name__}")
+
+                # Handle different JSON formats
+                if isinstance(data, list):
+                    # List of credentials
+                    credentials = data
+                elif isinstance(data, dict) and 'credentials' in data:
+                    # Object with credentials array
+                    credentials = data['credentials']
+                    if not isinstance(credentials, list):
+                        raise ValueError(f"Invalid JSON structure: 'credentials' must be an array, got {type(credentials).__name__}")
+                else:
+                    # Single credential object
+                    credentials = [data]
+
+                for i, cred in enumerate(credentials):
+                    # Validate credential object
+                    if not isinstance(cred, dict):
+                        skipped_rows.append(f"Item {i+1}: Not an object")
+                        continue
+
+                    # Validate required fields
+                    if 'username' not in cred or 'password' not in cred:
+                        skipped_rows.append(f"Item {i+1}: Missing username or password")
+                        continue
+
+                    # Extract fields
+                    username = cred['username']
+                    password = cred['password']
+                    name = cred.get('name', username)
+                    category = cred.get('category', 'Other')
+                    notes = cred.get('notes', '')
+
+                    # Extract and validate tags
+                    tags = cred.get('tags', [])
+                    if not isinstance(tags, list):
+                        tags = [str(tags)]  # Convert to string and wrap in list
+                        skipped_rows.append(f"Item {i+1}: 'tags' is not an array, converted to string")
+
+                    try:
+                        # Add the credential
+                        self.add_credential(
+                            name=name,
+                            username=username,
+                            password=password,
+                            category=category,
+                            tags=tags,
+                            notes=notes
+                        )
+                        count += 1
+                    except Exception as e:
+                        skipped_rows.append(f"Item {i+1}: {str(e)}")
+        except Exception as e:
+            # Log the error and re-raise
+            logging.error(f"Error importing JSON file: {str(e)}")
+            raise
+
+        # Log skipped rows
+        if skipped_rows:
+            logging.warning(f"Skipped {len(skipped_rows)} items during import:")
+            for msg in skipped_rows:
+                logging.warning(f"  {msg}")
+
+        return count, skipped_rows
+
+    def export_to_csv(self, file_path: str) -> int:
+        """
+        Export credentials to a CSV file.
+
+        Args:
+            file_path: Path to the CSV file
+
+        Returns:
+            Number of credentials exported
+        """
+        import csv
+
+        # Get all credentials
+        credentials = self.get_all_credentials()
+
+        # Write to CSV
+        with open(file_path, 'w', newline='') as csvfile:
+            fieldnames = ['name', 'username', 'password', 'status', 'category', 'tags', 'notes', 'last_used']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+            writer.writeheader()
+            for cred in credentials:
+                writer.writerow({
+                    'name': cred.name,
+                    'username': cred.username,
+                    'password': cred.password,
+                    'status': cred.status,
+                    'category': cred.category,
+                    'tags': ','.join(cred.tags),
+                    'notes': cred.notes,
+                    'last_used': cred.last_used.isoformat() if cred.last_used else ''
+                })
+
+        return len(credentials)
+
+    def export_to_json(self, file_path: str) -> int:
+        """
+        Export credentials to a JSON file.
+
+        Args:
+            file_path: Path to the JSON file
+
+        Returns:
+            Number of credentials exported
+        """
+        import json
+
+        # Get all credentials
+        credentials = self.get_all_credentials()
+
+        # Convert to serializable format
+        cred_list = []
+        for cred in credentials:
+            cred_list.append({
+                'name': cred.name,
+                'username': cred.username,
+                'password': cred.password,
+                'status': cred.status,
+                'category': cred.category,
+                'tags': cred.tags,
+                'notes': cred.notes,
+                'last_used': cred.last_used.isoformat() if cred.last_used else None
+            })
+
+        # Write to JSON
+        with open(file_path, 'w') as jsonfile:
+            json.dump({'credentials': cred_list}, jsonfile, indent=2)
+
+        return len(credentials)
+
+    def update_credentials_status(self, target_status: str, new_status: str) -> int:
+        """
+        Update the status of credentials matching a target status.
+
+        Args:
+            target_status: Status to match
+            new_status: New status to set
+
+        Returns:
+            Number of credentials updated
+
+        Raises:
+            ValueError: If the target status or new status is invalid
+        """
+        import logging
+
+        # Map UI status to backend status
+        status_map = {
+            "Active": CredentialStatus.UNUSED,
+            "Success": CredentialStatus.SUCCESS,
+            "Failure": CredentialStatus.FAILURE,
+            "Inactive": CredentialStatus.LOCKED
+        }
+
+        # Validate status values
+        if target_status not in status_map:
+            valid_statuses = list(status_map.keys())
+            raise ValueError(f"Invalid target status: {target_status}. Valid values are: {', '.join(valid_statuses)}")
+
+        if new_status not in status_map:
+            valid_statuses = list(status_map.keys())
+            raise ValueError(f"Invalid new status: {new_status}. Valid values are: {', '.join(valid_statuses)}")
+
+        # Get backend status values
+        target_backend_status = status_map[target_status]
+        new_backend_status = status_map[new_status]
+
+        # Log the operation
+        logging.info(f"Updating credentials from status '{target_status}' to '{new_status}'")
+
+        # Update credentials
+        count = 0
+        for username, record in list(self.credential_manager.credentials.items()):
+            if record.status == target_backend_status:
+                record.status = new_backend_status
+                count += 1
+                logging.debug(f"Updated status for credential '{username}'")
+
+        logging.info(f"Updated {count} credentials from status '{target_status}' to '{new_status}'")
+        return count
+
+    def delete_credentials_by_status(self, target_status: str) -> int:
+        """
+        Delete credentials matching a target status.
+
+        Args:
+            target_status: Status to match
+
+        Returns:
+            Number of credentials deleted
+
+        Raises:
+            ValueError: If the target status is invalid
+        """
+        import logging
+
+        # Map UI status to backend status
+        status_map = {
+            "Active": CredentialStatus.UNUSED,
+            "Success": CredentialStatus.SUCCESS,
+            "Failure": CredentialStatus.FAILURE,
+            "Inactive": CredentialStatus.LOCKED
+        }
+
+        # Validate status value
+        if target_status not in status_map:
+            valid_statuses = list(status_map.keys())
+            raise ValueError(f"Invalid target status: {target_status}. Valid values are: {', '.join(valid_statuses)}")
+
+        # Get backend status value
+        target_backend_status = status_map[target_status]
+
+        # Log the operation
+        logging.info(f"Deleting credentials with status '{target_status}'")
+
+        # Delete credentials
+        count = 0
+        deleted_usernames = []
+        for username, record in list(self.credential_manager.credentials.items()):
+            if record.status == target_backend_status:
+                del self.credential_manager.credentials[username]
+                count += 1
+                deleted_usernames.append(username)
+                logging.debug(f"Deleted credential '{username}'")
+
+        # Log summary
+        if count > 0:
+            logging.info(f"Deleted {count} credentials with status '{target_status}'")
+            if count <= 10:  # Only log all usernames if there are 10 or fewer
+                logging.info(f"Deleted credentials: {', '.join(deleted_usernames)}")
+        else:
+            logging.info(f"No credentials found with status '{target_status}'")
+
+        return count
