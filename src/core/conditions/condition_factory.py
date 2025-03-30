@@ -44,6 +44,29 @@ class ConditionFactoryClass:
         # Register the condition type
         self._registry[condition_type] = condition_class
 
+    def get_registered_condition_types(self) -> list[str]:
+        """
+        Get a list of all registered condition types
+
+        Returns:
+            List of condition type identifiers
+        """
+        return list(self._registry.keys())
+
+    def get_condition_by_id(self, condition_id: str) -> Optional[BaseCondition]:
+        """
+        Get a condition by its ID
+
+        Args:
+            condition_id: ID of the condition to get
+
+        Returns:
+            The condition instance, or None if not found
+        """
+        # This is a placeholder implementation
+        # In a real implementation, we would store conditions in a database or cache
+        return None
+
     def create_condition(self, condition_data: Dict[str, Any]) -> BaseCondition:
         """
         Create a condition instance from the given data
@@ -90,8 +113,8 @@ class ConditionFactoryClass:
 
             # Check if the item is a class that inherits from BaseCondition
             if (
-                inspect.isclass(item) 
-                and issubclass(item, BaseCondition) 
+                inspect.isclass(item)
+                and issubclass(item, BaseCondition)
                 and item is not BaseCondition
             ):
                 # Register the condition type using the type property
@@ -125,3 +148,16 @@ class ConditionFactoryClass:
 
 # Create a singleton instance
 ConditionFactory = ConditionFactoryClass.get_instance()
+
+# Register built-in condition types
+from src.core.conditions.comparison_condition import ComparisonCondition
+from src.core.conditions.element_exists_condition import ElementExistsCondition
+from src.core.conditions.text_contains_condition import TextContainsCondition
+from src.core.conditions.composite_conditions import AndCondition, OrCondition, NotCondition
+
+ConditionFactory.register_condition_type("comparison", ComparisonCondition)
+ConditionFactory.register_condition_type("element_exists", ElementExistsCondition)
+ConditionFactory.register_condition_type("text_contains", TextContainsCondition)
+ConditionFactory.register_condition_type("and", AndCondition)
+ConditionFactory.register_condition_type("or", OrCondition)
+ConditionFactory.register_condition_type("not", NotCondition)
