@@ -250,7 +250,7 @@ class CredentialAdapter:
             notes=notes
         )
 
-    def import_from_csv(self, file_path: str) -> int:
+    def import_from_csv(self, file_path: str) -> tuple:
         """
         Import credentials from a CSV file.
 
@@ -258,7 +258,7 @@ class CredentialAdapter:
             file_path: Path to the CSV file
 
         Returns:
-            Number of credentials imported
+            Tuple of (number of credentials imported, list of skipped rows)
 
         Raises:
             ValueError: If the file is not a valid CSV file
@@ -342,7 +342,7 @@ class CredentialAdapter:
 
         return count, skipped_rows
 
-    def import_from_json(self, file_path: str) -> int:
+    def import_from_json(self, file_path: str) -> tuple:
         """
         Import credentials from a JSON file.
 
@@ -350,7 +350,7 @@ class CredentialAdapter:
             file_path: Path to the JSON file
 
         Returns:
-            Number of credentials imported and list of skipped rows
+            Tuple of (number of credentials imported, list of skipped rows)
 
         Raises:
             ValueError: If the file is not a valid JSON file
@@ -529,7 +529,6 @@ class CredentialAdapter:
             ValueError: If the target status or new status is invalid
         """
         import logging
-
         # Map UI status to backend status
         status_map = {
             "Active": CredentialStatus.UNUSED,
@@ -579,7 +578,6 @@ class CredentialAdapter:
             ValueError: If the target status is invalid
         """
         import logging
-
         # Map UI status to backend status
         status_map = {
             "Active": CredentialStatus.UNUSED,

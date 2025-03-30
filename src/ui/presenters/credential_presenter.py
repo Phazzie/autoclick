@@ -4,8 +4,9 @@ SOLID: Single responsibility - business logic for credential management.
 KISS: Simple operations with clear error handling.
 """
 import os
+import tkinter as tk
 from datetime import datetime
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, simpledialog
 from typing import Dict, List, Any, Optional, TYPE_CHECKING
 
 from ..presenters.base_presenter import BasePresenter
@@ -344,7 +345,6 @@ class CredentialPresenter(BasePresenter[CredentialAdapter]):
                 self.view.display_warning("Import Complete with Warnings", message)
             else:
                 self.view.display_info("Import Complete", f"Successfully imported {imported_count} credentials.")
-
             self.update_app_status(f"Imported {imported_count} credentials from {file_path}")
         except Exception as e:
             self.view.display_error("Import Error", str(e))
@@ -416,3 +416,82 @@ class CredentialPresenter(BasePresenter[CredentialAdapter]):
         except Exception as e:
             self.view.display_error("Batch Operation Error", str(e))
             self._handle_error(f"performing batch operation", e)
+
+    def copy_username(self, credential_id: str):
+        """
+        Copy the username of a credential to the clipboard.
+
+        Args:
+            credential_id: ID of the credential
+        """
+        try:
+            # Get the credential
+            credential = self.service.get_credential_by_id(credential_id)
+
+            if credential:
+                # Copy to clipboard
+                self.view.copy_to_clipboard(credential.username)
+                self.update_app_status(f"Copied username for {credential.name} to clipboard")
+            else:
+                self.view.display_error("Error", "Credential not found")
+        except Exception as e:
+            self._handle_error(f"copying username for credential {credential_id}", e)
+
+    def copy_password(self, credential_id: str):
+        """
+        Copy the password of a credential to the clipboard.
+
+        Args:
+            credential_id: ID of the credential
+        """
+        try:
+            # Get the credential
+            credential = self.service.get_credential_by_id(credential_id)
+
+            if credential:
+                # Copy to clipboard
+                self.view.copy_to_clipboard(credential.password)
+                self.update_app_status(f"Copied password for {credential.name} to clipboard")
+            else:
+                self.view.display_error("Error", "Credential not found")
+        except Exception as e:
+            self._handle_error(f"copying password for credential {credential_id}", e)
+
+    def show_change_status_dialog(self, credential_id: str):
+        """
+        Show a dialog to change the status of a credential.
+
+        Args:
+            credential_id: ID of the credential
+        """
+        try:
+            # Get the credential
+            credential = self.service.get_credential_by_id(credential_id)
+
+            if credential:
+                # Show a dialog to select the new status
+                new_status = self.view.show_status_selection_dialog(credential.status)
+
+                if new_status and new_status != credential.status:
+                    # Update the credential
+                    success = self.service.update_credential(
+                        cid=credential_id,
+                        name=credential.name,
+                        username=credential.username,
+                        password=credential.password,
+                        status=new_status,
+                        category=credential.category,
+                        tags=credential.tags,
+                        notes=credential.notes
+                    )
+
+                    if success:
+                        # Reload credentials
+                        self.load_credentials()
+                        self.update_app_status(f"Updated status of {credential.name} to {new_status}")
+                    else:
+                        self.view.display_error("Error", "Failed to update credential status")
+            else:
+                self.view.display_error("Error", "Credential not found")
+        except Exception as e:
+            self._handle_error(f"changing status for credential {credential_id}", e)

@@ -6,9 +6,7 @@ KISS: Simple canvas-based interface with intuitive interactions.
 import customtkinter as ctk
 import tkinter as tk
 from tkinter import simpledialog, filedialog, messagebox
-from typing import Dict, List, Any, Optional, Tuple, TYPE_CHECKING
-import json
-import uuid
+from typing import Dict, List, Any, Optional, TYPE_CHECKING
 
 from ..views.base_view import BaseView
 from ..utils.constants import (
@@ -16,6 +14,7 @@ from ..utils.constants import (
     PAD_X_OUTER, PAD_Y_OUTER, PAD_X_INNER, PAD_Y_INNER
 )
 from ..utils.ui_utils import get_header_font, get_default_font, get_small_font
+from ..components.context_menu import ContextMenu
 
 if TYPE_CHECKING:
     from ..presenters.workflow_presenter import WorkflowPresenter
@@ -45,6 +44,14 @@ class WorkflowView(BaseView):
         self.drag_data = {"x": 0, "y": 0, "node_type": None}  # Data for dragging
         self.drag_icon = None  # Visual representation of dragged node
 
+<<<<<<< HEAD
+        # Context menus
+        self.node_context_menu = None
+        self.connection_context_menu = None
+        self.canvas_context_menu = None
+
+=======
+>>>>>>> main
     def _create_widgets(self):
         """Create the UI widgets."""
         # Main layout - split into toolbar, toolbox, canvas, and properties
@@ -178,7 +185,21 @@ class WorkflowView(BaseView):
     def _setup_layout(self):
         """Set up the layout grid."""
         # Main layout already set up in _create_widgets
+<<<<<<< HEAD
+
+        # Create context menus
+        self._create_context_menus()
+
+    def build_ui(self):
+        """Override build_ui to also create context menus."""
+        # Call the parent class's build_ui method
+        super().build_ui()
+
+        # Create context menus
+        self._create_context_menus()
+=======
         pass
+>>>>>>> main
 
     def initialize_canvas(self):
         """Initialize the canvas for workflow editing."""
@@ -553,8 +574,29 @@ class WorkflowView(BaseView):
 
     def _on_canvas_right_click(self, event):
         """Handle canvas right click."""
+<<<<<<< HEAD
+        # Check if we clicked on a node
+        node_id = self._find_node_at_position(event.x, event.y)
+        if node_id:
+            self.selected_node_id = node_id
+            self._highlight_selected_node()
+            self.node_context_menu.show(event.x_root, event.y_root)
+            return
+
+        # Check if we clicked on a connection
+        connection_id = self._find_connection_at_position(event.x, event.y)
+        if connection_id:
+            self.selected_connection_id = connection_id
+            self._highlight_selected_connection()
+            self.connection_context_menu.show(event.x_root, event.y_root)
+            return
+
+        # Otherwise, show the canvas context menu
+        self.canvas_context_menu.show(event.x_root, event.y_root)
+=======
         # Show context menu
         pass
+>>>>>>> main
 
     def _on_canvas_drag(self, event):
         """Handle canvas drag."""
@@ -592,8 +634,18 @@ class WorkflowView(BaseView):
 
     def _on_canvas_scroll(self, event):
         """Handle canvas scroll."""
+<<<<<<< HEAD
+        # Determine the direction of the scroll
+        if event.num == 4 or event.delta > 0:
+            # Scroll up - zoom in
+            self._zoom_canvas(1.1, event.x, event.y)
+        elif event.num == 5 or event.delta < 0:
+            # Scroll down - zoom out
+            self._zoom_canvas(0.9, event.x, event.y)
+=======
         # Zoom the canvas
         pass
+>>>>>>> main
 
     def _on_node_click(self, event):
         """Handle node click."""
@@ -787,6 +839,157 @@ class WorkflowView(BaseView):
         self.drag_data["node_type"] = None
         self.drag_data["node_name"] = None
 
+<<<<<<< HEAD
+    # === Context Menu Methods ===
+
+    def _create_context_menus(self):
+        """Create context menus for the workflow view."""
+        # Node context menu
+        self.node_context_menu = ContextMenu(self.canvas)
+        self.node_context_menu.add_command("Edit Properties", self._on_node_edit)
+        self.node_context_menu.add_command("Delete Node", self._on_node_delete)
+        self.node_context_menu.add_separator()
+        self.node_context_menu.add_command("Copy Node", self._on_node_copy)
+        self.node_context_menu.add_command("Duplicate Node", self._on_node_duplicate)
+
+        # Connection context menu
+        self.connection_context_menu = ContextMenu(self.canvas)
+        self.connection_context_menu.add_command("Delete Connection", self._on_connection_delete)
+
+        # Canvas context menu
+        self.canvas_context_menu = ContextMenu(self.canvas)
+        self.canvas_context_menu.add_command("Add Node", self._on_canvas_add_node)
+        self.canvas_context_menu.add_command("Paste Node", self._on_canvas_paste_node, enabled=False)
+        self.canvas_context_menu.add_separator()
+        self.canvas_context_menu.add_command("Reset View", self._on_canvas_reset_view)
+
+    def _on_canvas_right_click(self, event):
+        """Handle canvas right-click for context menu."""
+        # Check if we clicked on a node
+        node_id = self._find_node_at_position(event.x, event.y)
+        if node_id:
+            self.selected_node_id = node_id
+            self._highlight_selected_node()
+            self.node_context_menu.show(event.x_root, event.y_root)
+            return
+
+        # Check if we clicked on a connection
+        connection_id = self._find_connection_at_position(event.x, event.y)
+        if connection_id:
+            self.selected_connection_id = connection_id
+            self._highlight_selected_connection()
+            self.connection_context_menu.show(event.x_root, event.y_root)
+            return
+
+        # Otherwise, show the canvas context menu
+        self.canvas_context_menu.show(event.x_root, event.y_root)
+
+    def _find_node_at_position(self, x, y):
+        """Find a node at the given position."""
+        # Check if the position is within any node
+        for node_id, elements in self.node_elements.items():
+            # Get the node position and dimensions
+            node_x, node_y = elements["position"]
+            node_width = 120  # Standard node width
+            node_height = 60  # Standard node height
+
+            # Check if the position is within the node
+            if (node_x - node_width/2 <= x <= node_x + node_width/2 and
+                node_y - node_height/2 <= y <= node_y + node_height/2):
+                return node_id
+
+        return None
+
+    def _find_connection_at_position(self, x, y):
+        """Find a connection at the given position."""
+        # Check if the position is near any connection line
+        for connection_id, elements in self.connection_elements.items():
+            # Get the connection line
+            line_id = elements["line"]
+
+            # Get the coordinates of the line
+            coords = self.canvas.coords(line_id)
+
+            # For bezier curves, check if the point is near the curve
+            # This is a simplified check - just check if the point is near the bounding box
+            x_coords = [coords[i] for i in range(0, len(coords), 2)]
+            y_coords = [coords[i] for i in range(1, len(coords), 2)]
+
+            min_x = min(x_coords) - 5
+            max_x = max(x_coords) + 5
+            min_y = min(y_coords) - 5
+            max_y = max(y_coords) + 5
+
+            if min_x <= x <= max_x and min_y <= y <= max_y:
+                # More precise check - calculate distance to the line segments
+                for i in range(len(x_coords) - 1):
+                    x1, y1 = x_coords[i], y_coords[i]
+                    x2, y2 = x_coords[i+1], y_coords[i+1]
+
+                    # Calculate distance from point to line segment
+                    distance = self._point_to_line_distance(x, y, x1, y1, x2, y2)
+
+                    if distance <= 5:  # 5 pixels tolerance
+                        return connection_id
+
+        return None
+
+    def _point_to_line_distance(self, x, y, x1, y1, x2, y2):
+        """Calculate the distance from a point to a line segment."""
+        # Calculate the length of the line segment
+        line_length = ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
+
+        if line_length == 0:
+            # The line segment is actually a point
+            return ((x - x1) ** 2 + (y - y1) ** 2) ** 0.5
+
+        # Calculate the projection of the point onto the line
+        t = max(0, min(1, ((x - x1) * (x2 - x1) + (y - y1) * (y2 - y1)) / (line_length ** 2)))
+
+        # Calculate the closest point on the line segment
+        closest_x = x1 + t * (x2 - x1)
+        closest_y = y1 + t * (y2 - y1)
+
+        # Calculate the distance from the point to the closest point on the line segment
+        return ((x - closest_x) ** 2 + (y - closest_y) ** 2) ** 0.5
+
+    def _on_node_copy(self):
+        """Handle node copy."""
+        if self.selected_node_id and self.presenter:
+            self.presenter.copy_node(self.selected_node_id)
+
+    def _on_node_duplicate(self):
+        """Handle node duplicate."""
+        if self.selected_node_id and self.presenter:
+            self.presenter.duplicate_node(self.selected_node_id)
+
+    def _on_connection_delete(self):
+        """Handle connection delete."""
+        if self.selected_connection_id and self.presenter:
+            self.presenter.delete_connection(self.selected_connection_id)
+
+    def _on_canvas_add_node(self):
+        """Handle adding a node from the canvas context menu."""
+        # Show a dialog to select the node type
+        if self.presenter:
+            self.presenter.show_add_node_dialog()
+
+    def _on_canvas_paste_node(self):
+        """Handle pasting a node from the canvas context menu."""
+        if self.presenter:
+            self.presenter.paste_node()
+
+    def _on_canvas_reset_view(self):
+        """Handle resetting the canvas view."""
+        # Reset the canvas scale and offset
+        self.canvas_scale = 1.0
+        self.canvas_offset = (0, 0)
+
+        # Redraw the canvas
+        self._redraw_canvas()
+
+=======
+>>>>>>> main
     def _on_add_property(self):
         """Handle add property button click."""
         prop_name = simpledialog.askstring("Add Property", "Enter property name:")
