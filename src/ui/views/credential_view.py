@@ -370,7 +370,7 @@ class CredentialView(BaseView):
         if self.presenter:
             self.presenter.show_batch_operations()
 
-<<<<<<< HEAD
+
     # === Context Menu Methods ===
 
     def _create_context_menus(self):
@@ -441,8 +441,7 @@ class CredentialView(BaseView):
         if self.presenter:
             self.presenter.load_credentials()
 
-=======
->>>>>>> main
+
     # === Public Methods ===
 
     def update_credential_list(self, credentials: List[Dict]):
