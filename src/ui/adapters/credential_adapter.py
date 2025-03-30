@@ -249,3 +249,243 @@ class CredentialAdapter:
             tags=tags,
             notes=notes
         )
+
+    def import_from_csv(self, file_path: str) -> int:
+        """
+        Import credentials from a CSV file.
+
+        Args:
+            file_path: Path to the CSV file
+
+        Returns:
+            Number of credentials imported
+        """
+        import csv
+
+        count = 0
+        with open(file_path, 'r', newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                # Skip rows without required fields
+                if 'username' not in row or 'password' not in row:
+                    continue
+
+                # Extract fields
+                username = row['username']
+                password = row['password']
+                name = row.get('name', username)
+                category = row.get('category', 'Other')
+                notes = row.get('notes', '')
+
+                # Extract tags if present
+                tags = []
+                if 'tags' in row:
+                    tags = [tag.strip() for tag in row['tags'].split(',') if tag.strip()]
+
+                # Add the credential
+                self.add_credential(
+                    name=name,
+                    username=username,
+                    password=password,
+                    category=category,
+                    tags=tags,
+                    notes=notes
+                )
+
+                count += 1
+
+        return count
+
+    def import_from_json(self, file_path: str) -> int:
+        """
+        Import credentials from a JSON file.
+
+        Args:
+            file_path: Path to the JSON file
+
+        Returns:
+            Number of credentials imported
+        """
+        import json
+
+        count = 0
+        with open(file_path, 'r') as jsonfile:
+            data = json.load(jsonfile)
+
+            # Handle different JSON formats
+            if isinstance(data, list):
+                # List of credentials
+                credentials = data
+            elif isinstance(data, dict) and 'credentials' in data:
+                # Object with credentials array
+                credentials = data['credentials']
+            else:
+                # Single credential object
+                credentials = [data]
+
+            for cred in credentials:
+                # Skip entries without required fields
+                if 'username' not in cred or 'password' not in cred:
+                    continue
+
+                # Extract fields
+                username = cred['username']
+                password = cred['password']
+                name = cred.get('name', username)
+                category = cred.get('category', 'Other')
+                notes = cred.get('notes', '')
+
+                # Extract tags
+                tags = cred.get('tags', [])
+
+                # Add the credential
+                self.add_credential(
+                    name=name,
+                    username=username,
+                    password=password,
+                    category=category,
+                    tags=tags,
+                    notes=notes
+                )
+
+                count += 1
+
+        return count
+
+    def export_to_csv(self, file_path: str) -> int:
+        """
+        Export credentials to a CSV file.
+
+        Args:
+            file_path: Path to the CSV file
+
+        Returns:
+            Number of credentials exported
+        """
+        import csv
+
+        # Get all credentials
+        credentials = self.get_all_credentials()
+
+        # Write to CSV
+        with open(file_path, 'w', newline='') as csvfile:
+            fieldnames = ['name', 'username', 'password', 'status', 'category', 'tags', 'notes', 'last_used']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+            writer.writeheader()
+            for cred in credentials:
+                writer.writerow({
+                    'name': cred.name,
+                    'username': cred.username,
+                    'password': cred.password,
+                    'status': cred.status,
+                    'category': cred.category,
+                    'tags': ','.join(cred.tags),
+                    'notes': cred.notes,
+                    'last_used': cred.last_used.isoformat() if cred.last_used else ''
+                })
+
+        return len(credentials)
+
+    def export_to_json(self, file_path: str) -> int:
+        """
+        Export credentials to a JSON file.
+
+        Args:
+            file_path: Path to the JSON file
+
+        Returns:
+            Number of credentials exported
+        """
+        import json
+
+        # Get all credentials
+        credentials = self.get_all_credentials()
+
+        # Convert to serializable format
+        cred_list = []
+        for cred in credentials:
+            cred_list.append({
+                'name': cred.name,
+                'username': cred.username,
+                'password': cred.password,
+                'status': cred.status,
+                'category': cred.category,
+                'tags': cred.tags,
+                'notes': cred.notes,
+                'last_used': cred.last_used.isoformat() if cred.last_used else None
+            })
+
+        # Write to JSON
+        with open(file_path, 'w') as jsonfile:
+            json.dump({'credentials': cred_list}, jsonfile, indent=2)
+
+        return len(credentials)
+
+    def update_credentials_status(self, target_status: str, new_status: str) -> int:
+        """
+        Update the status of credentials matching a target status.
+
+        Args:
+            target_status: Status to match
+            new_status: New status to set
+
+        Returns:
+            Number of credentials updated
+        """
+        # Map UI status to backend status
+        status_map = {
+            "Active": CredentialStatus.UNUSED,
+            "Success": CredentialStatus.SUCCESS,
+            "Failure": CredentialStatus.FAILURE,
+            "Inactive": CredentialStatus.LOCKED
+        }
+
+        # Get backend status values
+        target_backend_status = status_map.get(target_status)
+        new_backend_status = status_map.get(new_status)
+
+        if not target_backend_status or not new_backend_status:
+            return 0
+
+        # Update credentials
+        count = 0
+        for username, record in list(self.credential_manager.credentials.items()):
+            if record.status == target_backend_status:
+                record.status = new_backend_status
+                count += 1
+
+        return count
+
+    def delete_credentials_by_status(self, target_status: str) -> int:
+        """
+        Delete credentials matching a target status.
+
+        Args:
+            target_status: Status to match
+
+        Returns:
+            Number of credentials deleted
+        """
+        # Map UI status to backend status
+        status_map = {
+            "Active": CredentialStatus.UNUSED,
+            "Success": CredentialStatus.SUCCESS,
+            "Failure": CredentialStatus.FAILURE,
+            "Inactive": CredentialStatus.LOCKED
+        }
+
+        # Get backend status value
+        target_backend_status = status_map.get(target_status)
+
+        if not target_backend_status:
+            return 0
+
+        # Delete credentials
+        count = 0
+        for username, record in list(self.credential_manager.credentials.items()):
+            if record.status == target_backend_status:
+                del self.credential_manager.credentials[username]
+                count += 1
+
+        return count
