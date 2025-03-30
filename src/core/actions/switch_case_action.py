@@ -36,14 +36,23 @@ class CaseBranch:
 
         Returns:
             Instantiated case branch
-        """
-        # Create the condition
-        condition_data = data.get("condition", {})
-        condition = condition_factory.create_condition(condition_data)
 
-        # Create the actions
+        Raises:
+            ValueError: If the condition or actions cannot be created
+        """
+        # Create the condition with error handling
+        condition_data = data.get("condition", {})
+        try:
+            condition = condition_factory.create_condition(condition_data)
+        except Exception as e:
+            raise ValueError(f"Failed to create condition: {e}") from e
+
+        # Create the actions with error handling
         actions_data = data.get("actions", [])
-        actions = [action_factory.create_action(action_data) for action_data in actions_data]
+        try:
+            actions = [action_factory.create_action(action_data) for action_data in actions_data]
+        except Exception as e:
+            raise ValueError(f"Failed to create actions: {e}") from e
 
         # Create the case branch
         return cls(
@@ -135,12 +144,12 @@ class SwitchCaseAction(BaseAction):
                     # Action failed
                     success = False
                     error_message = f"Action {i+1} in {branch_name} branch failed: {result.message}"
-                    break
+                    break  # Exit loop immediately after failure
             except Exception as e:
                 # Handle unexpected exceptions
                 success = False
                 error_message = f"Error executing action {i+1} in {branch_name} branch: {str(e)}"
-                break
+                break  # Exit loop immediately after exception
 
         if success:
             return ActionResult.create_success(

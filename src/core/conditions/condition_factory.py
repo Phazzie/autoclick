@@ -53,6 +53,9 @@ class ConditionFactoryClass:
         """
         return list(self._registry.keys())
 
+    # Dictionary to store conditions by ID
+    _condition_store: Dict[str, BaseCondition] = {}
+
     def get_condition_by_id(self, condition_id: str) -> Optional[BaseCondition]:
         """
         Get a condition by its ID
@@ -63,9 +66,17 @@ class ConditionFactoryClass:
         Returns:
             The condition instance, or None if not found
         """
-        # This is a placeholder implementation
-        # In a real implementation, we would store conditions in a database or cache
-        return None
+        # Return the condition from the store if it exists
+        return self._condition_store.get(condition_id)
+
+    def store_condition(self, condition: BaseCondition) -> None:
+        """
+        Store a condition by its ID for later retrieval
+
+        Args:
+            condition: The condition to store
+        """
+        self._condition_store[condition.id] = condition
 
     def create_condition(self, condition_data: Dict[str, Any]) -> BaseCondition:
         """
@@ -86,7 +97,12 @@ class ConditionFactoryClass:
 
         # Get the condition class and create an instance
         condition_class = self._registry[condition_type]
-        return condition_class.from_dict(condition_data)
+        condition = condition_class.from_dict(condition_data)
+
+        # Store the condition for later retrieval
+        self.store_condition(condition)
+
+        return condition
 
     def get_available_condition_types(self) -> Set[str]:
         """

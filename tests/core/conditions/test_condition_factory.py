@@ -48,7 +48,7 @@ class TestConditionFactory(unittest.TestCase):
         """Set up test environment"""
         # Create a new factory instance for each test
         self.factory = ConditionFactoryClass()
-        
+
         # Clear the registry
         self.factory._registry = {}
 
@@ -171,6 +171,51 @@ class TestConditionFactory(unittest.TestCase):
         # Assert
         self.assertIsInstance(factory, ConditionFactoryClass)
         self.assertIs(factory, ConditionFactoryClass.get_instance())
+
+    def test_store_and_get_condition_by_id(self):
+        """Test storing and retrieving a condition by ID"""
+        # Arrange
+        condition = TestCondition("test value", "Test description", "test-id")
+
+        # Act - Store the condition
+        self.factory.store_condition(condition)
+
+        # Act - Retrieve the condition
+        retrieved_condition = self.factory.get_condition_by_id("test-id")
+
+        # Assert
+        self.assertIsNotNone(retrieved_condition)
+        self.assertIs(retrieved_condition, condition)
+        self.assertEqual(retrieved_condition.id, "test-id")
+        self.assertEqual(retrieved_condition.test_param, "test value")
+        self.assertEqual(retrieved_condition.description, "Test description")
+
+    def test_get_nonexistent_condition_by_id(self):
+        """Test retrieving a nonexistent condition by ID"""
+        # Act
+        retrieved_condition = self.factory.get_condition_by_id("nonexistent-id")
+
+        # Assert
+        self.assertIsNone(retrieved_condition)
+
+    def test_create_condition_stores_condition(self):
+        """Test that create_condition stores the created condition"""
+        # Arrange
+        self.factory.register_condition_type("test_condition", TestCondition)
+        condition_data = {
+            "type": "test_condition",
+            "test_param": "test value",
+            "description": "Test description",
+            "id": "test-id"
+        }
+
+        # Act
+        condition = self.factory.create_condition(condition_data)
+
+        # Assert
+        retrieved_condition = self.factory.get_condition_by_id("test-id")
+        self.assertIsNotNone(retrieved_condition)
+        self.assertIs(retrieved_condition, condition)
 
 
 if __name__ == "__main__":

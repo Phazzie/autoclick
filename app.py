@@ -16,8 +16,10 @@ from src.ui.views.credential_view import CredentialView
 from src.ui.views.condition_view import ConditionView
 from src.ui.views.loop_view import LoopView
 from src.ui.views.error_view import ErrorView
+from src.ui.views.error_handling_view import ErrorHandlingView
 from src.ui.views.workflow_view import WorkflowView
 from src.ui.views.action_execution_view import ActionExecutionView
+from src.ui.views.data_mapping_view import DataMappingView
 
 # Import presenters
 from src.ui.presenters.sidebar_presenter import SidebarPresenter
@@ -26,8 +28,10 @@ from src.ui.presenters.credential_presenter import CredentialPresenter
 from src.ui.presenters.condition_presenter import ConditionPresenter
 from src.ui.presenters.loop_presenter import LoopPresenter
 from src.ui.presenters.error_presenter import ErrorPresenter
+from src.ui.presenters.error_handling_presenter import ErrorHandlingPresenter
 from src.ui.presenters.workflow_presenter import WorkflowPresenter
 from src.ui.presenters.action_execution_presenter import ActionExecutionPresenter
+from src.ui.presenters.data_mapping_presenter import DataMappingPresenter
 
 # Import backend components
 from src.core.credentials.credential_manager import CredentialManager
@@ -41,6 +45,7 @@ from src.ui.adapters.variable_adapter import VariableAdapter
 from src.ui.adapters.workflow_adapter import WorkflowAdapter
 from src.ui.adapters.error_adapter import ErrorAdapter
 from src.ui.adapters.data_source_adapter import DataSourceAdapter
+from src.ui.adapters.data_mapping_adapter import DataMappingAdapter
 from src.ui.adapters.condition_adapter import ConditionAdapter
 from src.ui.adapters.loop_adapter import LoopAdapter
 from src.ui.adapters.reporting_adapter import ReportingAdapter
@@ -143,6 +148,7 @@ class AutoClickApp:
 
         # Initialize additional adapter services
         self.datasource_service = DataSourceAdapter()
+        self.data_mapping_service = DataMappingAdapter(self.datasource_service)
         self.reporting_service = ReportingAdapter()
         self.workflow_service = WorkflowAdapter()
 
@@ -186,8 +192,10 @@ class AutoClickApp:
         self.condition_view = ConditionView(self.tabs["Condition Editor"])
         self.loop_view = LoopView(self.tabs["Loop Configuration"])
         self.error_view = ErrorView(self.tabs["Error Handling"])
+        self.error_handling_view = ErrorHandlingView(self.tabs["Error Handling"])
         self.workflow_view = WorkflowView(self.tabs["Workflow Builder"])
         self.action_execution_view = ActionExecutionView(self.tabs["Action Execution"])
+        self.data_mapping_view = DataMappingView(self.tabs["Data Sources"])
 
         # Create presenter instances
         self.sidebar_presenter = SidebarPresenter(self.sidebar_frame, self)
@@ -216,6 +224,12 @@ class AutoClickApp:
             app=self,
             service=self.error_service
         )
+
+        self.error_handling_presenter = ErrorHandlingPresenter(
+            view=self.error_handling_view,
+            app=self,
+            service=self.error_service
+        )
         self.workflow_presenter = WorkflowPresenter(
             view=self.workflow_view,
             app=self,
@@ -227,6 +241,12 @@ class AutoClickApp:
             service=self.workflow_service
         )
 
+        self.data_mapping_presenter = DataMappingPresenter(
+            view=self.data_mapping_view,
+            app=self,
+            service=self.datasource_service
+        )
+
         # Link views to presenters
         self.sidebar_frame.set_presenter(self.sidebar_presenter)
         self.variable_view.set_presenter(self.variable_presenter)
@@ -234,8 +254,10 @@ class AutoClickApp:
         self.condition_view.set_presenter(self.condition_presenter)
         self.loop_view.set_presenter(self.loop_presenter)
         self.error_view.set_presenter(self.error_presenter)
+        self.error_handling_view.set_presenter(self.error_handling_presenter)
         self.workflow_view.set_presenter(self.workflow_presenter)
         self.action_execution_view.set_presenter(self.action_execution_presenter)
+        self.data_mapping_view.set_presenter(self.data_mapping_presenter)
 
         # Build UI for each view
         self.sidebar_frame.build_ui()
@@ -244,8 +266,10 @@ class AutoClickApp:
         self.condition_view.build_ui()
         self.loop_view.build_ui()
         self.error_view.build_ui()
+        self.error_handling_view.build_ui()
         self.workflow_view.build_ui()
         self.action_execution_view.build_ui()
+        self.data_mapping_view.build_ui()
 
         # Initialize presenters
         self.sidebar_presenter.initialize_view()
@@ -254,8 +278,10 @@ class AutoClickApp:
         self.condition_presenter.initialize_view()
         self.loop_presenter.initialize_view()
         self.error_presenter.initialize_view()
+        self.error_handling_presenter.initialize_view()
         self.workflow_presenter.initialize_view()
         self.action_execution_presenter.initialize_view()
+        self.data_mapping_presenter.initialize_view()
 
     def _setup_layout(self):
         """Set up the main application layout."""
