@@ -203,24 +203,33 @@ class WorkflowView(BaseView):
 
         self.node_buttons = {}
 
+        # Configure grid for better scalability
+        self.node_buttons_frame.grid_columnconfigure(0, weight=1)  # Make column expandable
+
         # Create buttons for each node type
         for i, node_type in enumerate(node_types):
+            # Create a frame for each node type to contain button and tooltip
+            node_frame = ctk.CTkFrame(self.node_buttons_frame, fg_color="transparent")
+            node_frame.grid(row=i, column=0, sticky="ew", padx=0, pady=PAD_Y_INNER)
+            node_frame.grid_columnconfigure(0, weight=1)  # Make column expandable
+
+            # Add button
             button = ctk.CTkButton(
-                self.node_buttons_frame,
+                node_frame,
                 text=node_type["name"],
                 command=lambda t=node_type["type"]: self._on_node_type_selected(t)
             )
-            button.grid(row=i*2, column=0, sticky="ew", padx=PAD_X_INNER, pady=PAD_Y_INNER)
+            button.grid(row=0, column=0, sticky="ew", padx=PAD_X_INNER, pady=(PAD_Y_INNER, 0))
 
             # Add tooltip
             tooltip = ctk.CTkLabel(
-                self.node_buttons_frame,
+                node_frame,
                 text=node_type["description"],
                 font=get_small_font(),
                 text_color="gray",
                 wraplength=140
             )
-            tooltip.grid(row=i*2+1, column=0, sticky="w", padx=PAD_X_INNER, pady=(0, PAD_Y_INNER))
+            tooltip.grid(row=1, column=0, sticky="w", padx=PAD_X_INNER, pady=(0, PAD_Y_INNER))
 
             # Store node type data with the button for drag and drop
             button.node_type = node_type["type"]
@@ -698,9 +707,16 @@ class WorkflowView(BaseView):
         self.drag_data["node_type"] = button.node_type
         self.drag_data["node_name"] = button.node_name
 
+        # Get the absolute coordinates of the button and canvas
+        button_root_x = button.winfo_rootx()
+        button_root_y = button.winfo_rooty()
+        canvas_root_x = self.canvas.winfo_rootx()
+        canvas_root_y = self.canvas.winfo_rooty()
+
         # Convert button coordinates to canvas coordinates
-        button_x = button.winfo_rootx() - self.canvas.winfo_rootx()
-        button_y = button.winfo_rooty() - self.canvas.winfo_rooty()
+        # Add event.x and event.y to get the exact mouse position relative to the button
+        button_x = button_root_x - canvas_root_x + event.x
+        button_y = button_root_y - canvas_root_y + event.y
 
         # Store the initial position
         self.drag_data["x"] = button_x
@@ -715,9 +731,15 @@ class WorkflowView(BaseView):
         if not self.is_dragging and self.drag_data["node_type"]:
             self.is_dragging = True
 
-            # Convert to canvas coordinates
-            canvas_x = event.widget.winfo_rootx() - self.canvas.winfo_rootx() + event.x
-            canvas_y = event.widget.winfo_rooty() - self.canvas.winfo_rooty() + event.y
+            # Get the absolute coordinates of the button and canvas
+            button_root_x = event.widget.winfo_rootx()
+            button_root_y = event.widget.winfo_rooty()
+            canvas_root_x = self.canvas.winfo_rootx()
+            canvas_root_y = self.canvas.winfo_rooty()
+
+            # Convert to canvas coordinates with precise mouse position
+            canvas_x = button_root_x - canvas_root_x + event.x
+            canvas_y = button_root_y - canvas_root_y + event.y
 
             # Create a drag icon on the canvas
             self._create_drag_icon(canvas_x, canvas_y)
@@ -736,9 +758,15 @@ class WorkflowView(BaseView):
             self._on_node_type_selected(event.widget.node_type)
             return
 
+        # Get the absolute coordinates of the button and canvas
+        button_root_x = event.widget.winfo_rootx()
+        button_root_y = event.widget.winfo_rooty()
+        canvas_root_x = self.canvas.winfo_rootx()
+        canvas_root_y = self.canvas.winfo_rooty()
+
         # If we're dragging but not over the canvas, cancel the drag
-        canvas_x = event.widget.winfo_rootx() - self.canvas.winfo_rootx() + event.x
-        canvas_y = event.widget.winfo_rooty() - self.canvas.winfo_rooty() + event.y
+        canvas_x = button_root_x - canvas_root_x + event.x
+        canvas_y = button_root_y - canvas_root_y + event.y
 
         canvas_width = self.canvas.winfo_width()
         canvas_height = self.canvas.winfo_height()
