@@ -39,6 +39,7 @@ from src.ui.adapters.error_adapter import ErrorAdapter
 from src.ui.adapters.data_source_adapter import DataSourceAdapter
 from src.ui.adapters.condition_adapter import ConditionAdapter
 from src.ui.adapters.loop_adapter import LoopAdapter
+from src.ui.adapters.reporting_adapter import ReportingAdapter
 
 # Import constants
 from src.ui.utils.constants import (
@@ -136,9 +137,9 @@ class AutoClickApp:
         self.condition_service = ConditionAdapter(self.condition_factory)
         self.loop_service = LoopAdapter(self.workflow_engine, self.condition_factory)
 
-        # TODO: Create additional adapter services as needed
-        self.datasource_service = None  # To be implemented
-        self.reporting_service = None  # To be implemented
+        # Initialize additional adapter services
+        self.datasource_service = DataSourceAdapter()
+        self.reporting_service = ReportingAdapter()
 
     def _create_ui_components(self):
         """Create the main UI components."""
