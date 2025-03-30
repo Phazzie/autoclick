@@ -18,6 +18,7 @@ from src.ui.views.loop_view import LoopView
 from src.ui.views.error_view import ErrorView
 from src.ui.views.workflow_view import WorkflowView
 from src.ui.views.action_execution_view import ActionExecutionView
+from src.ui.views.reporting_view import ReportingView
 
 # Import presenters
 from src.ui.presenters.sidebar_presenter import SidebarPresenter
@@ -28,6 +29,7 @@ from src.ui.presenters.loop_presenter import LoopPresenter
 from src.ui.presenters.error_presenter import ErrorPresenter
 from src.ui.presenters.workflow_presenter import WorkflowPresenter
 from src.ui.presenters.action_execution_presenter import ActionExecutionPresenter
+from src.ui.presenters.reporting_presenter import ReportingPresenter
 
 # Import backend components
 from src.core.credentials.credential_manager import CredentialManager
@@ -188,6 +190,7 @@ class AutoClickApp:
         self.error_view = ErrorView(self.tabs["Error Handling"])
         self.workflow_view = WorkflowView(self.tabs["Workflow Builder"])
         self.action_execution_view = ActionExecutionView(self.tabs["Action Execution"])
+        self.reporting_view = ReportingView(self.tabs["Reporting"])
 
         # Create presenter instances
         self.sidebar_presenter = SidebarPresenter(self.sidebar_frame, self)
@@ -226,6 +229,12 @@ class AutoClickApp:
             app=self,
             service=self.workflow_service
         )
+        self.reporting_presenter = ReportingPresenter(
+            view=self.reporting_view,
+            app=self,
+            service=self.reporting_service,
+            data_source_service=self.datasource_service
+        )
 
         # Link views to presenters
         self.sidebar_frame.set_presenter(self.sidebar_presenter)
@@ -236,6 +245,7 @@ class AutoClickApp:
         self.error_view.set_presenter(self.error_presenter)
         self.workflow_view.set_presenter(self.workflow_presenter)
         self.action_execution_view.set_presenter(self.action_execution_presenter)
+        self.reporting_view.set_presenter(self.reporting_presenter)
 
         # Build UI for each view
         self.sidebar_frame.build_ui()
@@ -246,6 +256,7 @@ class AutoClickApp:
         self.error_view.build_ui()
         self.workflow_view.build_ui()
         self.action_execution_view.build_ui()
+        self.reporting_view.build_ui()
 
         # Initialize presenters
         self.sidebar_presenter.initialize_view()
@@ -256,6 +267,7 @@ class AutoClickApp:
         self.error_presenter.initialize_view()
         self.workflow_presenter.initialize_view()
         self.action_execution_presenter.initialize_view()
+        self.reporting_presenter.initialize_view()
 
     def _setup_layout(self):
         """Set up the main application layout."""

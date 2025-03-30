@@ -1000,7 +1000,7 @@ The following major features are not yet completed or are only partially complet
   - [ ] Write tests for import/export
     - [ ] Test file operations
     - [ ] Test validation
-    - [ ] Test error handling
+    - [ ] Test error handlingv
     - [ ] Test large dataset performance
 
 ##### Day 5: Credential UI

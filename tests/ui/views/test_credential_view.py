@@ -274,12 +274,79 @@ class TestCredentialView(unittest.TestCase):
 
     def test_on_status_filter_changed(self):
         """Test the status filter changed event handler."""
+        # Set up the filter values
+        self.view.status_filter_var.set("Success")
+        self.view.category_var.set("All")
+        self.view.search_var.set("")
+
         # Call the method
         self.view._on_status_filter_changed("Success")
 
         # Verify the presenter was called
         self.assertEqual(self.view.current_status, "Success")
-        self.mock_presenter.filter_credentials.assert_called_once_with("Success")
+        self.mock_presenter.filter_credentials.assert_called_once_with("Success", "All", "")
+
+    def test_on_category_filter_changed(self):
+        """Test the category filter changed event handler."""
+        # Set up the filter values
+        self.view.status_filter_var.set("All")
+        self.view.category_var.set("Email")
+        self.view.search_var.set("")
+
+        # Call the method
+        self.view._on_category_filter_changed("Email")
+
+        # Verify the presenter was called
+        self.mock_presenter.filter_credentials.assert_called_once_with("All", "Email", "")
+
+    def test_on_search_changed(self):
+        """Test the search changed event handler."""
+        # Set up the filter values
+        self.view.status_filter_var.set("All")
+        self.view.category_var.set("All")
+        self.view.search_var.set("test")
+
+        # Call the method
+        self.view._on_search_changed()
+
+        # Verify the presenter was called
+        self.mock_presenter.filter_credentials.assert_called_once_with("All", "All", "test")
+
+    def test_on_clear_search(self):
+        """Test the clear search button click event handler."""
+        # Set up the search value
+        self.view.search_var.set("test")
+
+        # Call the method
+        self.view._on_clear_search()
+
+        # Verify the search was cleared
+        self.assertEqual(self.view.search_var.get(), "")
+
+    def test_on_column_click(self):
+        """Test the column click event handler."""
+        # Initialize sort state
+        self.view.sort_column = "name"
+        self.view.sort_reverse = False
+
+        # Call the method with the same column
+        self.view._on_column_click("name")
+
+        # Verify the presenter was called and sort state was updated
+        self.mock_presenter.sort_credentials.assert_called_once_with("name", True)
+        self.assertEqual(self.view.sort_column, "name")
+        self.assertEqual(self.view.sort_reverse, True)
+
+        # Reset the mock
+        self.mock_presenter.sort_credentials.reset_mock()
+
+        # Call the method with a different column
+        self.view._on_column_click("username")
+
+        # Verify the presenter was called and sort state was updated
+        self.mock_presenter.sort_credentials.assert_called_once_with("username", False)
+        self.assertEqual(self.view.sort_column, "username")
+        self.assertEqual(self.view.sort_reverse, False)
 
     def test_on_new_clicked(self):
         """Test the new button click event handler."""
@@ -324,6 +391,30 @@ class TestCredentialView(unittest.TestCase):
         # Verify the editor was cleared and disabled
         self.assertEqual(self.view.selected_credential, None)
         self.assertEqual(self.view.editor_header.cget("text"), "Credential Editor")
+
+    def test_on_import_clicked(self):
+        """Test the import button click event handler."""
+        # Call the method
+        self.view._on_import_clicked()
+
+        # Verify the presenter was called
+        self.mock_presenter.import_credentials.assert_called_once()
+
+    def test_on_export_clicked(self):
+        """Test the export button click event handler."""
+        # Call the method
+        self.view._on_export_clicked()
+
+        # Verify the presenter was called
+        self.mock_presenter.export_credentials.assert_called_once()
+
+    def test_on_batch_operations_clicked(self):
+        """Test the batch operations button click event handler."""
+        # Call the method
+        self.view._on_batch_operations_clicked()
+
+        # Verify the presenter was called
+        self.mock_presenter.show_batch_operations.assert_called_once()
 
 if __name__ == "__main__":
     unittest.main()

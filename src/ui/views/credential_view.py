@@ -16,6 +16,7 @@ from ..utils.constants import (
     PAD_X_OUTER, PAD_Y_OUTER, PAD_X_INNER, PAD_Y_INNER
 )
 from ..utils.ui_utils import get_header_font, get_default_font, get_small_font
+from ..components.context_menu import ContextMenu
 
 if TYPE_CHECKING:
     from ..presenters.credential_presenter import CredentialPresenter
@@ -55,21 +56,60 @@ class CredentialView(BaseView):
         )
         self.title_label.grid(row=0, column=0, sticky="w", padx=PAD_X_INNER, pady=PAD_Y_INNER)
 
-        # Status filter
-        self.status_frame = ctk.CTkFrame(self.header_frame)
-        self.status_frame.grid(row=0, column=1, sticky="e", padx=PAD_X_INNER, pady=PAD_Y_INNER)
+        # Filter and search frame
+        self.filter_frame = ctk.CTkFrame(self.header_frame)
+        self.filter_frame.grid(row=0, column=1, sticky="e", padx=PAD_X_INNER, pady=PAD_Y_INNER)
 
-        self.status_label = ctk.CTkLabel(self.status_frame, text="Status:", font=get_default_font())
+        # Status filter
+        self.status_label = ctk.CTkLabel(self.filter_frame, text="Status:", font=get_default_font())
         self.status_label.grid(row=0, column=0, sticky="w", padx=PAD_X_INNER, pady=PAD_Y_INNER)
 
         self.status_filter_var = tk.StringVar(value="All")
         self.status_dropdown = ctk.CTkOptionMenu(
-            self.status_frame,
+            self.filter_frame,
             values=["All", "Active", "Success", "Failure", "Inactive"],
             variable=self.status_filter_var,
-            command=self._on_status_filter_changed
+            command=self._on_status_filter_changed,
+            width=100
         )
-        self.status_dropdown.grid(row=0, column=1, sticky="e", padx=PAD_X_INNER, pady=PAD_Y_INNER)
+        self.status_dropdown.grid(row=0, column=1, sticky="w", padx=PAD_X_INNER, pady=PAD_Y_INNER)
+
+        # Category filter
+        self.category_label = ctk.CTkLabel(self.filter_frame, text="Category:", font=get_default_font())
+        self.category_label.grid(row=0, column=2, sticky="w", padx=PAD_X_INNER, pady=PAD_Y_INNER)
+
+        self.category_var = tk.StringVar(value="All")
+        self.category_dropdown = ctk.CTkOptionMenu(
+            self.filter_frame,
+            values=["All", "Other", "Email", "Social", "Banking", "Shopping", "Work"],
+            variable=self.category_var,
+            command=self._on_category_filter_changed,
+            width=100
+        )
+        self.category_dropdown.grid(row=0, column=3, sticky="w", padx=PAD_X_INNER, pady=PAD_Y_INNER)
+
+        # Search field
+        self.search_label = ctk.CTkLabel(self.filter_frame, text="Search:", font=get_default_font())
+        self.search_label.grid(row=0, column=4, sticky="w", padx=PAD_X_INNER, pady=PAD_Y_INNER)
+
+        self.search_var = tk.StringVar()
+        self.search_var.trace_add("write", self._on_search_changed)
+        self.search_entry = ctk.CTkEntry(
+            self.filter_frame,
+            textvariable=self.search_var,
+            placeholder_text="Search credentials...",
+            width=200
+        )
+        self.search_entry.grid(row=0, column=5, sticky="ew", padx=PAD_X_INNER, pady=PAD_Y_INNER)
+
+        # Clear search button
+        self.clear_search_button = ctk.CTkButton(
+            self.filter_frame,
+            text="Clear",
+            command=self._on_clear_search,
+            width=60
+        )
+        self.clear_search_button.grid(row=0, column=6, sticky="e", padx=PAD_X_INNER, pady=PAD_Y_INNER)
 
         # Credential treeview
         self.credential_tree = StyledTreeview(
@@ -86,6 +126,29 @@ class CredentialView(BaseView):
         )
         self.credential_tree.grid(row=1, column=0, sticky="nsew", padx=0, pady=0)
         self.credential_tree.bind("<<TreeviewSelect>>", self._on_credential_selected)
+        self.credential_tree.bind("<Button-3>", self._on_credential_right_click)  # Right-click for context menu
+
+        # Add sorting by clicking on column headers
+        for col in (COL_ID_NAME, COL_ID_USERNAME, COL_ID_STATUS, COL_ID_CATEGORY, COL_ID_LAST_USED):
+            self.credential_tree.heading(col, command=lambda c=col: self._on_column_click(c))
+
+        # Initialize sorting state
+        self.sort_column = COL_ID_NAME  # Default sort column
+        self.sort_reverse = False  # Default sort direction
+
+        # Import/Export buttons
+        self.import_export_frame = ctk.CTkFrame(self.list_frame)
+        self.import_export_frame.grid(row=2, column=0, sticky="ew", padx=0, pady=PAD_Y_INNER)
+
+        self.import_button = ctk.CTkButton(self.import_export_frame, text="Import", command=self._on_import_clicked)
+        self.import_button.grid(row=0, column=0, padx=PAD_X_INNER, pady=PAD_Y_INNER)
+
+        self.export_button = ctk.CTkButton(self.import_export_frame, text="Export", command=self._on_export_clicked)
+        self.export_button.grid(row=0, column=1, padx=PAD_X_INNER, pady=PAD_Y_INNER)
+
+        # Batch operations button
+        self.batch_button = ctk.CTkButton(self.import_export_frame, text="Batch Operations", command=self._on_batch_operations_clicked)
+        self.batch_button.grid(row=0, column=2, padx=PAD_X_INNER, pady=PAD_Y_INNER)
 
         # === Right Panel (Credential Editor) ===
         self.editor_frame = ctk.CTkFrame(self)
@@ -195,7 +258,9 @@ class CredentialView(BaseView):
     def _setup_layout(self):
         """Set up the layout grid."""
         # Main layout already set up in _create_widgets
-        pass
+
+        # Create context menus
+        self._create_context_menus()
 
     # === Event Handlers ===
 
@@ -203,7 +268,35 @@ class CredentialView(BaseView):
         """Handle status filter change."""
         self.current_status = status
         if self.presenter:
-            self.presenter.filter_credentials(status)
+            self.presenter.filter_credentials(status, self.category_var.get(), self.search_var.get())
+
+    def _on_category_filter_changed(self, category: str):
+        """Handle category filter change."""
+        if self.presenter:
+            self.presenter.filter_credentials(self.status_var.get(), category, self.search_var.get())
+
+    def _on_search_changed(self, *args):
+        """Handle search text change."""
+        if self.presenter:
+            self.presenter.filter_credentials(self.status_var.get(), self.category_var.get(), self.search_var.get())
+
+    def _on_clear_search(self):
+        """Handle clear search button click."""
+        self.search_var.set("")
+
+    def _on_column_click(self, column):
+        """Handle column header click for sorting."""
+        # If clicking the same column, reverse the sort order
+        if self.sort_column == column:
+            self.sort_reverse = not self.sort_reverse
+        else:
+            # Otherwise, sort by the new column in ascending order
+            self.sort_reverse = False
+            self.sort_column = column
+
+        # Apply the sort
+        if self.presenter:
+            self.presenter.sort_credentials(self.sort_column, self.sort_reverse)
 
     def _on_credential_selected(self, event):
         """Handle credential selection in the tree."""
@@ -239,6 +332,91 @@ class CredentialView(BaseView):
         self.clear_editor()
         self.set_editor_state(False)
         self.selected_credential = None
+
+    def _on_import_clicked(self):
+        """Handle import button click."""
+        if self.presenter:
+            self.presenter.import_credentials()
+
+    def _on_export_clicked(self):
+        """Handle export button click."""
+        if self.presenter:
+            self.presenter.export_credentials()
+
+    def _on_batch_operations_clicked(self):
+        """Handle batch operations button click."""
+        if self.presenter:
+            self.presenter.show_batch_operations()
+
+    # === Context Menu Methods ===
+
+    def _create_context_menus(self):
+        """Create context menus for the credential view."""
+        # Credential context menu (when right-clicking on a credential)
+        self.credential_context_menu = ContextMenu(self.credential_tree)
+        self.credential_context_menu.add_command("Edit", self._on_edit_from_context_menu)
+        self.credential_context_menu.add_command("Delete", self._on_delete_from_context_menu)
+        self.credential_context_menu.add_separator()
+        self.credential_context_menu.add_command("Copy Username", self._on_copy_username)
+        self.credential_context_menu.add_command("Copy Password", self._on_copy_password)
+        self.credential_context_menu.add_separator()
+        self.credential_context_menu.add_command("Change Status", self._on_change_status)
+
+        # List context menu (when right-clicking on empty space in the list)
+        self.list_context_menu = ContextMenu(self.credential_tree)
+        self.list_context_menu.add_command("Add New Credential", self._on_add_clicked)
+        self.list_context_menu.add_separator()
+        self.list_context_menu.add_command("Import Credentials", self._on_import_clicked)
+        self.list_context_menu.add_command("Export Credentials", self._on_export_clicked)
+        self.list_context_menu.add_separator()
+        self.list_context_menu.add_command("Batch Operations", self._on_batch_operations_clicked)
+        self.list_context_menu.add_command("Refresh List", self._on_refresh_list)
+
+    def _on_credential_right_click(self, event):
+        """Handle right-click on a credential."""
+        # Get the item that was clicked
+        item_id = self.credential_tree.identify_row(event.y)
+
+        if item_id:  # If an item was clicked
+            # Select the item
+            self.credential_tree.selection_set(item_id)
+            self.selected_credential = item_id
+
+            # Show the credential context menu
+            self.credential_context_menu.show(event.x_root, event.y_root)
+        else:  # If empty space was clicked
+            # Show the list context menu
+            self.list_context_menu.show(event.x_root, event.y_root)
+
+    def _on_edit_from_context_menu(self):
+        """Handle edit from context menu."""
+        if self.selected_credential and self.presenter:
+            self.presenter.select_credential(self.selected_credential)
+
+    def _on_delete_from_context_menu(self):
+        """Handle delete from context menu."""
+        if self.selected_credential and self.presenter:
+            self.presenter.delete_credential(self.selected_credential)
+
+    def _on_copy_username(self):
+        """Handle copy username from context menu."""
+        if self.selected_credential and self.presenter:
+            self.presenter.copy_username(self.selected_credential)
+
+    def _on_copy_password(self):
+        """Handle copy password from context menu."""
+        if self.selected_credential and self.presenter:
+            self.presenter.copy_password(self.selected_credential)
+
+    def _on_change_status(self):
+        """Handle change status from context menu."""
+        if self.selected_credential and self.presenter:
+            self.presenter.show_change_status_dialog(self.selected_credential)
+
+    def _on_refresh_list(self):
+        """Handle refresh list from context menu."""
+        if self.presenter:
+            self.presenter.load_credentials()
 
     # === Public Methods ===
 
@@ -433,3 +611,75 @@ class CredentialView(BaseView):
             message: Error message to display
         """
         self.validation_label.configure(text=message)
+
+    def copy_to_clipboard(self, text: str):
+        """Copy text to the clipboard."""
+        self.clipboard_clear()
+        self.clipboard_append(text)
+
+    def show_status_selection_dialog(self, current_status: str) -> str:
+        """Show a dialog to select a new status."""
+        # Create a simple dialog
+        dialog = tk.Toplevel(self)
+        dialog.title("Change Status")
+        dialog.geometry("300x200")
+        dialog.resizable(False, False)
+        dialog.grab_set()  # Make the dialog modal
+
+        # Center the dialog
+        dialog.update_idletasks()
+        width = dialog.winfo_width()
+        height = dialog.winfo_height()
+        x = (dialog.winfo_screenwidth() // 2) - (width // 2)
+        y = (dialog.winfo_screenheight() // 2) - (height // 2)
+        dialog.geometry(f"{width}x{height}+{x}+{y}")
+
+        # Add a label
+        label = ctk.CTkLabel(
+            dialog,
+            text=f"Current status: {current_status}\nSelect new status:",
+            font=get_default_font()
+        )
+        label.pack(pady=10)
+
+        # Add radio buttons for status options
+        status_var = tk.StringVar(value=current_status)
+
+        for status in ["Active", "Success", "Failure", "Inactive"]:
+            radio = ctk.CTkRadioButton(
+                dialog,
+                text=status,
+                variable=status_var,
+                value=status,
+                font=get_default_font()
+            )
+            radio.pack(anchor="w", padx=20, pady=5)
+
+        # Add buttons
+        button_frame = ctk.CTkFrame(dialog)
+        button_frame.pack(side="bottom", fill="x", pady=10)
+
+        # Result variable
+        result = [None]  # Use a list to store the result (to allow modification from inner functions)
+
+        # Cancel button
+        cancel_button = ctk.CTkButton(
+            button_frame,
+            text="Cancel",
+            command=lambda: [result.clear(), result.append(None), dialog.destroy()]
+        )
+        cancel_button.pack(side="left", padx=10, pady=10, expand=True)
+
+        # OK button
+        ok_button = ctk.CTkButton(
+            button_frame,
+            text="OK",
+            command=lambda: [result.clear(), result.append(status_var.get()), dialog.destroy()]
+        )
+        ok_button.pack(side="right", padx=10, pady=10, expand=True)
+
+        # Wait for the dialog to be closed
+        self.wait_window(dialog)
+
+        # Return the selected status
+        return result[0]
