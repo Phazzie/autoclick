@@ -84,8 +84,8 @@
 - [x] Implement connection creation between nodes
 - [x] Implement connection styling and arrow drawing
 - [x] Implement connection validation (valid source/target)
-- [ ] Implement canvas panning
-- [ ] Implement canvas zooming
+- [x] Implement canvas panning
+- [x] Implement canvas zooming
 - [x] Implement workflow saving/loading
 - [x] Implement workflow execution controls
 - [x] Add validation for workflow structure
@@ -97,9 +97,9 @@
 - [x] Implement data source type selection
 - [x] Implement dynamic configuration form based on source type
 - [x] Implement data preview grid
-- [ ] Implement data mapping interface
-- [ ] Implement drag-and-drop field mapping
-- [ ] Implement mapping persistence
+- [x] Implement data mapping interface
+- [x] Implement drag-and-drop field mapping
+- [x] Implement mapping persistence
 - [x] Add validation for data source configuration
 
 ### 3.3 Reporting

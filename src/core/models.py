@@ -12,7 +12,9 @@ class CredentialRecord:
     id: str
     name: str
     username: str
-    password: str  # Encrypted by CredentialAdapter using Fernet symmetric encryption
+    password: str  # SECURITY: This is encrypted by CredentialAdapter using Fernet symmetric encryption
+                   # The actual encryption/decryption happens in CredentialAdapter._encrypt_password and _decrypt_password
+                   # Never store or log raw passwords!
     status: str  # "Active", "Inactive" primarily for edit; others for display/history
     last_used: Optional[datetime] = None
     category: str = "Other"
