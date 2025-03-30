@@ -150,6 +150,28 @@ class CredentialView(BaseView):
         self.batch_button = ctk.CTkButton(self.import_export_frame, text="Batch Operations", command=self._on_batch_operations_clicked)
         self.batch_button.grid(row=0, column=2, padx=PAD_X_INNER, pady=PAD_Y_INNER)
 
+        # Add sorting by clicking on column headers
+        for col in (COL_ID_NAME, COL_ID_USERNAME, COL_ID_STATUS, COL_ID_CATEGORY, COL_ID_LAST_USED):
+            self.credential_tree.heading(col, command=lambda c=col: self._on_column_click(c))
+
+        # Initialize sorting state
+        self.sort_column = COL_ID_NAME  # Default sort column
+        self.sort_reverse = False  # Default sort direction
+
+        # Import/Export buttons
+        self.import_export_frame = ctk.CTkFrame(self.list_frame)
+        self.import_export_frame.grid(row=2, column=0, sticky="ew", padx=0, pady=PAD_Y_INNER)
+
+        self.import_button = ctk.CTkButton(self.import_export_frame, text="Import", command=self._on_import_clicked)
+        self.import_button.grid(row=0, column=0, padx=PAD_X_INNER, pady=PAD_Y_INNER)
+
+        self.export_button = ctk.CTkButton(self.import_export_frame, text="Export", command=self._on_export_clicked)
+        self.export_button.grid(row=0, column=1, padx=PAD_X_INNER, pady=PAD_Y_INNER)
+
+        # Batch operations button
+        self.batch_button = ctk.CTkButton(self.import_export_frame, text="Batch Operations", command=self._on_batch_operations_clicked)
+        self.batch_button.grid(row=0, column=2, padx=PAD_X_INNER, pady=PAD_Y_INNER)
+
         # === Right Panel (Credential Editor) ===
         self.editor_frame = ctk.CTkFrame(self)
         self.editor_frame.grid(row=0, column=1, sticky="nsew", padx=PAD_X_INNER, pady=PAD_Y_INNER)
@@ -348,6 +370,7 @@ class CredentialView(BaseView):
         if self.presenter:
             self.presenter.show_batch_operations()
 
+<<<<<<< HEAD
     # === Context Menu Methods ===
 
     def _create_context_menus(self):
@@ -418,6 +441,8 @@ class CredentialView(BaseView):
         if self.presenter:
             self.presenter.load_credentials()
 
+=======
+>>>>>>> main
     # === Public Methods ===
 
     def update_credential_list(self, credentials: List[Dict]):

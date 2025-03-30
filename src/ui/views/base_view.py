@@ -64,6 +64,8 @@ class BaseView(ctk.CTkFrame):
         from ..utils.ui_utils import show_error; show_error(self, title, message)
     def display_info(self, title: str, message: str):
         from ..utils.ui_utils import show_message; show_message(self, title, message)
+    def display_warning(self, title: str, message: str):
+        from ..utils.ui_utils import show_warning; show_warning(self, title, message)
     def ask_yes_no(self, title: str, message: str) -> bool:
         from ..utils.ui_utils import ask_yes_no; return ask_yes_no(self, title, message)
     def get_input(self, title: str, prompt: str, initialvalue: str = "") -> Optional[str]:

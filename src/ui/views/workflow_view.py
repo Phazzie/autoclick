@@ -44,11 +44,14 @@ class WorkflowView(BaseView):
         self.drag_data = {"x": 0, "y": 0, "node_type": None}  # Data for dragging
         self.drag_icon = None  # Visual representation of dragged node
 
+<<<<<<< HEAD
         # Context menus
         self.node_context_menu = None
         self.connection_context_menu = None
         self.canvas_context_menu = None
 
+=======
+>>>>>>> main
     def _create_widgets(self):
         """Create the UI widgets."""
         # Main layout - split into toolbar, toolbox, canvas, and properties
@@ -182,6 +185,7 @@ class WorkflowView(BaseView):
     def _setup_layout(self):
         """Set up the layout grid."""
         # Main layout already set up in _create_widgets
+<<<<<<< HEAD
 
         # Create context menus
         self._create_context_menus()
@@ -193,6 +197,9 @@ class WorkflowView(BaseView):
 
         # Create context menus
         self._create_context_menus()
+=======
+        pass
+>>>>>>> main
 
     def initialize_canvas(self):
         """Initialize the canvas for workflow editing."""
@@ -567,6 +574,7 @@ class WorkflowView(BaseView):
 
     def _on_canvas_right_click(self, event):
         """Handle canvas right click."""
+<<<<<<< HEAD
         # Check if we clicked on a node
         node_id = self._find_node_at_position(event.x, event.y)
         if node_id:
@@ -585,6 +593,10 @@ class WorkflowView(BaseView):
 
         # Otherwise, show the canvas context menu
         self.canvas_context_menu.show(event.x_root, event.y_root)
+=======
+        # Show context menu
+        pass
+>>>>>>> main
 
     def _on_canvas_drag(self, event):
         """Handle canvas drag."""
@@ -622,6 +634,7 @@ class WorkflowView(BaseView):
 
     def _on_canvas_scroll(self, event):
         """Handle canvas scroll."""
+<<<<<<< HEAD
         # Determine the direction of the scroll
         if event.num == 4 or event.delta > 0:
             # Scroll up - zoom in
@@ -629,6 +642,10 @@ class WorkflowView(BaseView):
         elif event.num == 5 or event.delta < 0:
             # Scroll down - zoom out
             self._zoom_canvas(0.9, event.x, event.y)
+=======
+        # Zoom the canvas
+        pass
+>>>>>>> main
 
     def _on_node_click(self, event):
         """Handle node click."""
@@ -822,6 +839,7 @@ class WorkflowView(BaseView):
         self.drag_data["node_type"] = None
         self.drag_data["node_name"] = None
 
+<<<<<<< HEAD
     # === Context Menu Methods ===
 
     def _create_context_menus(self):
@@ -970,6 +988,8 @@ class WorkflowView(BaseView):
         # Redraw the canvas
         self._redraw_canvas()
 
+=======
+>>>>>>> main
     def _on_add_property(self):
         """Handle add property button click."""
         prop_name = simpledialog.askstring("Add Property", "Enter property name:")
