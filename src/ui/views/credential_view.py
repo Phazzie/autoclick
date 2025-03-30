@@ -258,7 +258,9 @@ class CredentialView(BaseView):
     def _setup_layout(self):
         """Set up the layout grid."""
         # Main layout already set up in _create_widgets
-        pass
+
+        # Create context menus
+        self._create_context_menus()
 
     # === Event Handlers ===
 

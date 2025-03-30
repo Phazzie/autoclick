@@ -182,7 +182,17 @@ class WorkflowView(BaseView):
     def _setup_layout(self):
         """Set up the layout grid."""
         # Main layout already set up in _create_widgets
-        pass
+
+        # Create context menus
+        self._create_context_menus()
+
+    def build_ui(self):
+        """Override build_ui to also create context menus."""
+        # Call the parent class's build_ui method
+        super().build_ui()
+
+        # Create context menus
+        self._create_context_menus()
 
     def initialize_canvas(self):
         """Initialize the canvas for workflow editing."""
