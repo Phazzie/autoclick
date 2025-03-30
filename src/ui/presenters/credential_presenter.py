@@ -308,19 +308,43 @@ class CredentialPresenter(BasePresenter[CredentialAdapter]):
             file_ext = os.path.splitext(file_path)[1].lower()
 
             # Import based on file type
-            if file_ext == ".csv":
-                imported_count = self.service.import_from_csv(file_path)
-            elif file_ext == ".json":
-                imported_count = self.service.import_from_json(file_path)
-            else:
-                self.view.display_error("Error", f"Unsupported file type: {file_ext}")
+            imported_count = 0
+            skipped_rows = []
+
+            try:
+                if file_ext == ".csv":
+                    imported_count, skipped_rows = self.service.import_from_csv(file_path)
+                elif file_ext == ".json":
+                    imported_count, skipped_rows = self.service.import_from_json(file_path)
+                else:
+                    self.view.display_error("Error", f"Unsupported file type: {file_ext}")
+                    return
+            except ValueError as e:
+                self.view.display_error("Import Error", str(e))
+                return
+            except FileNotFoundError as e:
+                self.view.display_error("Import Error", str(e))
                 return
 
             # Reload credentials
             self.load_credentials()
 
-            # Show success message
-            self.view.display_info("Import Complete", f"Successfully imported {imported_count} credentials.")
+            # Show success message with warning about skipped rows if any
+            if skipped_rows:
+                message = f"Successfully imported {imported_count} credentials.\n\n"
+                message += f"Warning: {len(skipped_rows)} rows were skipped during import."
+
+                # Show up to 5 skipped row messages
+                if len(skipped_rows) <= 5:
+                    message += "\n\nSkipped rows:\n" + "\n".join(skipped_rows)
+                else:
+                    message += "\n\nFirst 5 skipped rows:\n" + "\n".join(skipped_rows[:5])
+                    message += f"\n\n...and {len(skipped_rows) - 5} more."
+
+                self.view.display_warning("Import Complete with Warnings", message)
+            else:
+                self.view.display_info("Import Complete", f"Successfully imported {imported_count} credentials.")
+
             self.update_app_status(f"Imported {imported_count} credentials from {file_path}")
         except Exception as e:
             self.view.display_error("Import Error", str(e))

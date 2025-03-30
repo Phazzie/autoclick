@@ -29,6 +29,7 @@ def get_mono_font(): return get_font(family=FONT_FAMILY_MONO)
 
 def show_message(parent: tk.Misc, title: str, message: str): messagebox.showinfo(title, message, parent=parent)
 def show_error(parent: tk.Misc, title: str, message: str): messagebox.showerror(title, message, parent=parent)
+def show_warning(parent: tk.Misc, title: str, message: str): messagebox.showwarning(title, message, parent=parent)
 def ask_yes_no(parent: tk.Misc, title: str, message: str) -> bool: return messagebox.askyesno(title, message, parent=parent)
 def get_input(parent: tk.Misc, title: str, prompt: str, initialvalue: str = "") -> Optional[str]: return simpledialog.askstring(title, prompt, initialvalue=initialvalue, parent=parent)
 def select_file(parent: tk.Misc, title: str = "Select File", filetypes: Optional[List[Tuple[str, str]]] = None) -> Optional[str]:
