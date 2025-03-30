@@ -16,6 +16,7 @@ from ..utils.constants import (
     PAD_X_OUTER, PAD_Y_OUTER, PAD_X_INNER, PAD_Y_INNER
 )
 from ..utils.ui_utils import get_header_font, get_default_font, get_small_font
+from ..components.context_menu import ContextMenu
 
 if TYPE_CHECKING:
     from ..presenters.credential_presenter import CredentialPresenter
@@ -125,6 +126,7 @@ class CredentialView(BaseView):
         )
         self.credential_tree.grid(row=1, column=0, sticky="nsew", padx=0, pady=0)
         self.credential_tree.bind("<<TreeviewSelect>>", self._on_credential_selected)
+        self.credential_tree.bind("<Button-3>", self._on_credential_right_click)  # Right-click for context menu
 
         # Add sorting by clicking on column headers
         for col in (COL_ID_NAME, COL_ID_USERNAME, COL_ID_STATUS, COL_ID_CATEGORY, COL_ID_LAST_USED):
@@ -344,6 +346,76 @@ class CredentialView(BaseView):
         if self.presenter:
             self.presenter.show_batch_operations()
 
+    # === Context Menu Methods ===
+
+    def _create_context_menus(self):
+        """Create context menus for the credential view."""
+        # Credential context menu (when right-clicking on a credential)
+        self.credential_context_menu = ContextMenu(self.credential_tree)
+        self.credential_context_menu.add_command("Edit", self._on_edit_from_context_menu)
+        self.credential_context_menu.add_command("Delete", self._on_delete_from_context_menu)
+        self.credential_context_menu.add_separator()
+        self.credential_context_menu.add_command("Copy Username", self._on_copy_username)
+        self.credential_context_menu.add_command("Copy Password", self._on_copy_password)
+        self.credential_context_menu.add_separator()
+        self.credential_context_menu.add_command("Change Status", self._on_change_status)
+
+        # List context menu (when right-clicking on empty space in the list)
+        self.list_context_menu = ContextMenu(self.credential_tree)
+        self.list_context_menu.add_command("Add New Credential", self._on_add_clicked)
+        self.list_context_menu.add_separator()
+        self.list_context_menu.add_command("Import Credentials", self._on_import_clicked)
+        self.list_context_menu.add_command("Export Credentials", self._on_export_clicked)
+        self.list_context_menu.add_separator()
+        self.list_context_menu.add_command("Batch Operations", self._on_batch_operations_clicked)
+        self.list_context_menu.add_command("Refresh List", self._on_refresh_list)
+
+    def _on_credential_right_click(self, event):
+        """Handle right-click on a credential."""
+        # Get the item that was clicked
+        item_id = self.credential_tree.identify_row(event.y)
+
+        if item_id:  # If an item was clicked
+            # Select the item
+            self.credential_tree.selection_set(item_id)
+            self.selected_credential = item_id
+
+            # Show the credential context menu
+            self.credential_context_menu.show(event.x_root, event.y_root)
+        else:  # If empty space was clicked
+            # Show the list context menu
+            self.list_context_menu.show(event.x_root, event.y_root)
+
+    def _on_edit_from_context_menu(self):
+        """Handle edit from context menu."""
+        if self.selected_credential and self.presenter:
+            self.presenter.select_credential(self.selected_credential)
+
+    def _on_delete_from_context_menu(self):
+        """Handle delete from context menu."""
+        if self.selected_credential and self.presenter:
+            self.presenter.delete_credential(self.selected_credential)
+
+    def _on_copy_username(self):
+        """Handle copy username from context menu."""
+        if self.selected_credential and self.presenter:
+            self.presenter.copy_username(self.selected_credential)
+
+    def _on_copy_password(self):
+        """Handle copy password from context menu."""
+        if self.selected_credential and self.presenter:
+            self.presenter.copy_password(self.selected_credential)
+
+    def _on_change_status(self):
+        """Handle change status from context menu."""
+        if self.selected_credential and self.presenter:
+            self.presenter.show_change_status_dialog(self.selected_credential)
+
+    def _on_refresh_list(self):
+        """Handle refresh list from context menu."""
+        if self.presenter:
+            self.presenter.load_credentials()
+
     # === Public Methods ===
 
     def update_credential_list(self, credentials: List[Dict]):
@@ -537,3 +609,75 @@ class CredentialView(BaseView):
             message: Error message to display
         """
         self.validation_label.configure(text=message)
+
+    def copy_to_clipboard(self, text: str):
+        """Copy text to the clipboard."""
+        self.clipboard_clear()
+        self.clipboard_append(text)
+
+    def show_status_selection_dialog(self, current_status: str) -> str:
+        """Show a dialog to select a new status."""
+        # Create a simple dialog
+        dialog = tk.Toplevel(self)
+        dialog.title("Change Status")
+        dialog.geometry("300x200")
+        dialog.resizable(False, False)
+        dialog.grab_set()  # Make the dialog modal
+
+        # Center the dialog
+        dialog.update_idletasks()
+        width = dialog.winfo_width()
+        height = dialog.winfo_height()
+        x = (dialog.winfo_screenwidth() // 2) - (width // 2)
+        y = (dialog.winfo_screenheight() // 2) - (height // 2)
+        dialog.geometry(f"{width}x{height}+{x}+{y}")
+
+        # Add a label
+        label = ctk.CTkLabel(
+            dialog,
+            text=f"Current status: {current_status}\nSelect new status:",
+            font=get_default_font()
+        )
+        label.pack(pady=10)
+
+        # Add radio buttons for status options
+        status_var = tk.StringVar(value=current_status)
+
+        for status in ["Active", "Success", "Failure", "Inactive"]:
+            radio = ctk.CTkRadioButton(
+                dialog,
+                text=status,
+                variable=status_var,
+                value=status,
+                font=get_default_font()
+            )
+            radio.pack(anchor="w", padx=20, pady=5)
+
+        # Add buttons
+        button_frame = ctk.CTkFrame(dialog)
+        button_frame.pack(side="bottom", fill="x", pady=10)
+
+        # Result variable
+        result = [None]  # Use a list to store the result (to allow modification from inner functions)
+
+        # Cancel button
+        cancel_button = ctk.CTkButton(
+            button_frame,
+            text="Cancel",
+            command=lambda: [result.clear(), result.append(None), dialog.destroy()]
+        )
+        cancel_button.pack(side="left", padx=10, pady=10, expand=True)
+
+        # OK button
+        ok_button = ctk.CTkButton(
+            button_frame,
+            text="OK",
+            command=lambda: [result.clear(), result.append(status_var.get()), dialog.destroy()]
+        )
+        ok_button.pack(side="right", padx=10, pady=10, expand=True)
+
+        # Wait for the dialog to be closed
+        self.wait_window(dialog)
+
+        # Return the selected status
+        return result[0]
