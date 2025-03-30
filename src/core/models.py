@@ -12,8 +12,8 @@ class CredentialRecord:
     id: str
     name: str
     username: str
-    password: str # INSECURE STORAGE - For demo only
-    status: str # "Active", "Inactive" primarily for edit; others for display/history
+    password: str  # Encrypted by CredentialAdapter using Fernet symmetric encryption
+    status: str  # "Active", "Inactive" primarily for edit; others for display/history
     last_used: Optional[datetime] = None
     category: str = "Other"
     tags: List[str] = field(default_factory=list)
