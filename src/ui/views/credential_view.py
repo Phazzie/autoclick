@@ -387,7 +387,7 @@ class CredentialView(BaseView):
 
         # List context menu (when right-clicking on empty space in the list)
         self.list_context_menu = ContextMenu(self.credential_tree)
-        self.list_context_menu.add_command("Add New Credential", self._on_add_clicked)
+        self.list_context_menu.add_command("Add New Credential", self._on_new_clicked)
         self.list_context_menu.add_separator()
         self.list_context_menu.add_command("Import Credentials", self._on_import_clicked)
         self.list_context_menu.add_command("Export Credentials", self._on_export_clicked)
