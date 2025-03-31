@@ -31,7 +31,7 @@ Phase 1: Week 2: Day 5: Integration and Testing
 [ ] Implement condition parameter editors
 [ ] Add condition preview/testing
 [ ] Create condition validation
-[ ] Create loop configuration UI
+[ ] Create loop configuration UIi want yuo
 [ ] Implement loop type selector
 [ ] Add loop parameter editors
 [ ] Create loop iteration preview
