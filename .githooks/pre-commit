@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# Pre-commit hook to check for merge conflicts and null bytes
+
+echo "Running pre-commit checks..."
+
+# Check for merge conflict markers
+echo "Checking for merge conflict markers..."
+if git diff --cached --name-only | xargs grep -l "<<<<<<< HEAD" 2>/dev/null; then
+    echo "Error: Found merge conflict markers (<<<<<<< HEAD). Please resolve conflicts before committing."
+    exit 1
+fi
+
+if git diff --cached --name-only | xargs grep -l "=======" 2>/dev/null; then
+    echo "Error: Found merge conflict markers (=======). Please resolve conflicts before committing."
+    exit 1
+fi
+
+if git diff --cached --name-only | xargs grep -l ">>>>>>> " 2>/dev/null; then
+    echo "Error: Found merge conflict markers (>>>>>>>). Please resolve conflicts before committing."
+    exit 1
+fi
+
+# Check for null bytes in Python files
+echo "Checking for null bytes in Python files..."
+for file in $(git diff --cached --name-only | grep "\.py$"); do
+    if [ -f "$file" ]; then
+        if grep -q -P "\x00" "$file"; then
+            echo "Error: Found null bytes in $file. This may indicate UTF-16 encoding or binary content."
+            echo "Please convert the file to UTF-8 encoding before committing."
+            exit 1
+        fi
+    fi
+done
+
+# Check for empty files or files with only whitespace
+echo "Checking for empty files..."
+for file in $(git diff --cached --name-only); do
+    if [ -f "$file" ]; then
+        if [ ! -s "$file" ] || [ "$(tr -d '[:space:]' < "$file" | wc -c)" -eq 0 ]; then
+            echo "Warning: File $file is empty or contains only whitespace."
+            read -p "Do you want to continue with the commit? (y/n) " -n 1 -r
+            echo
+            if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+                exit 1
+            fi
+        fi
+    fi
+done
+
+# Check for correct encoding in workflow_view.py
+if git diff --cached --name-only | grep -q "src/ui/views/workflow_view.py"; then
+    echo "Checking encoding of workflow_view.py..."
+    file_encoding=$(file -b --mime-encoding "src/ui/views/workflow_view.py")
+    if [ "$file_encoding" != "utf-8" ]; then
+        echo "Error: workflow_view.py is not UTF-8 encoded (detected: $file_encoding)."
+        echo "Please convert the file to UTF-8 encoding before committing."
+        exit 1
+    fi
+fi
+
+echo "All pre-commit checks passed!"
+exit 0
