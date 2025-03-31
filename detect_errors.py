@@ -58,11 +58,38 @@ def print_success(text: str) -> None:
 
 def find_python_files(directory: str) -> List[str]:
     """Find all Python files in the given directory and its subdirectories."""
+    # Directories to ignore
+    ignore_dirs = {
+        'node_modules',
+        'venv',
+        'env',
+        '.env',
+        '.venv',
+        '__pycache__',
+        '.git',
+        '.pytest_cache',
+        'build',
+        'dist',
+        '.next',
+        'out'
+    }
+    
     python_files = []
-    for root, _, files in os.walk(directory):
+    for root, dirs, files in os.walk(directory):
+        # Remove ignored directories from dirs list
+        dirs[:] = [d for d in dirs if d not in ignore_dirs]
+        
+        # Only check files in your project directories
+        if any(ignore_dir in root for ignore_dir in ignore_dirs):
+            continue
+            
         for file in files:
             if file.endswith('.py'):
-                python_files.append(os.path.join(root, file))
+                full_path = os.path.join(root, file)
+                # Only include files from your project
+                if 'site-packages' not in full_path:
+                    python_files.append(full_path)
+    
     return python_files
 
 def check_merge_conflicts(file_path: str) -> List[int]:

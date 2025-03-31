@@ -81,7 +81,7 @@ class ConditionResult(Generic[T]):
         default_value = None
         if isinstance(value, bool) or value is None:
             default_value = False  # type: ignore
-        
+
         return cls(False, value if value is not None else default_value, message)  # type: ignore
 
 
@@ -111,6 +111,7 @@ class ConditionInterface(ABC, Generic[T]):
         Returns:
             A new condition that evaluates to True only if both conditions are True
         """
+        # Import here to avoid circular dependency
         from src.core.conditions.composite_conditions import AndCondition
         return AndCondition(self, other)
 
@@ -124,6 +125,7 @@ class ConditionInterface(ABC, Generic[T]):
         Returns:
             A new condition that evaluates to True if either condition is True
         """
+        # Import here to avoid circular dependency
         from src.core.conditions.composite_conditions import OrCondition
         return OrCondition(self, other)
 
@@ -134,6 +136,7 @@ class ConditionInterface(ABC, Generic[T]):
         Returns:
             A new condition that evaluates to True only if this condition is False
         """
+        # Import here to avoid circular dependency
         from src.core.conditions.composite_conditions import NotCondition
         return NotCondition(self)
 

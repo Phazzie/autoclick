@@ -1,11 +1,15 @@
 """Handles logic for the SidebarView."""
 from .base_presenter import BasePresenter
 import customtkinter as ctk # Needed for get_appearance_mode
-from typing import List, Tuple, TYPE_CHECKING
+from typing import List, Tuple, TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from ..views.sidebar_view import SidebarView
     from app import AutoClickApp # Import App for type hint
+else:
+    # Use Any for runtime to avoid circular imports
+    AutoClickApp = Any
+    SidebarView = Any
 
 class SidebarPresenter(BasePresenter): # Type hint view and app
     view: 'SidebarView'

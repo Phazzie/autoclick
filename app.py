@@ -148,39 +148,55 @@ class AutoClickApp:
 
     def _create_ui_components(self):
         """Create the main UI components."""
+        print("DEBUG: Creating UI components...")
         # Configure grid
         self.window.grid_columnconfigure(1, weight=1)  # Content area expands
         self.window.grid_rowconfigure(1, weight=1)     # Content area expands
+        print("DEBUG: Configured grid")
 
         # Create sidebar
+        print("DEBUG: Creating sidebar...")
         self.sidebar_frame = SidebarView(self.window)
+        print("DEBUG: Sidebar created")
 
         # Create main content area with tabs
+        print("DEBUG: Creating tabview...")
         self.tabview = ctk.CTkTabview(self.window)
         self.tabview.grid_rowconfigure(0, weight=1)
         self.tabview.grid_columnconfigure(0, weight=1)
+        print("DEBUG: Tabview created")
 
         # Create tabs
+        print("DEBUG: Creating tabs...")
         self.tabs = {}
         tab_names = [
             "Workflow Builder", "Action Execution", "Variable Management", "Credential Management",
             "Condition Editor", "Loop Configuration", "Error Handling", "Reporting", "Data Sources", "Settings"
         ]
         for tab_name in tab_names:
+            print(f"DEBUG: Creating tab {tab_name}...")
             tab = self.tabview.add(tab_name)
             tab.grid_rowconfigure(0, weight=1)
             tab.grid_columnconfigure(0, weight=1)
             self.tabs[tab_name] = tab
+        print("DEBUG: All tabs created")
 
         # Hide the tab bar - we'll use the sidebar for navigation
+        print("DEBUG: Hiding tab bar...")
         self.tabview._segmented_button.grid_forget()
+        print("DEBUG: Tab bar hidden")
 
         # Create status bar
+        print("DEBUG: Creating status bar...")
         self.statusbar = StatusbarView(self.window)
+        print("DEBUG: Status bar created")
 
     def _init_views_and_presenters(self):
         """Initialize all views and presenters."""
+        print("DEBUG: Initializing views and presenters...")
+
         # Create view instances for tabs
+        print("DEBUG: Creating view instances...")
         self.variable_view = VariableView(self.tabs["Variable Management"])
         self.credential_view = CredentialView(self.tabs["Credential Management"])
         self.condition_view = ConditionView(self.tabs["Condition Editor"])
@@ -188,8 +204,10 @@ class AutoClickApp:
         self.error_view = ErrorView(self.tabs["Error Handling"])
         self.workflow_view = WorkflowView(self.tabs["Workflow Builder"])
         self.action_execution_view = ActionExecutionView(self.tabs["Action Execution"])
+        print("DEBUG: View instances created")
 
         # Create presenter instances
+        print("DEBUG: Creating presenter instances...")
         self.sidebar_presenter = SidebarPresenter(self.sidebar_frame, self)
         self.variable_presenter = VariablePresenter(
             view=self.variable_view,
@@ -226,8 +244,10 @@ class AutoClickApp:
             app=self,
             service=self.workflow_service
         )
+        print("DEBUG: Presenter instances created")
 
         # Link views to presenters
+        print("DEBUG: Linking views to presenters...")
         self.sidebar_frame.set_presenter(self.sidebar_presenter)
         self.variable_view.set_presenter(self.variable_presenter)
         self.credential_view.set_presenter(self.credential_presenter)
@@ -236,8 +256,10 @@ class AutoClickApp:
         self.error_view.set_presenter(self.error_presenter)
         self.workflow_view.set_presenter(self.workflow_presenter)
         self.action_execution_view.set_presenter(self.action_execution_presenter)
+        print("DEBUG: Views linked to presenters")
 
         # Build UI for each view
+        print("DEBUG: Building UI for each view...")
         self.sidebar_frame.build_ui()
         self.variable_view.build_ui()
         self.credential_view.build_ui()
@@ -246,8 +268,10 @@ class AutoClickApp:
         self.error_view.build_ui()
         self.workflow_view.build_ui()
         self.action_execution_view.build_ui()
+        print("DEBUG: UI built for all views")
 
         # Initialize presenters
+        print("DEBUG: Initializing presenters...")
         self.sidebar_presenter.initialize_view()
         self.variable_presenter.initialize_view()
         self.credential_presenter.initialize_view()
@@ -256,6 +280,7 @@ class AutoClickApp:
         self.error_presenter.initialize_view()
         self.workflow_presenter.initialize_view()
         self.action_execution_presenter.initialize_view()
+        print("DEBUG: Presenters initialized")
 
     def _setup_layout(self):
         """Set up the main application layout."""
@@ -266,12 +291,18 @@ class AutoClickApp:
 
     def navigate_to_tab(self, tab_name: str):
         """Switch to the specified tab."""
+        print(f"DEBUG: Navigating to tab {tab_name}...")
         if tab_name in self.tabs:
+            print(f"DEBUG: Tab {tab_name} found in self.tabs")
             self.tabview.set(tab_name)
+            print(f"DEBUG: Set tabview to {tab_name}")
             self.update_status(f"Navigated to {tab_name}")
             # Update settings
             self.settings["last_tab"] = tab_name
             self._save_settings()
+            print(f"DEBUG: Navigation to {tab_name} complete")
+        else:
+            print(f"DEBUG: Tab {tab_name} not found in self.tabs. Available tabs: {list(self.tabs.keys())}")
 
     def update_status(self, message: str):
         """Update the status bar message."""
@@ -307,8 +338,13 @@ class AutoClickApp:
 
     def run(self):
         """Run the application main loop."""
+        print("DEBUG: Running application...")
         # Show the main window
+        print("DEBUG: Showing main window...")
         self.window.deiconify()
+        print("DEBUG: Main window shown")
 
         # Start the main loop
+        print("DEBUG: Starting main loop...")
         self.root.mainloop()
+        print("DEBUG: Main loop ended")

@@ -8,8 +8,6 @@ KISS: Simple canvas-based interface with intuitive interactions.
 
 """
 
-print("DEBUG: workflow_view.py is being loaded!")
-
 import customtkinter as ctk
 
 import tkinter as tk
@@ -373,10 +371,14 @@ class WorkflowView(BaseView):
         """Set up the layout grid."""
 
         # Main layout already set up in _create_widgets
-        print("DEBUG: WorkflowView._setup_layout() called")
 
-        # Note: Context menus are created in build_ui to avoid duplication
-        print("DEBUG: WorkflowView._setup_layout() completed")
+
+
+
+
+        # Create context menus
+
+        self._create_context_menus()
 
 
 
@@ -384,21 +386,19 @@ class WorkflowView(BaseView):
 
         """Override build_ui to also create context menus."""
 
-        print("DEBUG: WorkflowView.build_ui() called")
         # Call the parent class's build_ui method
 
         super().build_ui()
-        print("DEBUG: WorkflowView.build_ui() - super().build_ui() completed")
+
 
 
         # Create context menus
-        print("DEBUG: WorkflowView.build_ui() - creating context menus")
 
         self._create_context_menus()
-        print("DEBUG: WorkflowView.build_ui() - context menus created")
 
 
-        print("DEBUG: WorkflowView.build_ui() completed")
+
+        pass
 
 
 
@@ -547,36 +547,32 @@ class WorkflowView(BaseView):
             workflow: Workflow to draw
 
         """
-        print("DEBUG: WorkflowView.redraw_workflow() called")
 
         if not workflow:
-            print("DEBUG: No workflow provided to redraw_workflow()")
+
             return
 
-        print(f"DEBUG: Redrawing workflow with {len(workflow.nodes)} nodes and {len(workflow.connections)} connections")
+
 
         # Clear the canvas
-        print("DEBUG: Clearing canvas...")
+
         self.clear_canvas()
-        print("DEBUG: Canvas cleared")
+
 
 
         # Draw all nodes
-        print("DEBUG: Drawing nodes...")
+
         for node_id, node in workflow.nodes.items():
-            print(f"DEBUG: Drawing node {node_id} of type {node.type} at position {node.position}")
+
             self.draw_node(node)
-        print("DEBUG: All nodes drawn")
+
 
 
         # Draw all connections
-        print("DEBUG: Drawing connections...")
-        for conn_id, conn in workflow.connections.items():
-            print(f"DEBUG: Drawing connection {conn_id} from {conn.source_node_id} to {conn.target_node_id}")
-            self.draw_connection(conn)
-        print("DEBUG: All connections drawn")
 
-        print("DEBUG: WorkflowView.redraw_workflow() completed")
+        for conn_id, conn in workflow.connections.items():
+
+            self.draw_connection(conn)
 
 
 
@@ -593,7 +589,6 @@ class WorkflowView(BaseView):
             node: Node to draw
 
         """
-        print(f"DEBUG: Drawing node {node.id} of type {node.type}")
 
         # Node dimensions
 
@@ -602,7 +597,7 @@ class WorkflowView(BaseView):
         height = 60
 
         x, y = node.position
-        print(f"DEBUG: Node position: ({x}, {y})")
+
 
 
         # Node colors based on type
@@ -628,11 +623,11 @@ class WorkflowView(BaseView):
 
 
         color = colors.get(node.type, "#607D8B")  # Default to gray
-        print(f"DEBUG: Node color: {color}")
+
 
 
         # Draw node body
-        print("DEBUG: Drawing node body...")
+
         body = self.canvas.create_rectangle(
 
             x - width/2, y - height/2, x + width/2, y + height/2,
@@ -642,11 +637,11 @@ class WorkflowView(BaseView):
             tags=(f"node_{node.id}", "body")
 
         )
-        print(f"DEBUG: Node body created with ID: {body}")
+
 
 
         # Draw node label
-        print("DEBUG: Drawing node label...")
+
         label = self.canvas.create_text(
 
             x, y, text=node.label or node.type,
@@ -656,11 +651,11 @@ class WorkflowView(BaseView):
             tags=(f"node_{node.id}", "label")
 
         )
-        print(f"DEBUG: Node label created with ID: {label}")
+
 
 
         # Draw input port
-        print("DEBUG: Drawing input port...")
+
         input_port = self.canvas.create_oval(
 
             x - 5, y - height/2 - 5, x + 5, y - height/2 + 5,
@@ -670,11 +665,11 @@ class WorkflowView(BaseView):
             tags=(f"node_{node.id}", "input_port")
 
         )
-        print(f"DEBUG: Input port created with ID: {input_port}")
+
 
 
         # Draw output port
-        print("DEBUG: Drawing output port...")
+
         output_port = self.canvas.create_oval(
 
             x - 5, y + height/2 - 5, x + 5, y + height/2 + 5,
@@ -684,11 +679,11 @@ class WorkflowView(BaseView):
             tags=(f"node_{node.id}", "output_port")
 
         )
-        print(f"DEBUG: Output port created with ID: {output_port}")
+
 
 
         # Store node elements
-        print("DEBUG: Storing node elements...")
+
         self.node_elements[node.id] = {
 
             "body": body,
@@ -706,19 +701,16 @@ class WorkflowView(BaseView):
             "height": height
 
         }
-        print(f"DEBUG: Node elements stored for node {node.id}")
+
 
 
         # Add event bindings
-        print("DEBUG: Adding event bindings...")
+
         self.canvas.tag_bind(f"node_{node.id}", "<Button-1>", self._on_node_click)
 
         self.canvas.tag_bind(f"node_{node.id}", "<B1-Motion>", self._on_node_drag)
 
         self.canvas.tag_bind(f"node_{node.id}", "<ButtonRelease-1>", self._on_node_release)
-        print("DEBUG: Event bindings added")
-
-        print(f"DEBUG: Node {node.id} drawing completed")
 
 
 
