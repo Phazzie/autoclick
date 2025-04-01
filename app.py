@@ -64,7 +64,7 @@ from src.ui.presenters.action_execution_presenter import ActionExecutionPresente
 from src.core.credentials.credential_manager import CredentialManager
 from src.core.context.variable_storage import VariableStorage
 from src.core.workflow.workflow_service import WorkflowService
-from src.core.workflow.workflow_engine import WorkflowEngine
+from src.core.workflow import WorkflowEngine
 from src.core.conditions.condition_factory import ConditionFactory
 
 # Import adapters

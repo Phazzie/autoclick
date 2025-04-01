@@ -6,6 +6,29 @@ during workflow execution, providing a loose coupling between components.
 """
 from dataclasses import dataclass
 from typing import Dict, Any, Optional, List
+from enum import Enum, auto
+
+
+class WorkflowEventType(Enum):
+    """Enumeration of workflow event types."""
+
+    WORKFLOW_STARTED = auto()
+    WORKFLOW_COMPLETED = auto()
+    WORKFLOW_FAILED = auto()
+    WORKFLOW_PAUSED = auto()
+    WORKFLOW_RESUMED = auto()
+    WORKFLOW_ABORTED = auto()
+    STEP_STARTED = auto()
+    STEP_COMPLETED = auto()
+    STEP_FAILED = auto()
+    STEP_SKIPPED = auto()
+    ACTION_STARTED = auto()
+    ACTION_COMPLETED = auto()
+    ACTION_FAILED = auto()
+    ACTION_SKIPPED = auto()
+    VARIABLE_CHANGED = auto()
+    CONDITION_EVALUATED = auto()
+    ERROR_OCCURRED = auto()
 
 
 @dataclass(frozen=True)
@@ -13,6 +36,14 @@ class WorkflowEvent:
     """Base class for all workflow events."""
     workflow_id: str
     timestamp: float
+
+
+@dataclass(frozen=True)
+class WorkflowStateEvent(WorkflowEvent):
+    """Event for workflow state changes."""
+    state: str
+    previous_state: Optional[str] = None
+    data: Optional[Dict[str, Any]] = None
 
 
 @dataclass(frozen=True)
@@ -65,6 +96,15 @@ class ActionFailedEvent(WorkflowEvent):
 
 
 @dataclass(frozen=True)
+class ActionEvent(WorkflowEvent):
+    """Event for action execution."""
+    step_id: str
+    action_id: str
+    action_type: str
+    data: Optional[Dict[str, Any]] = None
+
+
+@dataclass(frozen=True)
 class VariableUpdatedEvent(WorkflowEvent):
     """Event published when a variable is updated during workflow execution."""
     variable_name: str
@@ -88,3 +128,4 @@ EVENT_ACTION_COMPLETED = "action.completed"
 EVENT_ACTION_FAILED = "action.failed"
 EVENT_VARIABLE_UPDATED = "variable.updated"
 EVENT_VALIDATION_COMPLETED = "validation.completed"
+
