@@ -1,23 +1,19 @@
 """
-Adapter for WorkflowEngine to provide the interface expected by the UI.
+Adapter for WorkflowService to provide the interface expected by the UI.
 SOLID: Single responsibility - adapting workflow operations.
-KISS: Simple delegation to WorkflowEngine.
+KISS: Simple delegation to WorkflowService.
 """
-import uuid
-from typing import List, Dict, Any, Optional, Tuple
+from typing import List, Dict, Any, Optional
 
-from src.core.workflow.workflow_engine import WorkflowEngine, WorkflowStatus
-from src.core.actions.base_action import BaseAction
-from src.core.context.execution_context import ExecutionContext
-from src.core.models import Workflow as UIWorkflow, WorkflowNode as UIWorkflowNode, WorkflowConnection as UIWorkflowConnection
+from src.core.workflow.workflow_service import WorkflowService, WorkflowValidationError
+from src.core.models import Workflow as UIWorkflow
 
 class WorkflowAdapter:
-    """Adapter for WorkflowEngine to provide the interface expected by the UI."""
+    """Adapter for WorkflowService to provide the interface expected by the UI."""
 
-    def __init__(self, workflow_engine: Optional[WorkflowEngine] = None):
-        """Initialize the adapter with a WorkflowEngine instance."""
-        self.workflow_engine = workflow_engine
-        self.workflows: Dict[str, UIWorkflow] = {}
+    def __init__(self, workflow_service: Optional[WorkflowService] = None):
+        """Initialize the adapter with a WorkflowService instance."""
+        self.workflow_service = workflow_service or WorkflowService()
 
     def get_node_types(self) -> List[Dict[str, Any]]:
         """
@@ -26,15 +22,7 @@ class WorkflowAdapter:
         Returns:
             List of node types with metadata
         """
-        return [
-            {"type": "Start", "name": "Start", "description": "Start of workflow"},
-            {"type": "Click", "name": "Click", "description": "Click on element"},
-            {"type": "Type", "name": "Type", "description": "Type text"},
-            {"type": "Wait", "name": "Wait", "description": "Wait for time or element"},
-            {"type": "Condition", "name": "Condition", "description": "Branch based on condition"},
-            {"type": "Loop", "name": "Loop", "description": "Repeat actions"},
-            {"type": "End", "name": "End", "description": "End of workflow"}
-        ]
+        return self.workflow_service.get_node_types()
 
     def get_all_workflows(self) -> List[UIWorkflow]:
         """
@@ -43,7 +31,7 @@ class WorkflowAdapter:
         Returns:
             List of workflows in the UI-expected format.
         """
-        return list(self.workflows.values())
+        return self.workflow_service.get_workflows()
 
     def get_workflow(self, workflow_id: str) -> Optional[UIWorkflow]:
         """
@@ -55,7 +43,7 @@ class WorkflowAdapter:
         Returns:
             Workflow in the UI-expected format, or None if not found.
         """
-        return self.workflows.get(workflow_id)
+        return self.workflow_service.get_workflow(workflow_id)
 
     def create_workflow(self, workflow: UIWorkflow) -> UIWorkflow:
         """
@@ -66,11 +54,12 @@ class WorkflowAdapter:
 
         Returns:
             The new workflow in the UI-expected format.
-        """
-        # Store the workflow
-        self.workflows[workflow.id] = workflow
 
-        return workflow
+        Raises:
+            ValueError: If a workflow with the same ID already exists
+            WorkflowValidationError: If the workflow fails validation
+        """
+        return self.workflow_service.create_workflow(workflow)
 
     def update_workflow(self, workflow: UIWorkflow) -> UIWorkflow:
         """
@@ -81,9 +70,12 @@ class WorkflowAdapter:
 
         Returns:
             The updated workflow in the UI-expected format.
+
+        Raises:
+            ValueError: If the workflow doesn't exist
+            WorkflowValidationError: If the workflow fails validation
         """
-        self.workflows[workflow.id] = workflow
-        return workflow
+        return self.workflow_service.update_workflow(workflow)
 
     def delete_workflow(self, workflow_id: str) -> bool:
         """
@@ -95,10 +87,7 @@ class WorkflowAdapter:
         Returns:
             True if the workflow was deleted, False if not found.
         """
-        if workflow_id in self.workflows:
-            del self.workflows[workflow_id]
-            return True
-        return False
+        return self.workflow_service.delete_workflow(workflow_id)
 
     def execute_workflow(self, workflow: UIWorkflow) -> Dict[str, Any]:
         """
@@ -109,15 +98,19 @@ class WorkflowAdapter:
 
         Returns:
             Dictionary containing workflow execution results.
-        """
-        # Convert UI workflow to backend actions
-        actions = self._convert_to_actions(workflow)
 
-        # Create execution context
-        context = ExecutionContext()
+        Raises:
+            ValueError: If the workflow doesn't exist
+            WorkflowValidationError: If the workflow fails validation
+        """
+        # Make sure the workflow is saved/updated before execution
+        if self.workflow_service.get_workflow(workflow.id) is None:
+            self.workflow_service.create_workflow(workflow)
+        else:
+            self.workflow_service.update_workflow(workflow)
 
         # Execute the workflow
-        return self.workflow_engine.execute_workflow(actions, context, workflow.id)
+        return self.workflow_service.execute_workflow(workflow.id)
 
     def get_workflow_status(self, workflow_id: str) -> str:
         """
@@ -129,22 +122,27 @@ class WorkflowAdapter:
         Returns:
             Status string.
         """
-        if workflow_id in self.workflow_engine._workflows:
-            status = self.workflow_engine._workflows[workflow_id]["status"]
-            return status.name
+        # Check if the workflow exists
+        if self.workflow_service.get_workflow(workflow_id):
+            # This would need to be implemented in the WorkflowService
+            # For now, we'll return a placeholder for existing workflows
+            return "Pending"
         return "Unknown"
 
-    def _convert_to_actions(self, workflow: UIWorkflow) -> List[BaseAction]:
+    def validate_workflow(self, workflow: UIWorkflow) -> List[str]:
         """
-        Convert a UI workflow to a list of backend actions.
+        Validate a workflow.
 
         Args:
-            workflow: Workflow in the UI-expected format
+            workflow: Workflow to validate
 
         Returns:
-            List of backend actions.
+            List of validation errors, empty if valid
         """
-        # This is a placeholder implementation
-        # In a real implementation, we would convert the workflow nodes and connections
-        # to a list of actions that the WorkflowEngine can execute
-        return []
+        try:
+            # Use the service's validation method
+            self.workflow_service._validate_workflow(workflow)
+            return []
+        except WorkflowValidationError as e:
+            # Return the validation errors as a list
+            return str(e).replace("Workflow validation failed: ", "").split("; ")

@@ -111,9 +111,9 @@ class ConditionInterface(ABC, Generic[T]):
         Returns:
             A new condition that evaluates to True only if both conditions are True
         """
-        # Import here to avoid circular dependency
-        from src.core.conditions.composite_conditions import AndCondition
-        return AndCondition(self, other)
+        # Use operators module to avoid circular dependency
+        from src.core.conditions.operators import create_and_condition
+        return create_and_condition(self, other)
 
     def __or__(self, other: 'ConditionInterface') -> 'ConditionInterface':
         """
@@ -125,9 +125,9 @@ class ConditionInterface(ABC, Generic[T]):
         Returns:
             A new condition that evaluates to True if either condition is True
         """
-        # Import here to avoid circular dependency
-        from src.core.conditions.composite_conditions import OrCondition
-        return OrCondition(self, other)
+        # Use operators module to avoid circular dependency
+        from src.core.conditions.operators import create_or_condition
+        return create_or_condition(self, other)
 
     def __invert__(self) -> 'ConditionInterface':
         """
@@ -136,9 +136,9 @@ class ConditionInterface(ABC, Generic[T]):
         Returns:
             A new condition that evaluates to True only if this condition is False
         """
-        # Import here to avoid circular dependency
-        from src.core.conditions.composite_conditions import NotCondition
-        return NotCondition(self)
+        # Use operators module to avoid circular dependency
+        from src.core.conditions.operators import create_not_condition
+        return create_not_condition(self)
 
 
 # Type alias for boolean conditions (most common case)
