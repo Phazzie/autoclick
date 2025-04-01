@@ -16,7 +16,7 @@ import tkinter as tk
 
 from tkinter import simpledialog, filedialog, messagebox
 
-from typing import Dict, List, Any, Optional, TYPE_CHECKING
+from typing import Dict, List, Any, Optional, TYPE_CHECKING, Tuple, Set, Callable
 
 
 
@@ -115,14 +115,15 @@ class WorkflowView(BaseView):
         # Main layout - split into toolbar, toolbox, canvas, and properties
 
         self.grid_columnconfigure(0, weight=0)  # Toolbox
-
         self.grid_columnconfigure(1, weight=1)  # Canvas
-
         self.grid_columnconfigure(2, weight=0)  # Properties
-
         self.grid_rowconfigure(0, weight=0)  # Toolbar
-
         self.grid_rowconfigure(1, weight=1)  # Main content
+
+        # Debug grid configuration
+        print("DEBUG: WorkflowView grid configured")
+        print(f"DEBUG: Grid rowconfigure: {self.grid_size()[1]} rows")
+        print(f"DEBUG: Grid columnconfigure: {self.grid_size()[0]} columns")
 
 
 
@@ -241,26 +242,35 @@ class WorkflowView(BaseView):
 
 
         # === Canvas ===
-
         self.canvas_frame = ctk.CTkFrame(self)
-
         self.canvas_frame.grid(row=1, column=1, sticky="nsew", padx=PAD_X_INNER, pady=PAD_Y_INNER)
-
         self.canvas_frame.grid_columnconfigure(0, weight=1)
-
         self.canvas_frame.grid_rowconfigure(0, weight=1)
+
+        # Debug canvas frame
+        print("DEBUG: Canvas frame created")
+        print(f"DEBUG: Canvas frame grid position: row=1, column=1")
+        print(f"DEBUG: Canvas frame visible: {self.canvas_frame.winfo_viewable()}")
+
+        # Force update to ensure frame is drawn
+        self.canvas_frame.update()
 
 
 
         self.canvas = tk.Canvas(
-
             self.canvas_frame, bg="#2B2B2B", width=800, height=600,
-
             highlightthickness=0
-
         )
-
         self.canvas.grid(row=0, column=0, sticky="nsew")
+
+        # Debug canvas creation
+        print("DEBUG: Canvas created")
+        print(f"DEBUG: Canvas dimensions: {self.canvas.winfo_width()}x{self.canvas.winfo_height()}")
+        print(f"DEBUG: Canvas grid position: row=0, column=0")
+        print(f"DEBUG: Canvas visible: {self.canvas.winfo_viewable()}")
+
+        # Force update to ensure canvas is drawn
+        self.canvas.update()
 
 
 
@@ -299,19 +309,19 @@ class WorkflowView(BaseView):
 
 
         # Canvas event bindings
-
         self.canvas.bind("<Button-1>", self._on_canvas_click)
-
         self.canvas.bind("<Button-3>", self._on_canvas_right_click)
-
         self.canvas.bind("<B1-Motion>", self._on_canvas_drag)
-
         self.canvas.bind("<ButtonRelease-1>", self._on_canvas_release)
 
+        # Bind middle mouse button for panning
+        self.canvas.bind("<Button-2>", self._on_canvas_middle_click)
+        self.canvas.bind("<B2-Motion>", self._on_canvas_middle_drag)
+        self.canvas.bind("<ButtonRelease-2>", self._on_canvas_middle_release)
+
+        # Bind mousewheel for zooming
         self.canvas.bind("<MouseWheel>", self._on_canvas_scroll)  # Windows/macOS
-
         self.canvas.bind("<Button-4>", self._on_canvas_scroll)  # Linux scroll up
-
         self.canvas.bind("<Button-5>", self._on_canvas_scroll)  # Linux scroll down
 
 
@@ -400,6 +410,11 @@ class WorkflowView(BaseView):
 
         print("DEBUG: WorkflowView.build_ui() completed")
 
+        # Force update to ensure view is drawn
+        self.update()
+        print(f"DEBUG: WorkflowView dimensions after build: {self.winfo_width()}x{self.winfo_height()}")
+        print(f"DEBUG: WorkflowView visible after build: {self.winfo_viewable()}")
+
 
 
 
@@ -407,6 +422,7 @@ class WorkflowView(BaseView):
     def initialize_canvas(self):
 
         """Initialize the canvas for workflow editing."""
+        print("DEBUG: Initializing canvas")
 
         # Set up canvas properties
 
@@ -416,11 +432,18 @@ class WorkflowView(BaseView):
 
         self.canvas_offset = (0, 0)
 
-
-
         # Draw grid lines
+        print("DEBUG: Drawing grid")
 
         self._draw_grid()
+        print("DEBUG: Grid drawn")
+
+        # Debug canvas state
+        print(f"DEBUG: Canvas dimensions: {self.canvas.winfo_width()}x{self.canvas.winfo_height()}")
+        print(f"DEBUG: Canvas visible: {self.canvas.winfo_viewable()}")
+        print(f"DEBUG: Canvas frame dimensions: {self.canvas_frame.winfo_width()}x{self.canvas_frame.winfo_height()}")
+        print(f"DEBUG: Canvas frame visible: {self.canvas_frame.winfo_viewable()}")
+        print("DEBUG: Canvas initialization complete")
 
 
 
@@ -576,6 +599,17 @@ class WorkflowView(BaseView):
             self.draw_connection(conn)
         print("DEBUG: All connections drawn")
 
+        # Debug canvas state after redraw
+        print(f"DEBUG: Canvas dimensions after redraw: {self.canvas.winfo_width()}x{self.canvas.winfo_height()}")
+        print(f"DEBUG: Canvas visible after redraw: {self.canvas.winfo_viewable()}")
+        print(f"DEBUG: Canvas frame dimensions after redraw: {self.canvas_frame.winfo_width()}x{self.canvas_frame.winfo_height()}")
+        print(f"DEBUG: Canvas frame visible after redraw: {self.canvas_frame.winfo_viewable()}")
+
+        # Force update to ensure canvas is drawn
+        self.canvas.update()
+        self.canvas_frame.update()
+        self.update()
+
         print("DEBUG: WorkflowView.redraw_workflow() completed")
 
 
@@ -596,13 +630,16 @@ class WorkflowView(BaseView):
         print(f"DEBUG: Drawing node {node.id} of type {node.type}")
 
         # Node dimensions
-
         width = 120
-
         height = 60
 
-        x, y = node.position
-        print(f"DEBUG: Node position: ({x}, {y})")
+        # Get node position in world coordinates
+        world_x, world_y = node.position
+        print(f"DEBUG: Node world position: ({world_x}, {world_y})")
+
+        # Convert to screen coordinates
+        x, y = self.world_to_screen(world_x, world_y)
+        print(f"DEBUG: Node screen position: ({x}, {y})")
 
 
         # Node colors based on type
@@ -699,7 +736,8 @@ class WorkflowView(BaseView):
 
             "output_port": output_port,
 
-            "position": (x, y),
+            "world_position": (world_x, world_y),  # Store world position
+            "screen_position": (x, y),  # Store screen position
 
             "width": width,
 
@@ -751,24 +789,15 @@ class WorkflowView(BaseView):
 
 
         # Get port positions
-
         if connection.source_port == "output":
-
-            source_x, source_y = source_node["position"][0], source_node["position"][1] + source_node["height"]/2
-
+            source_x, source_y = source_node["screen_position"][0], source_node["screen_position"][1] + source_node["height"]/2
         else:
-
-            source_x, source_y = source_node["position"]
-
-
+            source_x, source_y = source_node["screen_position"]
 
         if connection.target_port == "input":
-
-            target_x, target_y = target_node["position"][0], target_node["position"][1] - target_node["height"]/2
-
+            target_x, target_y = target_node["screen_position"][0], target_node["screen_position"][1] - target_node["height"]/2
         else:
-
-            target_x, target_y = target_node["position"]
+            target_x, target_y = target_node["screen_position"]
 
 
 
@@ -1140,7 +1169,9 @@ class WorkflowView(BaseView):
 
             if self.presenter:
 
-                self.presenter.add_node(self.selected_node_type, (event.x, event.y))
+                # Convert screen coordinates to world coordinates
+                world_x, world_y = self.screen_to_world(event.x, event.y)
+                self.presenter.add_node(self.selected_node_type, (world_x, world_y))
 
                 self.selected_node_type = None  # Reset selection
 
@@ -1248,7 +1279,9 @@ class WorkflowView(BaseView):
 
             if self.presenter:
 
-                self.presenter.add_node(self.drag_data["node_type"], (event.x, event.y))
+                # Convert screen coordinates to world coordinates
+                world_x, world_y = self.screen_to_world(event.x, event.y)
+                self.presenter.add_node(self.drag_data["node_type"], (world_x, world_y))
 
 
 
@@ -1275,34 +1308,68 @@ class WorkflowView(BaseView):
 
 
     def _on_canvas_scroll(self, event):
-
         """Handle canvas scroll."""
-
-
+        print("DEBUG: WorkflowView._on_canvas_scroll() called")
 
         # Determine the direction of the scroll
-
         if event.num == 4 or event.delta > 0:
-
             # Scroll up - zoom in
-
             self._zoom_canvas(1.1, event.x, event.y)
-
+            print("DEBUG: Zooming in")
         elif event.num == 5 or event.delta < 0:
-
             # Scroll down - zoom out
-
             self._zoom_canvas(0.9, event.x, event.y)
-
-
-
-        # Zoom the canvas
-
-        pass
+            print("DEBUG: Zooming out")
 
 
 
 
+
+    def _zoom_canvas(self, factor: float, center_x: int = None, center_y: int = None):
+        """
+        Zoom the canvas by the given factor.
+
+        Args:
+            factor: Zoom factor (>1 to zoom in, <1 to zoom out)
+            center_x: X coordinate of zoom center (defaults to canvas center)
+            center_y: Y coordinate of zoom center (defaults to canvas center)
+        """
+        print(f"DEBUG: WorkflowView._zoom_canvas({factor}, {center_x}, {center_y}) called")
+
+        # Default to canvas center if no center point provided
+        if center_x is None or center_y is None:
+            center_x = self.canvas.winfo_width() / 2
+            center_y = self.canvas.winfo_height() / 2
+
+        # Calculate new scale, clamping to reasonable limits
+        new_scale = max(0.1, min(3.0, self.canvas_scale * factor))
+
+        # If scale didn't change, no need to zoom
+        if new_scale == self.canvas_scale:
+            return
+
+        # Calculate zoom center in world coordinates
+        world_center_x = (center_x - self.canvas_offset[0]) / self.canvas_scale
+        world_center_y = (center_y - self.canvas_offset[1]) / self.canvas_scale
+
+        # Calculate new offset to keep zoom center fixed
+        new_offset_x = center_x - world_center_x * new_scale
+        new_offset_y = center_y - world_center_y * new_scale
+
+        # Update scale and offset
+        scale_change = new_scale / self.canvas_scale
+        self.canvas_scale = new_scale
+        self.canvas_offset = (new_offset_x, new_offset_y)
+
+        # Scale all objects on canvas
+        self.canvas.scale("all", center_x, center_y, scale_change, scale_change)
+
+        # Redraw grid
+        self._draw_grid()
+
+        print(f"DEBUG: Canvas zoomed to scale {self.canvas_scale}")
+
+        print(f"DEBUG: Canvas zoomed to scale {self.canvas_scale}")
 
     def _on_node_click(self, event):
 
@@ -1352,13 +1419,10 @@ class WorkflowView(BaseView):
 
 
 
-        # Calculate movement
-
-        old_x, old_y = elements["position"]
-
-        dx = event.x - old_x
-
-        dy = event.y - old_y
+        # Calculate movement in screen coordinates
+        old_screen_x, old_screen_y = elements["screen_position"]
+        dx = event.x - old_screen_x
+        dy = event.y - old_screen_y
 
 
 
@@ -1366,15 +1430,24 @@ class WorkflowView(BaseView):
 
         for key, item_id in elements.items():
 
-            if key not in ["position", "width", "height"]:
+            if key not in ["world_position", "screen_position", "width", "height"]:
 
                 self.canvas.move(item_id, dx, dy)
 
 
 
-        # Update node position
+        # Update node screen position
+        elements["screen_position"] = (event.x, event.y)
 
-        elements["position"] = (event.x, event.y)
+        # Update node world position
+        world_x, world_y = self.screen_to_world(event.x, event.y)
+        elements["world_position"] = (world_x, world_y)
+
+        # Update the node in the workflow model
+        if self.presenter and self.presenter.current_workflow:
+            node = self.presenter.current_workflow.nodes.get(self.selected_node_id)
+            if node:
+                node.position = (world_x, world_y)
 
 
 
@@ -1786,9 +1859,8 @@ class WorkflowView(BaseView):
 
         for node_id, elements in self.node_elements.items():
 
-            # Get the node position and dimensions
-
-            node_x, node_y = elements["position"]
+            # Get the node screen position and dimensions
+            node_x, node_y = elements["screen_position"]
 
             node_width = 120  # Standard node width
 
@@ -2028,31 +2100,136 @@ class WorkflowView(BaseView):
 
 
 
+    def _on_canvas_middle_click(self, event):
+        """
+        Handle middle mouse button click for panning.
+
+        Args:
+            event: Mouse click event
+        """
+        print("DEBUG: WorkflowView._on_canvas_middle_click() called")
+
+        # Store the starting position for panning
+        self.drag_start_x = event.x
+        self.drag_start_y = event.y
+
+        # Change cursor to indicate panning mode
+        self.canvas.config(cursor="fleur")
+
+    def _on_canvas_middle_drag(self, event):
+        """
+        Handle middle mouse button drag for panning.
+
+        Args:
+            event: Mouse drag event
+        """
+        print("DEBUG: WorkflowView._on_canvas_middle_drag() called")
+
+        # Calculate the distance moved
+        dx = event.x - self.drag_start_x
+        dy = event.y - self.drag_start_y
+
+        # Update the drag start position
+        self.drag_start_x = event.x
+        self.drag_start_y = event.y
+
+        # Pan the canvas
+        self._pan_canvas(dx, dy)
+
+    def _on_canvas_middle_release(self, event):
+        """
+        Handle middle mouse button release after panning.
+
+        Args:
+            event: Mouse release event
+        """
+        print("DEBUG: WorkflowView._on_canvas_middle_release() called")
+
+        # Reset cursor
+        self.canvas.config(cursor="")
+
+    def _pan_canvas(self, dx: int, dy: int):
+        """
+        Pan the canvas by the given amount.
+
+        Args:
+            dx: Change in x direction
+            dy: Change in y direction
+        """
+        print(f"DEBUG: WorkflowView._pan_canvas({dx}, {dy}) called")
+
+        # Update offset
+        self.canvas_offset = (
+            self.canvas_offset[0] + dx,
+            self.canvas_offset[1] + dy
+        )
+
+        # Move all objects
+        self.canvas.move("all", dx, dy)
+
+        # Redraw grid
+        self._draw_grid()
+
+        print(f"DEBUG: Canvas panned to offset {self.canvas_offset}")
+
     def _draw_grid(self):
-
         """Draw grid lines on the canvas."""
+        print("DEBUG: WorkflowView._draw_grid() called")
 
-        # Grid spacing
+        # Clear existing grid
+        self.canvas.delete("grid")
 
-        spacing = 20
-
+        # Get canvas dimensions
         width = int(self.canvas.cget("width"))
-
         height = int(self.canvas.cget("height"))
 
+        if width <= 1 or height <= 1:  # Canvas not yet properly sized
+            return
 
+        # Calculate grid spacing based on zoom level
+        spacing = int(20 * self.canvas_scale)
+        if spacing < 5:  # Minimum grid spacing
+            spacing = 5
+
+        # Calculate grid offset based on pan offset
+        offset_x = int(self.canvas_offset[0] % spacing)
+        offset_y = int(self.canvas_offset[1] % spacing)
 
         # Draw vertical lines
-
-        for x in range(0, width + 1, spacing):
-
+        for x in range(offset_x, width + 1, spacing):
             self.canvas.create_line(x, 0, x, height, fill="#444444", tags="grid")
 
-
-
         # Draw horizontal lines
-
-        for y in range(0, height + 1, spacing):
-
+        for y in range(offset_y, height + 1, spacing):
             self.canvas.create_line(0, y, width, y, fill="#444444", tags="grid")
+
+    def screen_to_world(self, screen_x: int, screen_y: int) -> Tuple[float, float]:
+        """
+        Convert screen coordinates to world coordinates.
+
+        Args:
+            screen_x: X coordinate in screen space
+            screen_y: Y coordinate in screen space
+
+        Returns:
+            Tuple of (x, y) in world space
+        """
+        world_x = (screen_x - self.canvas_offset[0]) / self.canvas_scale
+        world_y = (screen_y - self.canvas_offset[1]) / self.canvas_scale
+        return (world_x, world_y)
+
+    def world_to_screen(self, world_x: float, world_y: float) -> Tuple[int, int]:
+        """
+        Convert world coordinates to screen coordinates.
+
+        Args:
+            world_x: X coordinate in world space
+            world_y: Y coordinate in world space
+
+        Returns:
+            Tuple of (x, y) in screen space
+        """
+        screen_x = int(world_x * self.canvas_scale + self.canvas_offset[0])
+        screen_y = int(world_y * self.canvas_scale + self.canvas_offset[1])
+        return (screen_x, screen_y)
 

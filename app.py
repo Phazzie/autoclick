@@ -6,7 +6,38 @@ KISS: Simple initialization and coordination.
 import os
 import json
 import customtkinter as ctk
+import tkinter as tk
+from tkinter import ttk
 from typing import Dict, Any, Optional
+
+
+def configure_ttk_style(theme: str):
+    """Configure ttk style based on the theme."""
+    try:
+        print(f"DEBUG: Configuring ttk style for {theme} theme")
+        style = ttk.Style()
+
+        if theme.lower() == "dark":
+            # Dark theme
+            style.configure("TButton", foreground="white", background="#333333")
+            style.configure("TLabel", foreground="white", background="#333333")
+            style.configure("TEntry", foreground="white", background="#333333")
+            style.configure("TFrame", background="#333333")
+        else:
+            # Light theme
+            style.configure("TButton", foreground="black", background="#f0f0f0")
+            style.configure("TLabel", foreground="black", background="#f0f0f0")
+            style.configure("TEntry", foreground="black", background="#f0f0f0")
+            style.configure("TFrame", background="#f0f0f0")
+
+        print("DEBUG: ttk style configured successfully")
+    except Exception as e:
+        print(f"ERROR: Failed to configure ttk style: {str(e)}")
+        import traceback
+        print(traceback.format_exc())
+
+# Import app context
+from src.ui.services.app_context import AppContext
 
 # Import views
 from src.ui.views.sidebar_view import SidebarView
@@ -16,7 +47,7 @@ from src.ui.views.credential_view import CredentialView
 from src.ui.views.condition_view import ConditionView
 from src.ui.views.loop_view import LoopView
 from src.ui.views.error_view import ErrorView
-from src.ui.views.workflow_view import WorkflowView
+from src.ui.views.workflow_view import WorkflowView  # Using the original workflow view
 from src.ui.views.action_execution_view import ActionExecutionView
 
 # Import presenters
@@ -26,12 +57,13 @@ from src.ui.presenters.credential_presenter import CredentialPresenter
 from src.ui.presenters.condition_presenter import ConditionPresenter
 from src.ui.presenters.loop_presenter import LoopPresenter
 from src.ui.presenters.error_presenter import ErrorPresenter
-from src.ui.presenters.workflow_presenter import WorkflowPresenter
+from src.ui.presenters.workflow_presenter import WorkflowPresenter  # Using the original workflow presenter
 from src.ui.presenters.action_execution_presenter import ActionExecutionPresenter
 
 # Import backend components
 from src.core.credentials.credential_manager import CredentialManager
 from src.core.context.variable_storage import VariableStorage
+from src.core.workflow.workflow_service import WorkflowService
 from src.core.workflow.workflow_engine import WorkflowEngine
 from src.core.conditions.condition_factory import ConditionFactory
 
@@ -127,16 +159,22 @@ class AutoClickApp:
 
     def _init_services(self):
         """Initialize service instances."""
+        # Create app context
+        self.app_context = AppContext()
+        self.app_context.register_navigation_handler(self.navigate_to_tab)
+        self.app_context.register_status_handler(self.update_status)
+
         # Create backend service instances
         self.credential_manager = CredentialManager()
         self.variable_storage = VariableStorage()
         self.workflow_engine = WorkflowEngine()
+        self.workflow_service_backend = WorkflowService(storage_dir=self.settings.get("workflows_dir", "workflows"))
         self.condition_factory = ConditionFactory  # This is already an instance, not a class
 
         # Create adapter services that bridge between UI expectations and backend interfaces
         self.credential_service = CredentialAdapter(self.credential_manager)
         self.variable_service = VariableAdapter(self.variable_storage)
-        self.workflow_service = WorkflowAdapter(self.workflow_engine)
+        self.workflow_service = WorkflowAdapter(self.workflow_service_backend)
         self.error_service = ErrorAdapter()
         self.condition_service = ConditionAdapter(self.condition_factory)
         self.loop_service = LoopAdapter(self.workflow_engine, self.condition_factory)
@@ -144,7 +182,16 @@ class AutoClickApp:
         # Initialize additional adapter services
         self.datasource_service = DataSourceAdapter()
         self.reporting_service = ReportingAdapter()
-        self.workflow_service = WorkflowAdapter()
+
+        # Register services with app context
+        self.app_context.register_service("credential_service", self.credential_service)
+        self.app_context.register_service("variable_service", self.variable_service)
+        self.app_context.register_service("workflow_service", self.workflow_service)
+        self.app_context.register_service("error_service", self.error_service)
+        self.app_context.register_service("condition_service", self.condition_service)
+        self.app_context.register_service("loop_service", self.loop_service)
+        self.app_context.register_service("datasource_service", self.datasource_service)
+        self.app_context.register_service("reporting_service", self.reporting_service)
 
     def _create_ui_components(self):
         """Create the main UI components."""
@@ -164,7 +211,14 @@ class AutoClickApp:
         self.tabview = ctk.CTkTabview(self.window)
         self.tabview.grid_rowconfigure(0, weight=1)
         self.tabview.grid_columnconfigure(0, weight=1)
+
+        # Debug tabview creation
         print("DEBUG: Tabview created")
+        print(f"DEBUG: Tabview dimensions: {self.tabview.winfo_width()}x{self.tabview.winfo_height()}")
+        print(f"DEBUG: Tabview visible: {self.tabview.winfo_viewable()}")
+
+        # Force update to ensure tabview is drawn
+        self.tabview.update()
 
         # Create tabs
         print("DEBUG: Creating tabs...")
@@ -197,18 +251,23 @@ class AutoClickApp:
 
         # Create view instances for tabs
         print("DEBUG: Creating view instances...")
+        # Create the workflow view
+        self.workflow_view = WorkflowView(self.tabs["Workflow Builder"])
+
         self.variable_view = VariableView(self.tabs["Variable Management"])
         self.credential_view = CredentialView(self.tabs["Credential Management"])
         self.condition_view = ConditionView(self.tabs["Condition Editor"])
         self.loop_view = LoopView(self.tabs["Loop Configuration"])
         self.error_view = ErrorView(self.tabs["Error Handling"])
-        self.workflow_view = WorkflowView(self.tabs["Workflow Builder"])
         self.action_execution_view = ActionExecutionView(self.tabs["Action Execution"])
         print("DEBUG: View instances created")
 
         # Create presenter instances
         print("DEBUG: Creating presenter instances...")
-        self.sidebar_presenter = SidebarPresenter(self.sidebar_frame, self)
+        self.sidebar_presenter = SidebarPresenter(
+            view=self.sidebar_frame,
+            context=self.app_context
+        )
         self.variable_presenter = VariablePresenter(
             view=self.variable_view,
             app=self,
@@ -296,6 +355,25 @@ class AutoClickApp:
             print(f"DEBUG: Tab {tab_name} found in self.tabs")
             self.tabview.set(tab_name)
             print(f"DEBUG: Set tabview to {tab_name}")
+
+            # Force update and ensure tab is visible
+            self.tabview.update()
+            tab = self.tabs[tab_name]
+            tab.update()
+            print(f"DEBUG: Tab {tab_name} dimensions: {tab.winfo_width()}x{tab.winfo_height()}")
+            print(f"DEBUG: Tab {tab_name} visible: {tab.winfo_viewable()}")
+
+            # If this is the Workflow Builder tab, ensure the workflow view is visible
+            if tab_name == "Workflow Builder" and hasattr(self, 'workflow_view'):
+                self.workflow_view.update()
+                print(f"DEBUG: Workflow view dimensions: {self.workflow_view.winfo_width()}x{self.workflow_view.winfo_height()}")
+                print(f"DEBUG: Workflow view visible: {self.workflow_view.winfo_viewable()}")
+
+                # Force redraw of the workflow if available
+                if hasattr(self.workflow_presenter, 'current_workflow') and self.workflow_presenter.current_workflow:
+                    print("DEBUG: Redrawing current workflow")
+                    self.workflow_view.redraw_workflow(self.workflow_presenter.current_workflow)
+
             self.update_status(f"Navigated to {tab_name}")
             # Update settings
             self.settings["last_tab"] = tab_name
@@ -320,10 +398,22 @@ class AutoClickApp:
 
     def _apply_theme(self, theme: str):
         """Apply the specified theme."""
-        ctk.set_appearance_mode(theme)
-        configure_ttk_style(theme)
+        try:
+            print(f"DEBUG: Applying theme {theme}")
+            ctk.set_appearance_mode(theme)
 
-        # Update sidebar theme switch if it exists
+            # Check if ttk style configuration function exists
+            if 'configure_ttk_style' in globals():
+                configure_ttk_style(theme)
+            else:
+                print("DEBUG: configure_ttk_style function not found, skipping")
+
+            # Update sidebar theme switch if it exists
+            print("DEBUG: Theme applied successfully")
+        except Exception as e:
+            print(f"ERROR: Failed to apply theme: {str(e)}")
+            import traceback
+            print(traceback.format_exc())
         if hasattr(self, 'sidebar_frame'):
             self.sidebar_frame.set_theme_switch_state(theme)
 
