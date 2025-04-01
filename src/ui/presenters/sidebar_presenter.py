@@ -1,22 +1,25 @@
 """Handles logic for the SidebarView."""
 from .base_presenter import BasePresenter
 import customtkinter as ctk # Needed for get_appearance_mode
-from typing import List, Tuple, TYPE_CHECKING, Any
+from typing import List, Tuple, TYPE_CHECKING, Any, Optional
 
 if TYPE_CHECKING:
     from ..views.sidebar_view import SidebarView
-    from app import AutoClickApp # Import App for type hint
-else:
-    # Use Any for runtime to avoid circular imports
-    AutoClickApp = Any
-    SidebarView = Any
+    from ..services.app_context import AppContext
 
-class SidebarPresenter(BasePresenter): # Type hint view and app
-    view: 'SidebarView'
-    app: 'AutoClickApp'
+class SidebarPresenter(BasePresenter):
+    """Presenter for the sidebar view."""
 
-    def __init__(self, view: 'SidebarView', app: 'AutoClickApp'): # Needs App reference
-        super().__init__(view=view, app=app)
+    def __init__(self, view: Any, context: Optional[Any] = None):
+        """
+        Initialize the sidebar presenter.
+
+        Args:
+            view: The sidebar view
+            context: The application context
+        """
+        super().__init__(view=view)
+        self._context = context
         # Initialization done via initialize_view called by App
 
     def initialize_view(self):
@@ -43,13 +46,20 @@ class SidebarPresenter(BasePresenter): # Type hint view and app
 
     def navigate_to(self, tab_name: str):
         """Instructs the main app to switch tabs."""
-        if self.app and hasattr(self.app, 'navigate_to_tab'):
-             self.app.navigate_to_tab(tab_name)
-        else: print(f"Error: Cannot navigate. App reference missing or invalid.")
+        if self._context:
+            self._context.navigate_to(tab_name)
+        else:
+            print(f"Error: Cannot navigate. Context reference missing or invalid.")
 
     def toggle_theme(self):
         """Instructs the main app to toggle the theme."""
-        if self.app and hasattr(self.app, 'request_theme_toggle'):
-             self.app.request_theme_toggle()
-             # View state is updated by App calling apply_theme_change -> sidebar.set_theme_switch_state
-        else: print("Error: Cannot toggle theme. App reference missing or invalid.")
+        if self._context:
+            # Get the theme toggle service from the context
+            theme_service = self._context.get_service("theme_service")
+            if theme_service and hasattr(theme_service, 'toggle_theme'):
+                theme_service.toggle_theme()
+                # View state is updated by App calling apply_theme_change -> sidebar.set_theme_switch_state
+            else:
+                print("Error: Theme service not available in context.")
+        else:
+            print("Error: Cannot toggle theme. Context reference missing or invalid.")
