@@ -27,11 +27,35 @@ def get_mono_font(): return get_font(family=FONT_FAMILY_MONO)
 
 # --- Dialog Wrappers (Added type hints) ---
 
-def show_message(parent: tk.Misc, title: str, message: str): messagebox.showinfo(title, message, parent=parent)
-def show_error(parent: tk.Misc, title: str, message: str): messagebox.showerror(title, message, parent=parent)
-def show_warning(parent: tk.Misc, title: str, message: str): messagebox.showwarning(title, message, parent=parent)
-def ask_yes_no(parent: tk.Misc, title: str, message: str) -> bool: return messagebox.askyesno(title, message, parent=parent)
-def get_input(parent: tk.Misc, title: str, prompt: str, initialvalue: str = "") -> Optional[str]: return simpledialog.askstring(title, prompt, initialvalue=initialvalue, parent=parent)
+def show_message(parent: tk.Misc, title: str, message: str):
+    # Ensure title and message are strings
+    title = str(title) if title is not None else "Information"
+    message = str(message) if message is not None else ""
+    messagebox.showinfo(title, message, parent=parent)
+
+def show_error(parent: tk.Misc, title: str, message: str):
+    # Ensure title and message are strings
+    title = str(title) if title is not None else "Error"
+    message = str(message) if message is not None else ""
+    messagebox.showerror(title, message, parent=parent)
+
+def show_warning(parent: tk.Misc, title: str, message: str):
+    # Ensure title and message are strings
+    title = str(title) if title is not None else "Warning"
+    message = str(message) if message is not None else ""
+    messagebox.showwarning(title, message, parent=parent)
+def ask_yes_no(parent: tk.Misc, title: str, message: str) -> bool:
+    # Ensure title and message are strings
+    title = str(title) if title is not None else "Confirmation"
+    message = str(message) if message is not None else ""
+    return messagebox.askyesno(title, message, parent=parent)
+
+def get_input(parent: tk.Misc, title: str, prompt: str, initialvalue: str = "") -> Optional[str]:
+    # Ensure title, prompt and initialvalue are strings
+    title = str(title) if title is not None else "Input"
+    prompt = str(prompt) if prompt is not None else ""
+    initialvalue = str(initialvalue) if initialvalue is not None else ""
+    return simpledialog.askstring(title, prompt, initialvalue=initialvalue, parent=parent)
 def select_file(parent: tk.Misc, title: str = "Select File", filetypes: Optional[List[Tuple[str, str]]] = None) -> Optional[str]:
     result = filedialog.askopenfilename(title=title, filetypes=filetypes or [("All files", "*.*")], parent=parent)
     return result if result else None
@@ -63,6 +87,9 @@ def configure_ttk_style(appearance_mode: Optional[str] = None):
     fallback_dark = {"bg": "#2B2B2B", "fg": "#DCE4EE", "sel": "#2A5E8A", "hdr": "#323232", "tree_bg": "#2B2B2B"}
     fallback_light = {"bg": "#EBEBEB", "fg": "#1F1F1F", "sel": "#3B8ED0", "hdr": "#DADADA", "tree_bg": "#F5F5F5"}
 
+    # Initialize tree_bg with a default value
+    tree_bg = "#2B2B2B" if mode == "Dark" else "#EFEFEF"
+
     try: # Try to get colors from theme
         if mode == "Dark":
             bg = theme_dict["CTkFrame"]["fg_color"][1]
@@ -75,7 +102,9 @@ def configure_ttk_style(appearance_mode: Optional[str] = None):
             fg = theme_dict["CTkLabel"]["text_color"][0]
             sel = theme_dict["CTkButton"]["fg_color"][0]
             hdr = theme_dict["CTkFrame"].get("top_fg_color", bg)[0]
-            tree_bg = theme_dict.get("CTk",{}).get("fg_color",tree_bg)[0] # Try root background
+            # Use the CTk fg_color if available, otherwise keep the default tree_bg
+            if "CTk" in theme_dict and "fg_color" in theme_dict["CTk"]:
+                tree_bg = theme_dict["CTk"]["fg_color"][0]
     except (IndexError, KeyError, AttributeError): # Fallback on any error
         print("Warning: Using fallback ttk style colors due to theme read error.")
         colors = fallback_dark if mode == "Dark" else fallback_light

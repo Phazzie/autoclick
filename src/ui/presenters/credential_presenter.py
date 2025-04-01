@@ -397,12 +397,22 @@ class CredentialPresenter(BasePresenter[CredentialAdapter]):
 
             # If the user confirmed the operation
             if dialog.result:
+                # Validate required fields
+                if not hasattr(dialog, 'operation') or not dialog.operation:
+                    raise ValueError("Operation type is missing")
+                if not hasattr(dialog, 'target_status') or not dialog.target_status:
+                    raise ValueError("Target status is missing")
+
                 operation = dialog.operation
                 target_status = dialog.target_status
-                new_status = dialog.new_status
+                new_status = dialog.new_status if hasattr(dialog, 'new_status') else None
 
                 # Perform the operation
                 if operation == "update_status":
+                    # Validate new status for update operation
+                    if not new_status:
+                        raise ValueError("New status is required for update operation")
+
                     # Update status of credentials
                     count = self.service.update_credentials_status(target_status, new_status)
                     self.view.display_info("Batch Operation", f"Updated {count} credentials from {target_status} to {new_status}.")
@@ -410,6 +420,8 @@ class CredentialPresenter(BasePresenter[CredentialAdapter]):
                     # Delete credentials by status
                     count = self.service.delete_credentials_by_status(target_status)
                     self.view.display_info("Batch Operation", f"Deleted {count} credentials with status {target_status}.")
+                else:
+                    raise ValueError(f"Unknown operation type: {operation}")
 
                 # Reload credentials
                 self.load_credentials()
