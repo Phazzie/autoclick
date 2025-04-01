@@ -199,6 +199,7 @@ class AutoClickApp:
         # Configure grid
         self.window.grid_columnconfigure(1, weight=1)  # Content area expands
         self.window.grid_rowconfigure(1, weight=1)     # Content area expands
+        self.window.grid_rowconfigure(2, weight=0)     # Status bar row
         print("DEBUG: Configured grid")
 
         # Create sidebar
@@ -344,9 +345,12 @@ class AutoClickApp:
     def _setup_layout(self):
         """Set up the main application layout."""
         # Place components in the grid
-        self.sidebar_frame.grid(row=0, column=0, rowspan=2, sticky="nsew", padx=(PAD_X_OUTER, 0), pady=PAD_Y_OUTER)
-        self.tabview.grid(row=0, column=1, sticky="nsew", padx=PAD_X_OUTER, pady=PAD_Y_OUTER)
-        self.statusbar.grid(row=1, column=1, sticky="ew", padx=PAD_X_OUTER, pady=(0, PAD_Y_OUTER))
+        self.sidebar_frame.grid(row=0, column=0, rowspan=3, sticky="nsew", padx=(PAD_X_OUTER, 0), pady=PAD_Y_OUTER)
+        print(f"DEBUG: Sidebar positioned at row=0, column=0, rowspan=3")
+        self.tabview.grid(row=1, column=1, sticky="nsew", padx=PAD_X_OUTER, pady=PAD_Y_OUTER)
+        print(f"DEBUG: Tabview positioned at row=1, column=1")
+        self.statusbar.grid(row=2, column=1, sticky="ew", padx=PAD_X_OUTER, pady=(0, PAD_Y_OUTER))
+        print(f"DEBUG: Statusbar positioned at row=2, column=1")
 
     def navigate_to_tab(self, tab_name: str):
         """Switch to the specified tab."""
