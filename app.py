@@ -64,7 +64,7 @@ from src.ui.presenters.action_execution_presenter import ActionExecutionPresente
 from src.core.credentials.credential_manager import CredentialManager
 from src.core.context.variable_storage import VariableStorage
 from src.core.workflow.workflow_service import WorkflowService
-from src.core.workflow import WorkflowEngine
+from src.core.workflow.workflow_engine_new import WorkflowEngine
 from src.core.conditions.condition_factory import ConditionFactory
 
 # Import adapters
@@ -167,7 +167,7 @@ class AutoClickApp:
         # Create backend service instances
         self.credential_manager = CredentialManager()
         self.variable_storage = VariableStorage()
-        self.workflow_engine = WorkflowEngine()
+        self.workflow_engine = WorkflowEngine(validator=None, executor=None, event_bus=None, action_resolver=None)
         self.workflow_service_backend = WorkflowService(storage_dir=self.settings.get("workflows_dir", "workflows"))
         self.condition_factory = ConditionFactory  # This is already an instance, not a class
 
@@ -266,7 +266,7 @@ class AutoClickApp:
         print("DEBUG: Creating presenter instances...")
         self.sidebar_presenter = SidebarPresenter(
             view=self.sidebar_frame,
-            context=self.app_context
+            app=self
         )
         self.variable_presenter = VariablePresenter(
             view=self.variable_view,
