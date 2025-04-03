@@ -15,8 +15,8 @@ To complete the refactoring process by integrating the refactored service archit
 
 ### 1. Integration with UI Adapters (In Progress)
 
--   [x] Update existing UI adapters to use the new architecture (WorkflowAdapter, VariableAdapter, ConditionAdapter, DataSourceAdapter, ErrorAdapter, LoopAdapter, ReportingAdapter, CredentialAdapter completed)
--   [x] Create integration tests for UI adapters (WorkflowAdapter, VariableAdapter, ConditionAdapter, DataSourceAdapter, ErrorAdapter, LoopAdapter, ReportingAdapter, CredentialAdapter tests completed)
+-   [x] Update existing UI adapters to use the new architecture (WorkflowAdapter, VariableAdapter, ConditionAdapter, DataSourceAdapter, ErrorAdapter, LoopAdapter, ReportingAdapter, CredentialAdapter, ActionAdapter completed)
+-   [x] Create integration tests for UI adapters (WorkflowAdapter, VariableAdapter, ConditionAdapter, DataSourceAdapter, ErrorAdapter, LoopAdapter, ReportingAdapter, CredentialAdapter, ActionAdapter tests completed)
 -   [ ] Verify that UI components correctly access services
 -   [ ] Ensure proper dependency wiring and configuration
 
@@ -31,8 +31,8 @@ To complete the refactoring process by integrating the refactored service archit
 
 ### Integration with UI Adapters
 
--   [x] Update UI adapters to use the refactored service architecture (WorkflowAdapter, VariableAdapter, ConditionAdapter, DataSourceAdapter, ErrorAdapter, LoopAdapter, ReportingAdapter, CredentialAdapter completed).
--   [x] Create integration tests for UI adapters (WorkflowAdapter, VariableAdapter, ConditionAdapter, DataSourceAdapter, ErrorAdapter, LoopAdapter, ReportingAdapter, CredentialAdapter tests completed).
+-   [x] Update UI adapters to use the refactored service architecture (WorkflowAdapter, VariableAdapter, ConditionAdapter, DataSourceAdapter, ErrorAdapter, LoopAdapter, ReportingAdapter, CredentialAdapter, ActionAdapter completed).
+-   [x] Create integration tests for UI adapters (WorkflowAdapter, VariableAdapter, ConditionAdapter, DataSourceAdapter, ErrorAdapter, LoopAdapter, ReportingAdapter, CredentialAdapter, ActionAdapter tests completed).
 -   [ ] Verify that UI components correctly access services.
 -   [ ] Ensure proper dependency wiring and configuration.
 
@@ -64,8 +64,8 @@ Continue with the remaining tasks in Phase 3:
 
 1. **UI Adapter Integration**
 
-    - ✅ Update existing UI adapters to use the new architecture (WorkflowAdapter, VariableAdapter, ConditionAdapter, DataSourceAdapter, ErrorAdapter, LoopAdapter, ReportingAdapter, CredentialAdapter completed)
-    - ✅ Create integration tests for UI adapters (WorkflowAdapter, VariableAdapter, ConditionAdapter, DataSourceAdapter, ErrorAdapter, LoopAdapter, ReportingAdapter, CredentialAdapter tests completed)
+    - ✅ Update existing UI adapters to use the new architecture (WorkflowAdapter, VariableAdapter, ConditionAdapter, DataSourceAdapter, ErrorAdapter, LoopAdapter, ReportingAdapter, CredentialAdapter, ActionAdapter completed)
+    - ✅ Create integration tests for UI adapters (WorkflowAdapter, VariableAdapter, ConditionAdapter, DataSourceAdapter, ErrorAdapter, LoopAdapter, ReportingAdapter, CredentialAdapter, ActionAdapter tests completed)
     - Ensure proper dependency wiring and configuration
     - Verify that UI components correctly access services
 
