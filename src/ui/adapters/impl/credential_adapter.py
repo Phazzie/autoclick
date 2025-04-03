@@ -10,6 +10,7 @@ from typing import List, Dict, Any, Optional
 
 from src.core.credentials.credential_manager import CredentialManager, CredentialStatus
 from src.domain.credentials.interfaces import ICredentialService
+from src.domain.credentials.utils import get_status_map, mask_sensitive_data
 from src.ui.adapters.base.base_credential_adapter import BaseCredentialAdapter
 
 
@@ -344,46 +345,11 @@ class CredentialAdapter(BaseCredentialAdapter):
         Returns:
             Credential type metadata
         """
-        # Define metadata for known credential types
-        metadata = {
-            "username_password": {
-                "id": "username_password",
-                "name": "Username/Password",
-                "description": "Username and password credentials",
-                "icon": "user-password",
-                "category": "basic"
-            },
-            "api_key": {
-                "id": "api_key",
-                "name": "API Key",
-                "description": "API key credentials",
-                "icon": "api-key",
-                "category": "api"
-            },
-            "oauth2": {
-                "id": "oauth2",
-                "name": "OAuth 2.0",
-                "description": "OAuth 2.0 credentials",
-                "icon": "oauth",
-                "category": "oauth"
-            },
-            "certificate": {
-                "id": "certificate",
-                "name": "Certificate",
-                "description": "Certificate credentials",
-                "icon": "certificate",
-                "category": "security"
-            }
-        }
+        # Import here to avoid circular imports
+        from src.domain.credentials.impl.credential_formatter import CredentialFormatter
 
-        # Return metadata for the credential type, or a default if not found
-        return metadata.get(credential_type, {
-            "id": credential_type,
-            "name": credential_type.capitalize(),
-            "description": f"{credential_type.capitalize()} credentials",
-            "icon": "credential",
-            "category": "other"
-        })
+        # Use the formatter to get metadata
+        return CredentialFormatter.get_credential_type_metadata(credential_type)
 
     def _convert_credential_to_ui_format(self, credential: Any) -> Dict[str, Any]:
         """
@@ -395,36 +361,11 @@ class CredentialAdapter(BaseCredentialAdapter):
         Returns:
             Credential in UI format (sensitive data masked)
         """
-        # Map status to UI status
-        status_map = {
-            CredentialStatus.UNUSED: "Active",
-            CredentialStatus.SUCCESS: "Success",
-            CredentialStatus.FAILURE: "Failure",
-            CredentialStatus.LOCKED: "Inactive",
-            CredentialStatus.EXPIRED: "Inactive",
-            CredentialStatus.INVALID: "Inactive",
-            CredentialStatus.BLACKLISTED: "Inactive"
-        }
+        # Import here to avoid circular imports
+        from src.domain.credentials.impl.credential_formatter import CredentialFormatter
 
-        # Get UI-specific fields from metadata
-        metadata = credential.metadata or {}
-        name = metadata.get("name", credential.username)
-        category = metadata.get("category", "Other")
-        tags = metadata.get("tags", [])
-        notes = metadata.get("notes", "")
-
-        # Create UI format
-        return {
-            "id": credential.username,
-            "name": name,
-            "username": credential.username,
-            "password": "********",  # Mask password
-            "status": status_map.get(credential.status, "Active"),
-            "last_used": credential.last_used,
-            "category": category,
-            "tags": tags,
-            "notes": notes
-        }
+        # Use the formatter to convert to UI format
+        return CredentialFormatter.to_ui_format(credential)
 
     def _mask_sensitive_data(self, credential_data: Dict[str, Any]) -> None:
         """
@@ -436,12 +377,11 @@ class CredentialAdapter(BaseCredentialAdapter):
         # Get the credential data
         data = credential_data.get("data", {})
 
-        # Mask sensitive fields
-        sensitive_fields = ["password", "secret", "key", "token", "access_token", "refresh_token", "private_key"]
+        # Use the utility function to mask sensitive data
+        masked_data = mask_sensitive_data(data)
 
-        for field in sensitive_fields:
-            if field in data and data[field]:
-                data[field] = "********"
+        # Update the credential data
+        credential_data["data"] = masked_data
 
     def _get_status_string(self, status: CredentialStatus) -> str:
         """
@@ -453,14 +393,7 @@ class CredentialAdapter(BaseCredentialAdapter):
         Returns:
             String representation of the status
         """
-        status_map = {
-            CredentialStatus.UNUSED: "Active",
-            CredentialStatus.SUCCESS: "Success",
-            CredentialStatus.FAILURE: "Failure",
-            CredentialStatus.LOCKED: "Inactive",
-            CredentialStatus.EXPIRED: "Inactive",
-            CredentialStatus.INVALID: "Inactive",
-            CredentialStatus.BLACKLISTED: "Inactive"
-        }
+        # Use the utility function to get the status map
+        status_map = get_status_map()
 
         return status_map.get(status, "Active")
