@@ -1,0 +1,1874 @@
+{
+  "keep": [
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\test_error_config_serialization.py",
+      "tests_components": [
+        "src/core/models.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\test_variable_serialization.py",
+      "tests_components": [
+        "src/core/models.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\test_workflow_connection_serialization.py",
+      "tests_components": [
+        "src/core/models.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\test_workflow_node_serialization.py",
+      "tests_components": [
+        "src/core/models.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\models\\test_error_config_serialization.py",
+      "tests_components": [
+        "src/core/models.py",
+        "src/core/utils/serialization.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\models\\test_variable_serialization.py",
+      "tests_components": [
+        "src/core/models.py",
+        "src/core/utils/serialization.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\models\\test_workflow_connection_serialization.py",
+      "tests_components": [
+        "src/core/models.py",
+        "src/core/utils/serialization.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\models\\test_workflow_node_serialization.py",
+      "tests_components": [
+        "src/core/models.py",
+        "src/core/utils/serialization.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\models\\test_workflow_serialization.py",
+      "tests_components": [
+        "src/core/models.py",
+        "src/core/utils/serialization.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\workflow\\test_workflow_engine_new.py",
+      "tests_components": [
+        "src/core/workflow/exceptions.py",
+        "src/core/workflow/workflow_engine_new.py",
+        "src/core/workflow/execution_result.py",
+        "src/core/workflow/interfaces.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\workflow\\test_workflow_service.py",
+      "tests_components": [
+        "src/core/workflow/workflow_service.py",
+        "src/core/models.py",
+        "src/core/workflow/workflow_engine.py",
+        "src/core/context/execution_context.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\workflow\\engine\\test_workflow_engine.py",
+      "tests_components": [
+        "src/core/utils/logging.py",
+        "src/core/workflow/exceptions.py",
+        "src/core/utils/error_handling.py",
+        "src/core/workflow/execution_result.py",
+        "src/core/workflow/engine/workflow_engine.py",
+        "src/core/workflow/interfaces.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\workflow\\engine\\test_workflow_executor.py",
+      "tests_components": [
+        "src/core/utils/logging.py",
+        "src/core/workflow/engine/workflow_executor.py",
+        "src/core/workflow/exceptions.py",
+        "src/core/utils/error_handling.py",
+        "src/core/workflow/execution_result.py",
+        "src/core/workflow/interfaces.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\workflow\\engine\\test_workflow_validator.py",
+      "tests_components": [
+        "src/core/utils/logging.py",
+        "src/core/utils/error_handling.py",
+        "src/core/workflow/engine/workflow_validator.py",
+        "src/core/workflow/interfaces.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\workflow\\service\\test_base_workflow_service.py",
+      "tests_components": [
+        "src/core/utils/service.py",
+        "src/core/utils/logging.py",
+        "src/core/workflow/service/base_workflow_service.py",
+        "src/core/utils/error_handling.py",
+        "src/core/workflow/service_interfaces.py",
+        "src/core/workflow/interfaces.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\workflow\\service\\test_workflow_service.py",
+      "tests_components": [
+        "src/core/workflow/workflow_dto.py",
+        "src/core/workflow/service/base_workflow_service.py",
+        "src/core/workflow/exceptions.py",
+        "src/core/workflow/service_interfaces.py",
+        "src/core/workflow/service/workflow_service.py",
+        "src/core/workflow/interfaces.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\adapters\\test_credential_adapter.py",
+      "tests_components": [
+        "src/core/credentials/credential_manager.py",
+        "src/core/models.py",
+        "src/ui/adapters/credential_adapter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\adapters\\test_data_source_adapter.py",
+      "tests_components": [
+        "src/core/models.py",
+        "src/ui/adapters/data_source_adapter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\adapters\\test_error_adapter.py",
+      "tests_components": [
+        "src/core/models.py",
+        "src/ui/adapters/error_adapter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\presenters\\test_action_execution_presenter.py",
+      "tests_components": [
+        "src/core/models.py",
+        "src/ui/presenters/action_execution_presenter.py",
+        "src/ui/adapters/workflow_adapter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\presenters\\test_credential_presenter.py",
+      "tests_components": [
+        "src/core/models.py",
+        "src/ui/presenters/credential_presenter.py",
+        "src/ui/adapters/credential_adapter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\presenters\\test_data_source_presenter.py",
+      "tests_components": [
+        "src/ui/adapters/data_source_adapter.py",
+        "src/core/models.py",
+        "src/ui/presenters/data_source_presenter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\presenters\\test_error_presenter.py",
+      "tests_components": [
+        "src/core/models.py",
+        "src/ui/presenters/error_presenter.py",
+        "src/ui/adapters/error_adapter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\presenters\\test_variable_presenter.py",
+      "tests_components": [
+        "src/core/models.py",
+        "src/ui/adapters/variable_adapter.py",
+        "src/ui/presenters/variable_presenter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\presenters\\test_workflow_presenter.py",
+      "tests_components": [
+        "src/core/models.py",
+        "src/ui/presenters/workflow_presenter.py",
+        "src/ui/adapters/workflow_adapter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\views\\test_action_execution_view.py",
+      "tests_components": [
+        "src/core/models.py",
+        "src/ui/views/action_execution_view.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\views\\test_data_source_view.py",
+      "tests_components": [
+        "src/core/models.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\views\\test_error_view.py",
+      "tests_components": [
+        "src/core/models.py",
+        "src/ui/views/error_view.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\views\\test_workflow_view.py",
+      "tests_components": [
+        "src/core/models.py",
+        "src/ui/views/workflow_view.py"
+      ]
+    }
+  ],
+  "discard": [
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\astroid\\test_utils.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_abc.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_check.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_classdef.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_dataclasses.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_detect.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_dictviews.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_diff.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_extendpickle.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_fglobals.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_file.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_functions.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_functors.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_logger.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_mixins.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_module.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_moduledict.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_nested.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_objects.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_properties.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_pycapsule.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_recursive.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_registered.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_restricted.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_selected.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_session.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_source.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_sources.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_temp.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_threads.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\dill\\tests\\test_weakref.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\h11\\tests\\test_against_stdlib_http.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\h11\\tests\\test_connection.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\h11\\tests\\test_events.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\h11\\tests\\test_headers.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\h11\\tests\\test_helpers.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\h11\\tests\\test_io.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\h11\\tests\\test_receivebuffer.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\h11\\tests\\test_state.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\h11\\tests\\test_util.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypy\\test\\test_find_sources.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypy\\test\\test_ref_info.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypy\\test\\meta\\test_parse_data.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypy\\test\\meta\\test_update_data.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_alwaysdefined.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_analysis.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_cheader.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_commandline.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_emit.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_emitclass.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_emitfunc.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_emitwrapper.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_exceptions.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_external.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_irbuild.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_ircheck.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_literals.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_namegen.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_pprint.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_rarray.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_refcount.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_run.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_serialization.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_struct.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_tuplename.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\mypyc\\test\\test_typeops.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\pylint\\testutils\\functional\\test_file.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\sniffio\\_tests\\test_sniffio.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_asyncgen.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_exceptiongroup_gc.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_guest_mode.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_instrumentation.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_io.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_ki.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_local.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_mock_clock.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_parking_lot.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_run.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_thread_cache.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_tutil.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_unbounded_queue.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_windows.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_abc.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_channel.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_contextvars.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_deprecate.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_deprecate_strict_exception_groups_false.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_dtls.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_exports.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_fakenet.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_file_io.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_highlevel_generic.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_highlevel_open_tcp_listeners.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_highlevel_open_tcp_stream.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_highlevel_open_unix_stream.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_highlevel_serve_listeners.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_highlevel_socket.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_highlevel_ssl_helpers.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_path.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_repl.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_scheduler_determinism.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_signals.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_socket.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_ssl.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_subprocess.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_sync.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_testing.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_testing_raisesgroup.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_threads.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_timeouts.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_tracing.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_trio.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_unix_pipes.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_util.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_wait_for_object.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\test_windows_pipes.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\tools\\test_gen_exports.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\trio\\_tests\\tools\\test_mypy_annotate.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\websocket\\tests\\test_abnf.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\websocket\\tests\\test_app.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\websocket\\tests\\test_cookiejar.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\websocket\\tests\\test_http.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\websocket\\tests\\test_url.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\.venv\\Lib\\site-packages\\websocket\\tests\\test_websocket.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\scripts\\tests\\test_workflow_service_import.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\scripts\\tests\\test_workflow_validation_error_import.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\test_models_serialization.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\variables\\test_variable_types.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\views\\test_workflow_view_canvas.py",
+      "tests_components": [
+        "src/ui/views/workflow_view.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\h11\\tests\\test_against_stdlib_http.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\h11\\tests\\test_connection.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\h11\\tests\\test_events.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\h11\\tests\\test_headers.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\h11\\tests\\test_helpers.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\h11\\tests\\test_io.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\h11\\tests\\test_receivebuffer.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\h11\\tests\\test_state.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\h11\\tests\\test_util.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\sniffio\\_tests\\test_sniffio.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_asyncgen.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_exceptiongroup_gc.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_guest_mode.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_instrumentation.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_io.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_ki.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_local.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_mock_clock.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_parking_lot.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_run.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_thread_cache.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_tutil.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_unbounded_queue.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_core\\_tests\\test_windows.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_abc.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_channel.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_contextvars.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_deprecate.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_deprecate_strict_exception_groups_false.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_dtls.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_exports.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_fakenet.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_file_io.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_highlevel_generic.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_highlevel_open_tcp_listeners.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_highlevel_open_tcp_stream.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_highlevel_open_unix_stream.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_highlevel_serve_listeners.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_highlevel_socket.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_highlevel_ssl_helpers.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_path.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_repl.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_scheduler_determinism.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_signals.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_socket.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_ssl.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_subprocess.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_sync.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_testing.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_testing_raisesgroup.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_threads.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_timeouts.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_tracing.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_trio.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_unix_pipes.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_util.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_wait_for_object.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\test_windows_pipes.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\tools\\test_gen_exports.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\trio\\_tests\\tools\\test_mypy_annotate.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\websocket\\tests\\test_abnf.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\websocket\\tests\\test_app.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\websocket\\tests\\test_cookiejar.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\websocket\\tests\\test_http.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\websocket\\tests\\test_url.py",
+      "tests_components": []
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\venv\\Lib\\site-packages\\websocket\\tests\\test_websocket.py",
+      "tests_components": []
+    }
+  ],
+  "discuss": [
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\test_implementation.py",
+      "tests_components": [
+        "src/ui/adapters/interfaces/workflow_interfaces.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\scripts\\tests\\test_action_adapter_integration.py",
+      "tests_components": [
+        "src/ui/adapters/impl/action_adapter.py",
+        "src/domain/actions/impl/action_service.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\scripts\\tests\\test_action_factory_methods.py",
+      "tests_components": [
+        "src/core/actions/action_factory.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\scripts\\tests\\test_di_circular_import.py",
+      "tests_components": [
+        "src/infrastructure/di/container.py",
+        "src/infrastructure/di/config.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\scripts\\tests\\test_ui_components_integration.py",
+      "tests_components": [
+        "src/ui/presenters/workflow_presenter.py",
+        "src/ui/presenters/action_execution_presenter.py",
+        "src/ui/presenters/credential_presenter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\application\\workflows\\commands\\test_create_workflow_command.py",
+      "tests_components": [
+        "src/domain/workflows/interfaces.py",
+        "src/application/workflows/commands/create_workflow_command.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\actions\\test_action_factory.py",
+      "tests_components": [
+        "src/core/actions/action_interface.py",
+        "src/core/actions/base_action.py",
+        "src/core/actions/action_factory.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\actions\\test_action_factory_new.py",
+      "tests_components": [
+        "src/core/actions/exceptions.py",
+        "src/core/actions/action_factory_new.py",
+        "src/core/actions/interfaces.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\actions\\test_action_interface.py",
+      "tests_components": [
+        "src/core/actions/action_interface.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\actions\\test_base_action.py",
+      "tests_components": [
+        "src/core/actions/action_interface.py",
+        "src/core/actions/base_action.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\actions\\test_click_action.py",
+      "tests_components": [
+        "src/core/actions/action_factory.py",
+        "src/core/actions/click_action.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\actions\\test_credential_filter_action.py",
+      "tests_components": [
+        "src/core/actions/action_interface.py",
+        "src/core/credentials/credential_manager.py",
+        "src/core/actions/credential_filter_action.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\actions\\test_data_driven_action.py",
+      "tests_components": [
+        "src/core/data/mapping/mapper.py",
+        "src/core/actions/action_interface.py",
+        "src/core/data/iteration/context.py",
+        "src/core/data/sources/base.py",
+        "src/core/actions/base_action.py",
+        "src/core/actions/data_driven_action.py",
+        "src/core/actions/action_factory.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\actions\\test_if_then_else_action.py",
+      "tests_components": [
+        "src/core/actions/action_interface.py",
+        "src/core/actions/if_then_else_action.py",
+        "src/core/conditions/condition_interface.py",
+        "src/core/actions/base_action.py",
+        "src/core/conditions/base_condition.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\actions\\test_screenshot_action.py",
+      "tests_components": [
+        "src/core/utils/screenshot_capture.py",
+        "src/core/actions/screenshot_action.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\actions\\test_switch_case_action.py",
+      "tests_components": [
+        "src/core/actions/action_interface.py",
+        "src/core/actions/switch_case_action.py",
+        "src/core/conditions/condition_interface.py",
+        "src/core/actions/base_action.py",
+        "src/core/actions/action_factory.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\conditions\\test_base_condition.py",
+      "tests_components": [
+        "src/core/conditions/condition_interface.py",
+        "src/core/conditions/base_condition.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\conditions\\test_base_condition_new.py",
+      "tests_components": [
+        "src/core/conditions/exceptions.py",
+        "src/core/conditions/base_condition_new.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\conditions\\test_comparison_condition.py",
+      "tests_components": [
+        "src/core/conditions/comparison_condition.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\conditions\\test_composite_conditions.py",
+      "tests_components": [
+        "src/core/conditions/condition_interface.py",
+        "src/core/conditions/base_condition.py",
+        "src/core/conditions/composite_conditions.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\conditions\\test_compound_conditions.py",
+      "tests_components": [
+        "src/core/conditions/exceptions.py",
+        "src/core/conditions/compound_condition_base.py",
+        "src/core/conditions/compound_conditions.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\conditions\\test_condition_factory.py",
+      "tests_components": [
+        "src/core/conditions/condition_factory.py",
+        "src/core/conditions/condition_interface.py",
+        "src/core/conditions/base_condition.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\conditions\\test_condition_factory_new.py",
+      "tests_components": [
+        "src/core/conditions/exceptions.py",
+        "src/core/conditions/condition_factory_new.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\conditions\\test_condition_interface.py",
+      "tests_components": [
+        "src/core/conditions/condition_interface.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\conditions\\test_element_exists_condition.py",
+      "tests_components": [
+        "src/core/conditions/element_exists_condition.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\conditions\\test_text_contains_condition.py",
+      "tests_components": [
+        "src/core/conditions/text_contains_condition.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\context\\test_context_builder.py",
+      "tests_components": [
+        "src/core/context/context_builder.py",
+        "src/core/context/execution_context_new.py",
+        "src/core/context/exceptions.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\context\\test_context_factory.py",
+      "tests_components": [
+        "src/core/context/context_snapshot.py",
+        "src/core/context/context_factory.py",
+        "src/core/context/execution_context_new.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\context\\test_context_options.py",
+      "tests_components": [
+        "src/core/context/context_options.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\context\\test_context_snapshot.py",
+      "tests_components": [
+        "src/core/context/context_snapshot.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\context\\test_execution_context.py",
+      "tests_components": [
+        "src/core/context/variable_storage.py",
+        "src/core/context/context_options.py",
+        "src/core/context/execution_state.py",
+        "src/core/context/execution_context.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\context\\test_execution_context_new.py",
+      "tests_components": [
+        "src/core/context/context_snapshot.py",
+        "src/core/context/execution_context_new.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\context\\test_execution_state.py",
+      "tests_components": [
+        "src/core/context/execution_state.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\context\\test_variable_accessor.py",
+      "tests_components": [
+        "src/core/context/variable_accessor.py",
+        "src/core/context/exceptions.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\context\\test_variable_storage.py",
+      "tests_components": [
+        "src/core/context/variable_storage.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\context\\test_variable_storage_v2.py",
+      "tests_components": [
+        "src/core/variables/variable.py",
+        "src/core/context/variable_storage.py",
+        "src/core/context/variable_storage_v2.py",
+        "src/core/variables/variable_interface.py",
+        "src/core/variables/typed_variables.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\data\\iteration\\test_iteration.py",
+      "tests_components": [
+        "src/core/data/iteration/iterator.py",
+        "src/core/data/iteration/context.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\data\\mapping\\test_mapping.py",
+      "tests_components": [
+        "src/core/data/mapping/mapper.py",
+        "src/core/data/mapping/variable_mapper.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\data\\sources\\test_base_new.py",
+      "tests_components": [
+        "src/core/data/sources/field.py",
+        "src/core/data/sources/exceptions.py",
+        "src/core/data/sources/base_new.py",
+        "src/core/data/sources/record.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\data\\sources\\test_data_sources.py",
+      "tests_components": [
+        "src/core/data/sources/json_source.py",
+        "src/core/data/sources/base.py",
+        "src/core/data/sources/csv_source.py",
+        "src/core/data/sources/memory_source.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\data\\sources\\test_field.py",
+      "tests_components": [
+        "src/core/data/sources/field.py",
+        "src/core/data/sources/exceptions.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\data\\sources\\test_pagination.py",
+      "tests_components": [
+        "src/core/data/sources/exceptions.py",
+        "src/core/data/sources/pagination.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\data\\sources\\test_query.py",
+      "tests_components": [
+        "src/core/data/sources/query.py",
+        "src/core/data/sources/exceptions.py",
+        "src/core/data/sources/record.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\data\\sources\\test_record.py",
+      "tests_components": [
+        "src/core/data/sources/field.py",
+        "src/core/data/sources/exceptions.py",
+        "src/core/data/sources/record.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\errors\\test_error_factory.py",
+      "tests_components": [
+        "src/core/errors/recovery_strategies.py",
+        "src/core/errors/error_manager.py",
+        "src/core/errors/recovery_strategy.py",
+        "src/core/errors/error_factory.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\errors\\test_error_listener.py",
+      "tests_components": [
+        "src/core/errors/logging_listener.py",
+        "src/core/errors/error_listener.py",
+        "src/core/errors/error_types.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\errors\\test_error_manager.py",
+      "tests_components": [
+        "src/core/errors/error_listener.py",
+        "src/core/errors/error_types.py",
+        "src/core/errors/error_manager.py",
+        "src/core/errors/recovery_strategy.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\errors\\test_error_types.py",
+      "tests_components": [
+        "src/core/errors/error_types.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\errors\\test_recovery_strategy.py",
+      "tests_components": [
+        "src/core/errors/recovery_strategies.py",
+        "src/core/errors/error_types.py",
+        "src/core/errors/recovery_strategy.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\errors\\test_specific_errors.py",
+      "tests_components": [
+        "src/core/errors/timeout_errors.py",
+        "src/core/errors/element_errors.py",
+        "src/core/errors/error_types.py",
+        "src/core/errors/workflow_errors.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\errors\\test_specific_recovery_strategies.py",
+      "tests_components": [
+        "src/core/errors/recovery_strategies.py",
+        "src/core/errors/error_types.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\expressions\\test_expression_parser.py",
+      "tests_components": [
+        "src/core/expressions/expression_parser.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\utils\\test_error_handling.py",
+      "tests_components": [
+        "src/core/utils/error_handling.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\utils\\test_logging.py",
+      "tests_components": [
+        "src/core/utils/logging.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\utils\\test_screenshot_capture.py",
+      "tests_components": [
+        "src/core/utils/screenshot_capture.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\utils\\test_screenshot_cleaner.py",
+      "tests_components": [
+        "src/core/utils/screenshot_cleaner.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\utils\\test_screenshot_manager.py",
+      "tests_components": [
+        "src/core/utils/screenshot_capture.py",
+        "src/core/utils/screenshot_storage.py",
+        "src/core/utils/screenshot_manager.py",
+        "src/core/utils/screenshot_cleaner.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\utils\\test_screenshot_storage.py",
+      "tests_components": [
+        "src/core/utils/screenshot_storage.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\utils\\test_serialization.py",
+      "tests_components": [
+        "src/core/utils/serialization.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\utils\\test_service.py",
+      "tests_components": [
+        "src/core/utils/service.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\variables\\test_variable_interface.py",
+      "tests_components": [
+        "src/core/variables/variable.py",
+        "src/core/context/variable_storage.py",
+        "src/core/variables/variable_interface.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\variables\\test_variable_reference.py",
+      "tests_components": [
+        "src/core/variables/exceptions.py",
+        "src/core/variables/variable_reference.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\variables\\test_variable_resolver.py",
+      "tests_components": [
+        "src/core/variables/variable_resolver.py",
+        "src/core/variables/exceptions.py",
+        "src/core/variables/variable_reference.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\variables\\test_variable_storage.py",
+      "tests_components": [
+        "src/core/variables/variable_storage.py",
+        "src/core/variables/exceptions.py",
+        "src/core/variables/variable_reference.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\workflow\\test_workflow_dto.py",
+      "tests_components": [
+        "src/core/workflow/workflow_dto.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\workflow\\test_workflow_engine.py",
+      "tests_components": [
+        "src/core/actions/action_interface.py",
+        "src/core/workflow/workflow_engine.py",
+        "src/core/context/execution_state.py",
+        "src/core/actions/base_action.py",
+        "src/core/workflow/workflow_event.py",
+        "src/core/context/execution_context.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\workflow\\test_workflow_engine_interface.py",
+      "tests_components": [
+        "src/core/actions/action_interface.py",
+        "src/core/workflow/workflow_statistics.py",
+        "src/core/workflow/workflow_engine_interface.py",
+        "src/core/actions/base_action.py",
+        "src/core/workflow/workflow_event.py",
+        "src/core/context/execution_context.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\workflow\\test_workflow_events.py",
+      "tests_components": [
+        "src/core/actions/action_interface.py",
+        "src/core/workflow/workflow_event.py",
+        "src/core/actions/base_action.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\workflow\\test_workflow_query.py",
+      "tests_components": [
+        "src/core/workflow/workflow_query.py",
+        "src/core/workflow/service_exceptions.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\workflow\\test_workflow_repository.py",
+      "tests_components": [
+        "src/core/workflow/service_exceptions.py",
+        "src/core/workflow/workflow_repository.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\workflow\\test_workflow_serializer.py",
+      "tests_components": [
+        "src/core/actions/action_interface.py",
+        "src/core/workflow/workflow_serializer.py",
+        "src/core/actions/base_action.py",
+        "src/core/actions/action_factory.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\workflow\\test_workflow_serializer_new.py",
+      "tests_components": [
+        "src/core/workflow/service_exceptions.py",
+        "src/core/workflow/workflow_serializer_new.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\workflow\\test_workflow_service_new.py",
+      "tests_components": [
+        "src/core/workflow/workflow_service_new.py",
+        "src/core/workflow/service_exceptions.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\workflow\\test_workflow_service_new_fixed.py",
+      "tests_components": [
+        "src/core/workflow/workflow_service_new.py",
+        "src/core/workflow/service_exceptions.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\core\\workflow\\test_workflow_statistics.py",
+      "tests_components": [
+        "src/core/actions/action_interface.py",
+        "src/core/workflow/workflow_statistics.py",
+        "src/core/workflow/workflow_event.py",
+        "src/core/actions/base_action.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\domain\\actions\\test_action_metadata.py",
+      "tests_components": [
+        "src/domain/actions/metadata.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\domain\\actions\\test_action_schemas.py",
+      "tests_components": [
+        "src/domain/actions/schemas.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\domain\\actions\\test_action_service.py",
+      "tests_components": [
+        "src/domain/exceptions/domain_exceptions.py",
+        "src/domain/actions/impl/action_service.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\domain\\actions\\test_action_store.py",
+      "tests_components": [
+        "src/domain/actions/impl/action_service.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\domain\\actions\\test_action_type_registry.py",
+      "tests_components": [
+        "src/domain/actions/action_type_registry.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\domain\\actions\\test_action_validator.py",
+      "tests_components": [
+        "src/domain/actions/impl/action_validator.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\domain\\common\\test_error_handler.py",
+      "tests_components": [
+        "src/domain/common/error_handler.py",
+        "src/domain/exceptions/domain_exceptions.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\domain\\credentials\\test_credential_formatter.py",
+      "tests_components": [
+        "src/core/credentials/credential_manager.py",
+        "src/domain/credentials/impl/credential_formatter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\domain\\credentials\\test_credential_service.py",
+      "tests_components": [
+        "src/core/credentials/credential_manager.py",
+        "src/domain/credentials/impl/credential_service.py",
+        "src/domain/exceptions/domain_exceptions.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\domain\\credentials\\test_credential_utils.py",
+      "tests_components": [
+        "src/core/credentials/credential_manager.py",
+        "src/domain/credentials/utils.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\domain\\credentials\\test_credential_validator.py",
+      "tests_components": [
+        "src/domain/credentials/impl/credential_validator.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\infrastructure\\repositories\\test_workflow_repository.py",
+      "tests_components": [
+        "src/domain/workflows/models.py",
+        "src/infrastructure/repositories/workflow_repository.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\infrastructure\\serialization\\test_workflow_serializer.py",
+      "tests_components": [
+        "src/domain/workflows/models.py",
+        "src/infrastructure/serialization/workflow_serializer.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\integration\\test_credential_adapter_integration.py",
+      "tests_components": [
+        "src/domain/credentials/impl/credential_service.py",
+        "src/ui/adapters/impl/credential_adapter.py",
+        "src/ui/presenters/credential_presenter.py",
+        "src/ui/views/credential_view.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\integration\\test_credential_filter_integration.py",
+      "tests_components": [
+        "src/core/actions/action_interface.py",
+        "src/core/credentials/credential_manager.py",
+        "src/core/actions/credential_filter_action.py",
+        "src/core/context/variable_storage.py",
+        "src/core/workflow/workflow_engine.py",
+        "src/core/actions/base_action.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\integration\\test_workflow_integration.py",
+      "tests_components": [
+        "src/ui/adapters/interfaces/workflow_interfaces.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\adapters\\test_adapter_factory.py",
+      "tests_components": [
+        "src/core/credentials/credential_manager.py",
+        "src/core/data/data_source_manager.py",
+        "src/core/loops/loop_factory.py",
+        "src/ui/adapters/impl/variable_adapter.py",
+        "src/ui/adapters/impl/workflow_adapter.py",
+        "src/ui/adapters/impl/condition_adapter.py",
+        "src/core/variables/variable_storage.py",
+        "src/core/workflow/workflow_service_new.py",
+        "src/ui/adapters/impl/data_source_adapter.py",
+        "src/ui/adapters/impl/error_adapter.py",
+        "src/ui/adapters/impl/credential_adapter.py",
+        "src/core/errors/error_manager.py",
+        "src/ui/adapters/impl/loop_adapter.py",
+        "src/core/reporting/reporting_service.py",
+        "src/ui/adapters/impl/reporting_adapter.py",
+        "src/ui/adapters/factory/adapter_factory.py",
+        "src/core/conditions/condition_factory_new.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\adapters\\test_condition_adapter.py",
+      "tests_components": [
+        "src/ui/adapters/condition_adapter.py",
+        "src/core/conditions/condition_factory.py",
+        "src/core/conditions/text_contains_condition.py",
+        "src/core/conditions/comparison_condition.py",
+        "src/core/conditions/composite_conditions.py",
+        "src/core/conditions/element_exists_condition.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\adapters\\test_loop_adapter.py",
+      "tests_components": [
+        "src/core/conditions/condition_factory.py",
+        "src/core/actions/while_loop_action.py",
+        "src/core/actions/for_each_action.py",
+        "src/ui/adapters/loop_adapter.py",
+        "src/core/actions/action_factory.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\adapters\\test_reporting_adapter.py",
+      "tests_components": [
+        "src/core/reporting/reporting_service.py",
+        "src/ui/adapters/impl/reporting_adapter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\adapters\\test_variable_adapter.py",
+      "tests_components": [
+        "src/core/variables/variable_storage.py",
+        "src/core/variables/variable_type.py",
+        "src/ui/adapters/impl/variable_adapter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\adapters\\test_workflow_adapter.py",
+      "tests_components": [
+        "src/ui/adapters/impl/workflow_adapter.py",
+        "src/ui/adapters/interfaces/workflow_interfaces.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\adapters\\impl\\test_action_adapter.py",
+      "tests_components": [
+        "src/ui/adapters/impl/action_adapter.py",
+        "src/domain/actions/interfaces.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\adapters\\impl\\test_condition_adapter_new.py",
+      "tests_components": [
+        "src/ui/adapters/impl/condition_adapter.py",
+        "src/domain/conditions/interfaces.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\adapters\\impl\\test_credential_adapter_new.py",
+      "tests_components": [
+        "src/core/credentials/credential_manager.py",
+        "src/domain/credentials/interfaces.py",
+        "src/ui/adapters/impl/credential_adapter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\adapters\\impl\\test_data_source_adapter_new.py",
+      "tests_components": [
+        "src/ui/adapters/impl/data_source_adapter.py",
+        "src/domain/datasources/interfaces.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\adapters\\impl\\test_error_adapter_new.py",
+      "tests_components": [
+        "src/ui/adapters/impl/error_adapter.py",
+        "src/domain/errors/interfaces.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\adapters\\impl\\test_loop_adapter_new.py",
+      "tests_components": [
+        "src/ui/adapters/impl/loop_adapter.py",
+        "src/domain/loops/interfaces.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\adapters\\impl\\test_reporting_adapter_new.py",
+      "tests_components": [
+        "src/ui/adapters/impl/reporting_adapter.py",
+        "src/domain/reporting/interfaces.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\adapters\\impl\\test_variable_adapter_new.py",
+      "tests_components": [
+        "src/domain/variables/interfaces.py",
+        "src/ui/adapters/impl/variable_adapter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\adapters\\impl\\test_workflow_command_adapter.py",
+      "tests_components": [
+        "src/ui/adapters/impl/workflow_command_adapter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\components\\test_context_menu.py",
+      "tests_components": [
+        "src/ui/components/context_menu.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\dialogs\\test_batch_operations_dialog.py",
+      "tests_components": [
+        "src/ui/dialogs/batch_operations_dialog.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\presenters\\test_base_presenter.py",
+      "tests_components": [
+        "src/ui/presenters/base_presenter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\presenters\\test_condition_presenter.py",
+      "tests_components": [
+        "src/ui/adapters/condition_adapter.py",
+        "src/ui/presenters/condition_presenter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\presenters\\test_loop_presenter.py",
+      "tests_components": [
+        "src/ui/presenters/loop_presenter.py",
+        "src/ui/adapters/loop_adapter.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\views\\test_condition_view.py",
+      "tests_components": [
+        "src/ui/views/condition_view.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\views\\test_credential_view.py",
+      "tests_components": [
+        "src/ui/views/credential_view.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\views\\test_loop_view.py",
+      "tests_components": [
+        "src/ui/views/loop_view.py"
+      ]
+    },
+    {
+      "test_file": "C:\\Users\\thump\\OneDrive\\Desktop\\AUTOCLICK\\tests\\ui\\views\\test_variable_view.py",
+      "tests_components": [
+        "src/ui/views/variable_view.py"
+      ]
+    }
+  ]
+}
